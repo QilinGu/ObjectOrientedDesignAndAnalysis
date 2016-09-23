@@ -3,11 +3,17 @@
 
 #include "stdafx.h"
 #include <iostream>
+#include "Account.h"
 using namespace std;
 
 int main()
 {
-	cout << "just set up git on my laptop as well" << endl;
+	Account account("Checking", 6000);
+
+	account.deposit(-50);
+	cout << account.getBalance() << endl;
+	
+	
     return 0;
 }
 
