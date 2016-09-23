@@ -1,3 +1,9 @@
+/*
+	Created by: Pearson Radu
+	The Account class will be an instance of an account for each member of the bank
+	It will allow the member to execute balance modifications and changes to their account
+*/
+
 #include "stdafx.h"
 #include "Account.h"
 
@@ -23,7 +29,12 @@ Account::~Account()
 void Account::deleteAccount()
 {
 	if (balance == 0)
+	{
+		cout << getAccountType << " account has been deleted." << endl;
 		delete this;
+	}
+	else
+		cout << "Sorry, this account cannot be deleted since it's balance is not zero." << endl;
 }
 
 /*
@@ -34,11 +45,11 @@ void Account::withdraw(double value)
 {
 	if ((balance - value) < 0)
 	{
-		cout << "I am sorry this transaction cannot be completed since this it will result in a negative balance in your account." << endl;
+		cout << "Sorry, this transaction cannot be completed since this it will result in a negative balance in your account." << endl;
 	}
 	else if ((balance - value) == 1)
 	{
-		cout << "I am sorry this transaction cannot be completed since this will result in a negative balance in your account if you accept the charges." << endl;
+		cout << "Sorry, this transaction cannot be completed since this will result in a negative balance in your account if you accept the charges." << endl;
 	}
 	else if ((balance - value) < 1000)
 	{
@@ -68,7 +79,7 @@ void Account::deposit(double value)
 	if (value > 0)
 		balance += value;
 	else
-		cout << "I am sorry this value cannot be deposited." << endl;
+		cout << "Sorry, the value " << value << " cannot be deposited." << endl;
 }
 
 /*

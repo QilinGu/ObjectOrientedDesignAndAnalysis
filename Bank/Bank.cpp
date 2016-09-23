@@ -4,16 +4,16 @@
 #include "stdafx.h"
 #include <iostream>
 #include "Account.h"
+#include "Client.h"
 using namespace std;
 
 int main()
 {
-	Account account("Checking", 6000);
-
-	account.deposit(-50);
-	cout << account.getBalance() << endl;
-	
-	
+	Client client;
+	cout << client.getFirstname() << endl;
+	cout << client.getLastname() << endl;
+	cout << client.getUsername() << endl;
+	cout << client.getPassword() << endl;
     return 0;
 }
 

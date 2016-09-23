@@ -10,6 +10,9 @@ class Account
 	double balance;
 
 	public:
+	Account(string account, double value);
+	~Account();
+
 	string getAccountType();
 	void setAccountType(string account);
 	double getBalance();
@@ -18,8 +21,5 @@ class Account
 	void deposit(double value);
 	void transfer(double value, Account account);
 	void deleteAccount();
-	
-	Account(string account, double value);
-	~Account();
 };
 
