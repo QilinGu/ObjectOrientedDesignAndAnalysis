@@ -2,6 +2,7 @@
 #include <string>
 #include "Account.h"
 #include <iostream>
+#include <vector>
 using namespace std;
 
 class Member
@@ -10,6 +11,7 @@ class Member
 	string firstname,lastname;
 	string username;
 	string password;
+	vector<Account> accounts;
 
 	public:
 	Member();
@@ -22,5 +24,8 @@ class Member
 	void setUsername(string user);
 	string getPassword();
 	void setPassword(string pass);
+	void addAccount(Account account);
+	void removeAccount(Account account);
+	void printAccount();
 };
 
