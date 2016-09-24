@@ -5,7 +5,6 @@ Client::Client()
 {
 }
 
-
 Client::~Client()
 {
 }

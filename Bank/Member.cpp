@@ -20,19 +20,19 @@ Member::Member()
 	cin >> password;
 	cout << "How many accounts do you want to create for " << firstname << ": ";
 	
-	bool inputFail;
+	bool inputFail1;
 	int num1;
 	do
 	{
 		cin >> num1;
-		inputFail = cin.fail();
+		inputFail1 = cin.fail();
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	} while (inputFail == true);
+	} while (inputFail1 == true);
 
 	for (int i = 0; i < num1; i++)
 	{
-		bool inputFail;
+		bool inputFail2;
 		string accountType;
 		double balance;
 		cout << "--------------------------------------------------------------------------\n";
@@ -45,19 +45,17 @@ Member::Member()
 		do
 		{
 			cin >> balance;
-			inputFail = cin.fail();
+			inputFail2 = cin.fail();
 			cin.clear();
 			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		} while (inputFail == true);
+		} while (inputFail2 == true);
 
 		Account account(accountType, balance);
 		addAccount(account);
 	}
 
-	printAccount();
-
 	cout << "--------------------------------------------------------------------------\n";
-	cout << "                           Finished Creating Account" << endl;
+	cout << "                         Finished Creating Account" << endl;
 	cout << "--------------------------------------------------------------------------" << endl;
 }
 
@@ -100,13 +98,19 @@ void Member::removeAccount(Account account)
 */
 void Member::printAccount()
 {
+	cout << "--------------------------------------------------------------------------\n";
+	cout << "                               " << firstname << " " << lastname << endl;
+	cout << "--------------------------------------------------------------------------" << endl;
+	
 	int size = accounts.size();
-
 	for (int i = 0; i < size; i++)
 	{
-		cout << "Account: $" << accounts[i].getAccountType() << endl;
-		cout << "Balance: $" << accounts[i].getBalance() << endl;
+		cout << "\tAccount " << i + 1 << endl;
+		
+		cout << "\tAccount: $" << accounts[i].getAccountType() << endl;
+		cout << "\tBalance: $" << accounts[i].getBalance() << endl;
 	}
+	cout << "--------------------------------------------------------------------------" << endl;
 }
 
 /*Getter for firstname*/
