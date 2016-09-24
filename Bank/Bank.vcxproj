@@ -147,6 +147,8 @@
   <ItemGroup>
     <ClInclude Include="Account.h" />
     <ClInclude Include="Client.h" />
+    <ClInclude Include="Maintainer.h" />
+    <ClInclude Include="Manager.h" />
     <ClInclude Include="Member.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -155,6 +157,8 @@
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="Bank.cpp" />
     <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Maintainer.cpp" />
+    <ClCompile Include="Manager.cpp" />
     <ClCompile Include="Member.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -30,7 +30,7 @@ void Account::deleteAccount()
 {
 	if (balance == 0)
 	{
-		cout << getAccountType << " account has been deleted." << endl;
+		cout << "This account has been deleted." << endl;
 		delete this;
 	}
 	else
