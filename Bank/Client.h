@@ -4,9 +4,9 @@
 class Client : public Member
 {
 	private:
-
+	
 	public:
 	Client();
 	~Client();
+	void showClient();
 };
-
