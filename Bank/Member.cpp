@@ -1,10 +1,12 @@
+/*
+Created by: Pearson Radu
+The Member class is a parent class for Client, Manager, and Maintainer. This class give
+members a skeleton which will hold names, username, passwords as well as account detials.
+*/
+
 #include "stdafx.h"
 #include "Member.h"
 
-/*
-	Member Constructor
-	This will ask the user for their first and last name, username, password and accounts
-*/
 Member::Member()
 {
 	/**/
@@ -187,16 +189,4 @@ void Member::setPassword(string pass)
 vector<Account> Member::getAccounts()
 {
 	return accounts;
-}
-
-/*Getter for type*/
-string Member::getType()
-{
-	return type;
-}
-
-/*Setter for type*/
-void Member::setType(string newType)
-{
-	type = newType;
 }

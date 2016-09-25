@@ -48,29 +48,24 @@ int main()
 
 void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
-	Serializable clientSerial;
+	Serializable memberSerial;
+	
 	clients.clear();
-	clients = clientSerial.loadClients();
+	clients = memberSerial.loadClients();
 
-	Serializable managerSerial;
 	managers.clear();
-	managers = managerSerial.loadManagers();
+	managers = memberSerial.loadManagers();
 
-	Serializable maintainerSerial;
 	maintainers.clear();
-	maintainers = maintainerSerial.loadMaintainers();
+	maintainers = memberSerial.loadMaintainers();
 }
 
 void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
-	Serializable clientSerial;
-	clientSerial.saveClients(clients);
-
-	Serializable managerSerial;
-	managerSerial.saveManagers(managers);
-
-	Serializable maintainerSerial;
-	maintainerSerial.saveMaintainers(maintainers);
+	Serializable memberSerial;
+	memberSerial.saveClients(clients);
+	memberSerial.saveManagers(managers);
+	memberSerial.saveMaintainers(maintainers);
 }
 
 void startMenu(string &username, string &password, vector<Member> &vMember)
@@ -119,7 +114,7 @@ void validate(string &username, string &password, vector<Member> &vMember)
 
 void optionMenu(string &username, string &password, vector<Member> &vMember, Member &member)
 {
-	cout << "--------------------------------------------------------------------------\n";
+	/*cout << "--------------------------------------------------------------------------\n";
 	cout << "                                 Main Menu\n";
 	cout << "--------------------------------------------------------------------------\n" << endl;
 	cout << " Please select an option from below:" << endl;
@@ -174,7 +169,7 @@ void optionMenu(string &username, string &password, vector<Member> &vMember, Mem
 
 	cout << endl << endl;
 
-	choiceValidate(choice, username, password, vMember, member);
+	choiceValidate(choice, username, password, vMember, member);*/
 }
 
 void choiceValidate(int &choice, string &username, string &password, vector<Member> &vMember, Member &member)

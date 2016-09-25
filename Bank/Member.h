@@ -7,9 +7,6 @@ using namespace std;
 
 class Member
 {
-	protected:
-	string type;
-
 	private:
 	string firstname,lastname;
 	string username;
@@ -28,8 +25,6 @@ class Member
 	string getUsername();
 	void setUsername(string user);
 	string getPassword();
-	void setType(string type);
-	string getType();
 	void setPassword(string pass);
 	void addAccount(Account account);
 	void removeAccount(Account account);
