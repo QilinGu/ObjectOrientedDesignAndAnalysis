@@ -3,10 +3,8 @@
 
 class Client : public Member
 {
-	private:
-	
 	public:
 	Client();
+	Client(string firstname, string lastname, string username, string password, Account account);
 	~Client();
-	void showClient();
 };
