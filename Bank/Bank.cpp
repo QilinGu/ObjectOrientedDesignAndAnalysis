@@ -12,6 +12,8 @@ bool login();
 
 int main()
 {
+
+
 	bool entry = login();
 	cout << entry << endl;
 
