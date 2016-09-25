@@ -7,4 +7,3 @@ class Manager : public Member
 	Manager();
 	~Manager();
 };
-

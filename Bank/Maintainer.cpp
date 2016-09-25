@@ -3,8 +3,8 @@
 
 Maintainer::Maintainer()
 {
+	type = "maintainer";
 }
-
 
 Maintainer::~Maintainer()
 {

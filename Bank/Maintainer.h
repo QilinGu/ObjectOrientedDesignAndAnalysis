@@ -7,4 +7,3 @@ class Maintainer : public Member
 	Maintainer();
 	~Maintainer();
 };
-

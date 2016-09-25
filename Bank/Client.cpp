@@ -3,6 +3,7 @@
 
 Client::Client()
 {
+	type = "client";
 }
 
 Client::~Client()

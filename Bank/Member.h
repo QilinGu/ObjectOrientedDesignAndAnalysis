@@ -7,12 +7,15 @@ using namespace std;
 
 class Member
 {
+	protected:
+	string type;
+
 	private:
 	string firstname,lastname;
 	string username;
 	string password;
 	vector<Account> accounts;
-
+	
 	public:
 	Member();
 	~Member();
@@ -25,9 +28,13 @@ class Member
 	string getUsername();
 	void setUsername(string user);
 	string getPassword();
+	void setType(string type);
+	string getType();
 	void setPassword(string pass);
 	void addAccount(Account account);
 	void removeAccount(Account account);
-	void printAccount();
+	Account *selectAccount();
+	vector<Account> getAccounts();
+	void printAccount(); 
 };
 

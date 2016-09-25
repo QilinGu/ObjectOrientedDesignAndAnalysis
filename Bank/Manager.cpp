@@ -3,8 +3,8 @@
 
 Manager::Manager()
 {
+	type = "manager";
 }
-
 
 Manager::~Manager()
 {

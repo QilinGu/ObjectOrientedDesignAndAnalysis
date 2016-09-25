@@ -107,6 +107,15 @@ void Member::removeAccount(Account account)
 }
 
 /*
+	Account Selector Function
+*/
+Account *Member::selectAccount()
+{
+	if (accounts.size() == 1)
+		return &accounts[0];
+}
+
+/*
 	Print Account Function
 	This prints all the accounts and the balances of them
 */
@@ -114,17 +123,16 @@ void Member::printAccount()
 {
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                               " << firstname << " " << lastname << endl;
-	cout << "--------------------------------------------------------------------------" << endl;
+	cout << "--------------------------------------------------------------------------\n" << endl;
 
 	int size = accounts.size();
 	for (int i = 0; i < size; i++)
 	{
-		cout << "\tAccount " << i + 1 << endl;
+		cout << " Account " << i + 1 << endl;
 
-		cout << "\tAccount: $" << accounts[i].getAccountType() << endl;
-		cout << "\tBalance: $" << accounts[i].getBalance() << endl;
+		cout << " Account: " << accounts[i].getAccountType() << endl;
+		cout << " Balance: $" << accounts[i].getBalance() << endl << endl;
 	}
-	cout << "--------------------------------------------------------------------------" << endl;
 }
 
 /*Getter for firstname*/
@@ -173,4 +181,22 @@ string Member::getPassword()
 void Member::setPassword(string pass)
 {
 	password = pass;
+}
+
+/*Getter for accounts*/
+vector<Account> Member::getAccounts()
+{
+	return accounts;
+}
+
+/*Getter for type*/
+string Member::getType()
+{
+	return type;
+}
+
+/*Setter for type*/
+void Member::setType(string newType)
+{
+	type = newType;
 }
