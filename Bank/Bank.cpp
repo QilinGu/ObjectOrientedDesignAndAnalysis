@@ -48,18 +48,21 @@ void startMenu(string &username, string &password, vector<Member> vMember)
 {
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                             Welcome To PR Bank\n";
-	cout << "--------------------------------------------------------------------------" << endl;
-	cout << "Please login to your account to begin." << endl;
-	cout << "Username: ";
+	cout << "--------------------------------------------------------------------------\n" << endl;
+	cout << " Please login to your account to begin." << endl;
+	cout << " Username: ";
 	cin >> username;
-	cout << "Password: ";
+	cout << " Password: ";
 	cin >> password;
-
+	cout << endl;
 	validate(username, password, vMember);
 }
 
 void validate(string &username, string &password, vector<Member> vMember)
 {
+	cout << "--------------------------------------------------------------------------\n";
+	cout << "                            Searching for Account\n";
+	cout << "--------------------------------------------------------------------------\n" << endl;
 	int size = vMember.size();
 	bool found = false;
 	int element;
@@ -75,11 +78,14 @@ void validate(string &username, string &password, vector<Member> vMember)
 
 	if (found)
 	{
-		cout << "We have found your account" << endl;
+		cout << " We have found your account, " << vMember[element].getFirstname() << " " << vMember[element].getLastname() << "." <<endl << endl;
 		vMember[element].printAccount();
 	}
 	else
-		cout << "We cannot find your account" << endl;
+	{
+		cout << " Sorry, we were unable to find your account. Going back to main menu...\n" << endl;
+		startMenu(username, password, vMember);
+	}
 }
 
 void optionMenu(Member &member)
