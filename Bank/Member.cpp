@@ -9,13 +9,16 @@ members a skeleton which will hold names, username, passwords as well as account
 
 Member::Member()
 {
-	/**/
 }
 
 Member::~Member()
 {
 }
 
+/*
+	Initialize Member Function
+	This function allows for the program to add a member with basic parameters
+*/
 void Member::initialize(string first, string last, string user, string pass, Account account)
 {
 	firstname = first;
@@ -23,60 +26,6 @@ void Member::initialize(string first, string last, string user, string pass, Acc
 	username = user;
 	password = pass;
 	addAccount(account);
-}
-
-void Member::initialize()
-{
-	cout << "--------------------------------------------------------------------------\n";
-	cout << "                             New Member of PR Bank\n";
-	cout << "--------------------------------------------------------------------------" << endl;
-	cout << "Please enter the member's first name: ";
-	cin >> firstname;
-	cout << "Please enter the member's last name: ";
-	cin >> lastname;
-	cout << "Please enter the member's username: ";
-	cin >> username;
-	cout << "Please enter the member's password: ";
-	cin >> password;
-	cout << "How many accounts do you want to create for " << firstname << ": ";
-
-	bool inputFail1;
-	int num1;
-	do
-	{
-		cin >> num1;
-		inputFail1 = cin.fail();
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	} while (inputFail1 == true);
-
-	for (int i = 0; i < num1; i++)
-	{
-		bool inputFail2;
-		string accountType;
-		double balance;
-		cout << "--------------------------------------------------------------------------\n";
-		cout << "                                  Account " << i + 1 << endl;
-		cout << "--------------------------------------------------------------------------" << endl;
-		cout << "What type of account is this: ";
-		cin >> accountType;
-		cout << "How much money is going to be deposited in this account: $";
-
-		do
-		{
-			cin >> balance;
-			inputFail2 = cin.fail();
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		} while (inputFail2 == true);
-
-		Account account(accountType, balance);
-		addAccount(account);
-	}
-
-	cout << "--------------------------------------------------------------------------\n";
-	cout << "                         Finished Creating Account" << endl;
-	cout << "--------------------------------------------------------------------------" << endl;
 }
 
 /*

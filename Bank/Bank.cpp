@@ -24,21 +24,17 @@ int main()
 	vector<Maintainer> maintainers;
 	loadMembers(clients, managers, maintainers);
 	
-	
-	for (size_t i = 0; i < clients.size(); i++)
-	{
-		clients[i].printAccount();
-	}
+	int selection = managers[0].createMember();
 
-	for (size_t i = 0; i < managers.size(); i++)
+	if (selection == 1)
 	{
-		managers[i].printAccount();
+		Client client = managers[0].initializeClient();
+		client.printAccount();
 	}
-
-	for (size_t i = 0; i < maintainers.size(); i++)
-	{
-		maintainers[i].printAccount();
-	}
+	else if (selection == 2)
+		Manager manager = managers[0].initializeManager();
+	else if (selection == 3)
+		Maintainer maintainer = managers[0].initializeMaintainer();
 
 	//string username, password;
 	//startMenu(username, password, vMember);

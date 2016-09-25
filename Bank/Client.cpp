@@ -11,6 +11,11 @@ Client::Client()
 {
 }
 
+Client::Client(string firstname, string lastname, string username, string password, Account account)
+{
+	initialize(firstname, lastname, username, password, account);
+}
+
 Client::~Client()
 {
 }

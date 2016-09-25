@@ -16,7 +16,6 @@ class Member
 	public:
 	Member();
 	~Member();
-	void initialize();
 	void initialize(string first, string last, string user, string pass, Account account);
 	string getFirstname();
 	void setFirtname(string first);
