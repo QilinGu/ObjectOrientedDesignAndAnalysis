@@ -7,6 +7,24 @@
 */
 Member::Member()
 {
+	/**/
+}
+
+Member::~Member()
+{
+}
+
+void Member::initialize(string first, string last, string user, string pass, Account account)
+{
+	firstname = first;
+	lastname = last;
+	username = user;
+	password = pass;
+	addAccount(account);
+}
+
+void Member::initialize()
+{
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                             New Member of PR Bank\n";
 	cout << "--------------------------------------------------------------------------" << endl;
@@ -19,7 +37,7 @@ Member::Member()
 	cout << "Please enter the member's password: ";
 	cin >> password;
 	cout << "How many accounts do you want to create for " << firstname << ": ";
-	
+
 	bool inputFail1;
 	int num1;
 	do
@@ -57,10 +75,6 @@ Member::Member()
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                         Finished Creating Account" << endl;
 	cout << "--------------------------------------------------------------------------" << endl;
-}
-
-Member::~Member()
-{
 }
 
 /*
@@ -101,12 +115,12 @@ void Member::printAccount()
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                               " << firstname << " " << lastname << endl;
 	cout << "--------------------------------------------------------------------------" << endl;
-	
+
 	int size = accounts.size();
 	for (int i = 0; i < size; i++)
 	{
 		cout << "\tAccount " << i + 1 << endl;
-		
+
 		cout << "\tAccount: $" << accounts[i].getAccountType() << endl;
 		cout << "\tBalance: $" << accounts[i].getBalance() << endl;
 	}
