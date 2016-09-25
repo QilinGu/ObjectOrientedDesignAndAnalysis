@@ -10,6 +10,8 @@
 #include "serializable.h"
 using namespace std;
 
+void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
+void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 void startMenu(string &username, string &password, vector<Member> &vMember);
 void validate(string &username, string &password, vector<Member> &vMember);
 void optionMenu(string &username, string &password, vector<Member> &vMember, Member &member);
@@ -17,53 +19,21 @@ void choiceValidate(int &choice, string &username, string &password, vector<Memb
 
 int main()
 {
-	Client client;
-	Account account("Savings", 1000);
-	client.initialize("Pearson", "Radu", "pradu", "123", account);
-	Account account4("Chequing", 2000);
-	client.addAccount(account4);
-
-	Manager manager;
-	Account account2("Savings", 2000);
-	manager.initialize("Delainha", "Radu", "dradu", "456", account2);
-
-	Maintainer maintainer;
-	Account account3("Savings", 3000);
-	maintainer.initialize("Isabel", "Radu", "iradu", "789", account3);
-
 	vector<Client> clients;
-	clients.push_back(client);
-
 	vector<Manager> managers;
-	managers.push_back(manager);
-
 	vector<Maintainer> maintainers;
-	maintainers.push_back(maintainer);
-
-	Serializable clientSerial;
-	clientSerial.saveClients(clients);
-	clients.clear();
-	clients = clientSerial.loadClients();
+	loadMembers(clients, managers, maintainers);
+	
 	
 	for (size_t i = 0; i < clients.size(); i++)
 	{
 		clients[i].printAccount();
 	}
 
-	Serializable managerSerial;
-	managerSerial.saveManagers(managers);
-	managers.clear();
-	managers = managerSerial.loadManagers();
-
 	for (size_t i = 0; i < managers.size(); i++)
 	{
 		managers[i].printAccount();
 	}
-
-	Serializable maintainerSerial;
-	maintainerSerial.saveMaintainers(maintainers);
-	maintainers.clear();
-	maintainers = maintainerSerial.loadMaintainers();
 
 	for (size_t i = 0; i < maintainers.size(); i++)
 	{
@@ -74,6 +44,33 @@ int main()
 	//startMenu(username, password, vMember);
 
 	return 0;
+}
+
+void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
+{
+	Serializable clientSerial;
+	clients.clear();
+	clients = clientSerial.loadClients();
+
+	Serializable managerSerial;
+	managers.clear();
+	managers = managerSerial.loadManagers();
+
+	Serializable maintainerSerial;
+	maintainers.clear();
+	maintainers = maintainerSerial.loadMaintainers();
+}
+
+void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
+{
+	Serializable clientSerial;
+	clientSerial.saveClients(clients);
+
+	Serializable managerSerial;
+	managerSerial.saveManagers(managers);
+
+	Serializable maintainerSerial;
+	maintainerSerial.saveMaintainers(maintainers);
 }
 
 void startMenu(string &username, string &password, vector<Member> &vMember)
