@@ -32,9 +32,15 @@ int main()
 		client.printAccount();
 	}
 	else if (selection == 2)
+	{
 		Manager manager = managers[0].initializeManager();
+		manager.printAccount();
+	}
 	else if (selection == 3)
+	{
 		Maintainer maintainer = managers[0].initializeMaintainer();
+		maintainer.printAccount();
+	}
 
 	//string username, password;
 	//startMenu(username, password, vMember);

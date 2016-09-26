@@ -12,6 +12,11 @@ Manager::Manager()
 {
 }
 
+Manager::Manager(string firstname, string lastname, string username, string password, Account account)
+{
+	initialize(firstname, lastname, username, password, account);
+}
+
 Manager::~Manager()
 {
 }
@@ -46,9 +51,6 @@ int Manager::createMember()
 
 void Manager::memberInput(string &firstname, string &lastname, string &username, string &password, vector<Account> &accounts)
 {
-	cout << "--------------------------------------------------------------------------\n";
-	cout << "                             New Client of PR Bank\n";
-	cout << "--------------------------------------------------------------------------\n" << endl;
 	cout << "Please enter the member's first name: ";
 	cin >> firstname;
 	cout << "Please enter the member's last name: ";
@@ -108,7 +110,11 @@ Client Manager::initializeClient()
 	int choice;
 	vector<Account> accounts;
 	string firstname, lastname, username, password;
-	
+
+	cout << "--------------------------------------------------------------------------\n";
+	cout << "                             New Client of PR Bank\n";
+	cout << "--------------------------------------------------------------------------\n" << endl;
+
 	memberInput(firstname, lastname, username, password, accounts);
 
 	Client client(firstname, lastname, username, password, accounts[0]);
@@ -121,13 +127,41 @@ Client Manager::initializeClient()
 
 Manager Manager::initializeManager()
 {
-	//memberInput();
-	return Manager();
+	int choice; 
+	vector<Account> accounts;
+	string firstname, lastname, username, password;
+
+	cout << "--------------------------------------------------------------------------\n";
+	cout << "                            New Manager of PR Bank\n";
+	cout << "--------------------------------------------------------------------------\n" << endl;
+
+	memberInput(firstname, lastname, username, password, accounts);
+
+	Manager manager(firstname, lastname, username, password, accounts[0]);
+
+	for (size_t i = 1; i < accounts.size(); i++)
+		manager.addAccount(accounts[i]);
+
+	return manager;
 }
 
 Maintainer Manager::initializeMaintainer()
 {
-	//memberInput();
-	return Maintainer();
+	int choice;
+	vector<Account> accounts;
+	string firstname, lastname, username, password;
+
+	cout << "--------------------------------------------------------------------------\n";
+	cout << "                          New Maintainer of PR Bank\n";
+	cout << "--------------------------------------------------------------------------\n" << endl;
+
+	memberInput(firstname, lastname, username, password, accounts);
+
+	Maintainer maintainer(firstname, lastname, username, password, accounts[0]);
+
+	for (size_t i = 1; i < accounts.size(); i++)
+		maintainer.addAccount(accounts[i]);
+
+	return maintainer;
 }
 

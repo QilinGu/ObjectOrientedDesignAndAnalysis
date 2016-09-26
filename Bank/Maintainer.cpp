@@ -12,6 +12,11 @@ Maintainer::Maintainer()
 {
 }
 
+Maintainer::Maintainer(string firstname, string lastname, string username, string password, Account account)
+{
+	initialize(firstname, lastname, username, password, account);
+}
+
 Maintainer::~Maintainer()
 {
 }

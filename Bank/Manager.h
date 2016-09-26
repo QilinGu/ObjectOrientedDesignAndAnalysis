@@ -1,7 +1,6 @@
 #pragma once
 #include "Member.h"
 #include "Client.h"
-#include "Manager.h"
 #include "Maintainer.h"
 
 class Manager : public Member
@@ -11,6 +10,7 @@ class Manager : public Member
 
 	public:
 	Manager();
+	Manager(string firstname, string lastname, string username, string password, Account account);
 	~Manager();
 	int createMember();
 	Client initializeClient();
