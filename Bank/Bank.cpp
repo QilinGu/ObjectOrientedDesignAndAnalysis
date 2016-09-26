@@ -12,8 +12,8 @@ using namespace std;
 
 void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
-void startMenu(string &username, string &password, vector<Member> &vMember);
-void validate(string &username, string &password, vector<Member> &vMember);
+void startMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
+void validate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 void optionMenu(string &username, string &password, vector<Member> &vMember, Member &member);
 void choiceValidate(int &choice, string &username, string &password, vector<Member> &vMember, Member &member);
 
@@ -51,13 +51,10 @@ int main()
 void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	Serializable memberSerial;
-	
 	clients.clear();
 	clients = memberSerial.loadClients();
-
 	managers.clear();
 	managers = memberSerial.loadManagers();
-
 	maintainers.clear();
 	maintainers = memberSerial.loadMaintainers();
 }
@@ -70,7 +67,7 @@ void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Main
 	memberSerial.saveMaintainers(maintainers);
 }
 
-void startMenu(string &username, string &password, vector<Member> &vMember)
+void startMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                             Welcome To PR Bank\n";
@@ -81,17 +78,17 @@ void startMenu(string &username, string &password, vector<Member> &vMember)
 	cout << " Password: ";
 	cin >> password;
 	cout << endl;
-	validate(username, password, vMember);
+	validate(username, password, clients, managers, maintainers);
 }
 
-void validate(string &username, string &password, vector<Member> &vMember)
+void validate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                           Searching For Account\n";
 	cout << "--------------------------------------------------------------------------\n" << endl;
 	int size = vMember.size();
 	bool found = false;
-	int element;
+	int element = 0;
 	for (int i = 0; i < size; i++)
 	{
 		if (vMember[i].getUsername() == username && vMember[i].getPassword() == password)
@@ -110,7 +107,7 @@ void validate(string &username, string &password, vector<Member> &vMember)
 	else
 	{
 		cout << " Sorry, we were unable to find your account. Going back to main menu...\n" << endl;
-		startMenu(username, password, vMember);
+		startMenu(username, password, clients, managers, maintainers);
 	}
 }
 
@@ -206,7 +203,7 @@ void choiceValidate(int &choice, string &username, string &password, vector<Memb
 			break;
 		case 6:
 			cout << " Logging out, thank you for choosing PR Bank.\n" << endl;
-			startMenu(username, password, vMember);
+			startMenu(username, password, clients, managers, maintainers);
 			break;
 		case 7:
 			break;
@@ -216,7 +213,7 @@ void choiceValidate(int &choice, string &username, string &password, vector<Memb
 			break;
 		default:
 			cout << " INTERNAL ERROR: Returning to main menu...\n" << endl;
-			startMenu(username, password, vMember);
+			startMenu(username, password, clients, managers, maintainers);
 	}
 }
 
