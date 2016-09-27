@@ -1,3 +1,11 @@
+/**
+* Created by: Pearson Radu
+* The Serializable class saves or loads a vector of one of the three types of members.
+* Simply just puts the data in a text file.
+* Previously I did have a method that would use actual object serialization to save the data.
+* Unfortunately I was unable to unserialize the data properly.
+*/
+
 #include "stdafx.h"
 #include "Serializable.h"
 
@@ -9,6 +17,13 @@ Serializable::~Serializable()
 {
 }
 
+
+/**
+ * \brief
+ * Save Clients Function
+ * This function takes a vector of members and saves the attributes individually to a file
+ * \param clients
+ */
 void Serializable::saveClients(vector<Client>& clients)
 {
 	ofstream fileWriter("clients.pr");
@@ -35,6 +50,13 @@ void Serializable::saveClients(vector<Client>& clients)
 	fileWriter.close();
 }
 
+
+/**
+ * \brief
+ * Load Clients Function
+ * This function returns a vector of members that have been pulled and created from a file
+ * \return
+ */
 vector<Client> Serializable::loadClients()
 {
 	ifstream fileReader("clients.pr");
@@ -77,6 +99,12 @@ vector<Client> Serializable::loadClients()
 	return newClients;
 }
 
+/**
+* \brief
+* Save Managers Function
+* This function takes a vector of members and saves the attributes individually to a file
+* \param managers
+*/
 void Serializable::saveManagers(vector<Manager>& managers)
 {
 	ofstream fileWriter("managers.pr");
@@ -103,6 +131,12 @@ void Serializable::saveManagers(vector<Manager>& managers)
 	fileWriter.close();
 }
 
+/**
+* \brief
+* Load Managers Function
+* This function returns a vector of members that have been pulled and created from a file
+* \return
+*/
 vector<Manager> Serializable::loadManagers()
 {
 	ifstream fileReader("managers.pr");
@@ -145,6 +179,12 @@ vector<Manager> Serializable::loadManagers()
 	return newManagers;
 }
 
+/**
+* \brief
+* Save Maintainers Function
+* This function takes a vector of members and saves the attributes individually to a file
+* \param maintainers
+*/
 void Serializable::saveMaintainers(vector<Maintainer>& maintainers)
 {
 	ofstream fileWriter("maintainers.pr");
@@ -171,6 +211,12 @@ void Serializable::saveMaintainers(vector<Maintainer>& maintainers)
 	fileWriter.close();
 }
 
+/**
+* \brief
+* Load Maintainers Function
+* This function returns a vector of members that have been pulled and created from a file
+* \return
+*/
 vector<Maintainer> Serializable::loadMaintainers()
 {
 	ifstream fileReader("maintainers.pr");
