@@ -1,7 +1,7 @@
-/*
-Created by: Pearson Radu
-The Member class is a parent class for Client, Manager, and Maintainer. This class give
-members a skeleton which will hold names, username, passwords as well as account detials.
+/**
+ * Created by: Pearson Radu
+ * The Member class is a parent class for Client, Manager, and Maintainer. This class give
+ * members a skeleton which will hold names, username, passwords as well as account detials.
 */
 
 #include "stdafx.h"

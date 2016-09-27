@@ -153,4 +153,3 @@ void Account::setBalance(double value)
 {
 	balance = value;
 }
-

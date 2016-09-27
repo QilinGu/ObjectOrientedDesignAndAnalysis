@@ -8,11 +8,11 @@ using namespace std;
 class Member
 {
 	private:
-	string firstname,lastname;
+	string firstname, lastname;
 	string username;
 	string password;
 	vector<Account> accounts;
-	
+
 	public:
 	Member();
 	~Member();
@@ -29,6 +29,5 @@ class Member
 	void removeAccount(Account account);
 	Account *selectAccount();
 	vector<Account> getAccounts();
-	void printAccount(); 
+	void printAccount();
 };
-
