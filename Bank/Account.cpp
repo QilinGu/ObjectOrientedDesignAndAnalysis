@@ -43,19 +43,23 @@ void Account::deleteAccount()
 */
 void Account::withdraw(double value)
 {
-	if ((balance - value) < 0)
+	if(value <= 0)
 	{
-		cout << "\nSorry, this transaction cannot be completed since this it will result in a \nnegative balance in your account." << endl;
+		cout << "\n Sorry, this value cannt be withdrawn." << endl;
+	}
+	else if ((balance - value) < 0)
+	{
+		cout << "\n Sorry, this transaction cannot be completed since this it will result in a \n negative balance in your account." << endl;
 	}
 	else if ((balance - value) == 1)
 	{
-		cout << "Sorry, this transaction cannot be completed since this will result in a negative balance in your account if you accept the charges." << endl;
+		cout << " Sorry, this transaction cannot be completed since this will result in a negative balance in your account if you accept the charges." << endl;
 	}
 	else if ((balance - value) < 1000 && balance >= 1000)
 	{
-		cout << "\nIf you continue your " << getAccountType() << " account will have less than $1000 in it." << endl;
-		cout << "If you proceed, we will deduct $2 from your " << getAccountType() << " account." << endl;
-		cout << "Press 1 to proceed, anything else will stop this process: ";
+		cout << "\n If you continue your " << getAccountType() << " account will have less than $1000 in it." << endl;
+		cout << " If you proceed, we will deduct $2 from your " << getAccountType() << " account." << endl;
+		cout << " Press 1 to proceed, anything else will stop this process: ";
 
 		int answer;
 		cin >> answer;
@@ -68,7 +72,7 @@ void Account::withdraw(double value)
 	}
 	else
 	{
-		cout << "Successfully withdrew $" << value << " from " << accountType << ".\n" << endl;
+		cout << "\n Successfully withdrew $" << value << " from " << accountType << ".\n";
 		balance -= value;
 	}
 }
@@ -82,7 +86,7 @@ void Account::deposit(double value)
 	if (value > 0)
 		balance += value;
 	else
-		cout << "Sorry, the value " << value << " cannot be deposited." << endl;
+		cout << "\n Sorry, the value $" << value << " cannot be deposited." << endl;
 }
 
 /*

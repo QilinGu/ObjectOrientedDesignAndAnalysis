@@ -14,36 +14,35 @@ void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Main
 void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 void startMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 void validate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
-void optionMenu(string &username, string &password, vector<Member> &vMember, Member &member);
-void choiceValidate(int &choice, string &username, string &password, vector<Member> &vMember, Member &member);
+void optionMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice);
 
 int main()
 {
+	string username, password;
 	vector<Client> clients;
 	vector<Manager> managers;
 	vector<Maintainer> maintainers;
 	loadMembers(clients, managers, maintainers);
-	
-	int selection = managers[0].createMember();
+	startMenu(username, password, clients, managers, maintainers);
+
+	/*int selection = managers[0].createMember();
 
 	if (selection == 1)
 	{
-		Client client = managers[0].initializeClient();
-		client.printAccount();
+	Client client = managers[0].initializeClient();
+	client.printAccount();
 	}
 	else if (selection == 2)
 	{
-		Manager manager = managers[0].initializeManager();
-		manager.printAccount();
+	Manager manager = managers[0].initializeManager();
+	manager.printAccount();
 	}
 	else if (selection == 3)
 	{
-		Maintainer maintainer = managers[0].initializeMaintainer();
-		maintainer.printAccount();
-	}
-
-	//string username, password;
-	//startMenu(username, password, vMember);
+	Maintainer maintainer = managers[0].initializeMaintainer();
+	maintainer.printAccount();
+	}*/
 
 	return 0;
 }
@@ -86,34 +85,49 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                           Searching For Account\n";
 	cout << "--------------------------------------------------------------------------\n" << endl;
-	int size = vMember.size();
+
 	bool found = false;
-	int element = 0;
-	for (int i = 0; i < size; i++)
+
+	for (size_t i = 0; i < clients.size(); i++)
 	{
-		if (vMember[i].getUsername() == username && vMember[i].getPassword() == password)
+		if (clients[i].getUsername() == username && clients[i].getPassword() == password)
 		{
 			found = true;
-			element = i;
-			break;
+			cout << " We have found your account, " << clients[i].getFirstname() << " " << clients[i].getLastname() << "." << endl << endl;
+			optionMenu(username, password, clients, managers, maintainers, "client", i);
 		}
 	}
 
-	if (found)
+	for (size_t i = 0; i < managers.size(); i++)
 	{
-		cout << " We have found your account, " << vMember[element].getFirstname() << " " << vMember[element].getLastname() << "." << endl << endl;
-		optionMenu(username, password, vMember, vMember[element]);
+		if (managers[i].getUsername() == username && managers[i].getPassword() == password)
+		{
+			found = true;
+			cout << " We have found your account, " << managers[i].getFirstname() << " " << managers[i].getLastname() << "." << endl << endl;
+			optionMenu(username, password, clients, managers, maintainers, "manager", i);
+		}
 	}
-	else
+
+	for (size_t i = 0; i < maintainers.size(); i++)
+	{
+		if (maintainers[i].getUsername() == username && maintainers[i].getPassword() == password)
+		{
+			found = true;
+			cout << " We have found your account, " << maintainers[i].getFirstname() << " " << maintainers[i].getLastname() << "." << endl << endl;
+			optionMenu(username, password, clients, managers, maintainers, "maintainer", i);
+		}
+	}
+
+	if (!found)
 	{
 		cout << " Sorry, we were unable to find your account. Going back to main menu...\n" << endl;
 		startMenu(username, password, clients, managers, maintainers);
 	}
 }
 
-void optionMenu(string &username, string &password, vector<Member> &vMember, Member &member)
+void optionMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
-	/*cout << "--------------------------------------------------------------------------\n";
+	cout << "--------------------------------------------------------------------------\n";
 	cout << "                                 Main Menu\n";
 	cout << "--------------------------------------------------------------------------\n" << endl;
 	cout << " Please select an option from below:" << endl;
@@ -124,7 +138,7 @@ void optionMenu(string &username, string &password, vector<Member> &vMember, Mem
 	cout << " 5. Print Recent Transactions" << endl;
 	cout << " 6. Quit\n" << endl;
 
-	if (member.getType() == "manager")
+	if (type == "manager")
 	{
 		cout << " Additional Manager Options:" << endl;
 		cout << " 7. Open Account" << endl;
@@ -132,7 +146,7 @@ void optionMenu(string &username, string &password, vector<Member> &vMember, Mem
 		cout << " 9. View Details of Account(s)\n" << endl;
 	}
 
-	if (member.getType() == "maintainer:")
+	if (type == "maintainer")
 	{
 		cout << " Additional Maintenance Options" << endl;
 		cout << " 7. Turn On Execution Trace" << endl;
@@ -149,41 +163,49 @@ void optionMenu(string &username, string &password, vector<Member> &vMember, Mem
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-		if (member.getType() == "client")
+		if (type == "client")
 		{
 			if (choice <= 0 || choice >= 7)
 				inputFail = true;
 		}
-		else if (member.getType() == "manager")
+		else if (type == "manager")
 		{
 			if (choice <= 0 || choice >= 10)
 				inputFail = true;
 		}
-		else if (member.getType() == "maintainer")
+		else if (type == "maintainer")
 		{
 			if (choice <= 0 || choice >= 9)
 				inputFail = true;
 		}
 	} while (inputFail == true);
 
-	cout << endl << endl;
+	cout << endl;
 
-	choiceValidate(choice, username, password, vMember, member);*/
+	choiceValidate(username, password, clients, managers, maintainers, type, element, choice);
 }
 
-void choiceValidate(int &choice, string &username, string &password, vector<Member> &vMember, Member &member)
+void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice)
 {
 	double value = 0;
+	bool inputFail;
 
 	switch (choice)
 	{
 		case 1:
-			member.printAccount();
-			optionMenu(username, password, vMember, member);
+			if (type == "client")
+				clients[element].printAccount();
+			else if (type == "manager")
+				managers[element].printAccount();
+			else if (type == "maintainer")
+				maintainers[element].printAccount();
+
+			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
+
 		case 2:
-			cout << "Please enter a value you would like to withdraw: $";
-			bool inputFail;
+			cout << "--------------------------------------------------------------------------\n\n";
+			cout << " Please enter a value you would like to withdraw: $";
 			do
 			{
 				cin >> value;
@@ -191,17 +213,49 @@ void choiceValidate(int &choice, string &username, string &password, vector<Memb
 				cin.clear();
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			} while (inputFail == true);
-			member.selectAccount()->withdraw(value);
+
+			if (type == "client")
+				clients[element].selectAccount()->withdraw(value);
+			else if (type == "manager")
+				managers[element].selectAccount()->withdraw(value);
+			else if (type == "maintainer")
+				maintainers[element].selectAccount()->withdraw(value);
+
 			cout << endl;
-			optionMenu(username, password, vMember, member);
+			saveMembers(clients, managers, maintainers);
+			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
+
 		case 3:
+			cout << "--------------------------------------------------------------------------\n\n";
+			cout << " Please enter a value you would like to deposit: $";
+			do
+			{
+				cin >> value;
+				inputFail = cin.fail();
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			} while (inputFail == true);
+
+			if (type == "client")
+				clients[element].selectAccount()->deposit(value);
+			else if (type == "manager")
+				managers[element].selectAccount()->deposit(value);
+			else if (type == "maintainer")
+				maintainers[element].selectAccount()->deposit(value);
+
+			cout << endl;
+			saveMembers(clients, managers, maintainers);
+			optionMenu(username, password, clients, managers, maintainers, type, element);
+
 			break;
+
 		case 4:
 			break;
 		case 5:
 			break;
 		case 6:
+			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " Logging out, thank you for choosing PR Bank.\n" << endl;
 			startMenu(username, password, clients, managers, maintainers);
 			break;
@@ -212,8 +266,8 @@ void choiceValidate(int &choice, string &username, string &password, vector<Memb
 		case 9:
 			break;
 		default:
+			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " INTERNAL ERROR: Returning to main menu...\n" << endl;
 			startMenu(username, password, clients, managers, maintainers);
 	}
 }
-

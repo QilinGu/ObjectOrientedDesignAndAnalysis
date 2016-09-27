@@ -42,7 +42,7 @@ void Member::addAccount(Account account)
 */
 void Member::removeAccount(Account account)
 {
-	int location;
+	int location = 0;
 	int size = accounts.size();
 	Account *accountLocation = &account;
 	Account *vectorLocation;
@@ -64,6 +64,31 @@ Account *Member::selectAccount()
 {
 	if (accounts.size() == 1)
 		return &accounts[0];
+	else
+	{
+		cout << "\n Which account would you like to make changes to?" << endl;
+		for(size_t i = 0; i < accounts.size(); i++)
+		{
+			cout << " " << i + 1<< ". " << accounts[i].getAccountType() << endl;
+		}
+		cout << " Please enter the corresponding number to the account: ";
+
+		int choice;
+		bool inputFail;
+		do
+		{
+			cin >> choice;
+			inputFail = cin.fail();
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			if (choice <= 0 || choice >= accounts.size() + 1)
+				inputFail = true;
+
+		} while (inputFail == true);
+
+		return &accounts[choice - 1];
+	}
 }
 
 /*
