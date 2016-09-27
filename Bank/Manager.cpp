@@ -1,9 +1,9 @@
-/*
-Created by: Pearson Radu
-The Manager class is an inherited class from Member. This class holds a managers data 
-(like username, password and accounts). It also allows for additional managers roles
-like adding, closing and viewing accounts.
-*/
+/**
+ * Created by: Pearson Radu
+ * The Manager class is an inherited class from Member. This class holds a managers data
+ * (like username, password and accounts). It also allows for additional managers roles
+ * like adding, closing and viewing accounts.
+ */
 
 #include "stdafx.h"
 #include "Manager.h"
@@ -12,6 +12,15 @@ Manager::Manager()
 {
 }
 
+/**
+ * \brief
+ * Constructor that will call initializer from Member parent class
+ * \param firstname
+ * \param lastname
+ * \param username
+ * \param password
+ * \param account
+ */
 Manager::Manager(string firstname, string lastname, string username, string password, Account account)
 {
 	initialize(firstname, lastname, username, password, account);
@@ -127,7 +136,7 @@ Client Manager::initializeClient()
 
 Manager Manager::initializeManager()
 {
-	int choice; 
+	int choice;
 	vector<Account> accounts;
 	string firstname, lastname, username, password;
 

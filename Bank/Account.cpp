@@ -1,7 +1,7 @@
 /**
- *Created by: Pearson Radu
- *The Account class will be an instance of an account for each member of the bank
- *It will allow the member to execute balance modifications and changes to their account
+ * Created by: Pearson Radu
+ * The Account class will be an instance of an account for each member of the bank
+ * It will allow the member to execute balance modifications and changes to their account
  */
 
 #include "stdafx.h"
