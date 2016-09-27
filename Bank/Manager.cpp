@@ -30,6 +30,15 @@ Manager::~Manager()
 {
 }
 
+
+/**
+ * \brief
+ * Create Member Function
+ * This is the first step for a manager to create a new member
+ * This function returns an integer which corresponds with what type of member you want to create
+ * 1 (Client), 2 (Manager), and 3 (Maintainer)
+ * \return
+ */
 int Manager::createMember()
 {
 	cout << "--------------------------------------------------------------------------\n";
@@ -58,6 +67,17 @@ int Manager::createMember()
 	return choice;
 }
 
+/**
+ * \brief
+ * Member Input Function
+ * This function is called from the Member Initializer functions
+ * This function gathers the information needed to create a new member
+ * \param firstname
+ * \param lastname
+ * \param username
+ * \param password
+ * \param accounts
+ */
 void Manager::memberInput(string &firstname, string &lastname, string &username, string &password, vector<Account> &accounts)
 {
 	cout << "Please enter the member's first name: ";
@@ -114,6 +134,14 @@ void Manager::memberInput(string &firstname, string &lastname, string &username,
 	cout << "--------------------------------------------------------------------------" << endl;
 }
 
+/**
+ * \brief
+ * Initialize Client Function
+ * This is the second step for a Manager to create a new member
+ * The reason this function cannot be called from the first step is because we do not yet know which type of memebr we will return
+ * This function also calls Member Input, which is called with each Member Initializer that gets all new Member info
+ * \return
+ */
 Client Manager::initializeClient()
 {
 	int choice;
@@ -134,6 +162,14 @@ Client Manager::initializeClient()
 	return client;
 }
 
+/**
+* \brief
+* Initialize Manager Function
+* This is the second step for a Manager to create a new member
+* The reason this function cannot be called from the first step is because we do not yet know which type of memebr we will return
+* This function also calls Member Input, which is called with each Member Initializer that gets all new Member info
+* \return
+*/
 Manager Manager::initializeManager()
 {
 	int choice;
@@ -154,6 +190,14 @@ Manager Manager::initializeManager()
 	return manager;
 }
 
+/**
+* \brief
+* Initialize Maintainer Function
+* This is the second step for a Manager to create a new member
+* The reason this function cannot be called from the first step is because we do not yet know which type of memebr we will return
+* This function also calls Member Input, which is called with each Member Initializer that gets all new Member info
+* \return
+*/
 Maintainer Manager::initializeMaintainer()
 {
 	int choice;
@@ -173,4 +217,3 @@ Maintainer Manager::initializeMaintainer()
 
 	return maintainer;
 }
-
