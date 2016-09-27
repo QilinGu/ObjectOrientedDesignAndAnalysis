@@ -1,19 +1,19 @@
-/*
-	Created by: Pearson Radu
-	The Account class will be an instance of an account for each member of the bank
-	It will allow the member to execute balance modifications and changes to their account
-*/
+/**
+ *Created by: Pearson Radu
+ *The Account class will be an instance of an account for each member of the bank
+ *It will allow the member to execute balance modifications and changes to their account
+ */
 
 #include "stdafx.h"
 #include "Account.h"
 
-/**
- * \brief
- * Account constructer
- * takes two parameters, one is the name of the account, the other is the balance of the account
- * \param account
- * \param value
- */
+ /**
+  * \brief
+  * Account constructer
+  * takes two parameters, one is the name of the account, the other is the balance of the account
+  * \param account
+  * \param value
+  */
 Account::Account(string account, double value)
 {
 	accountType = account;
