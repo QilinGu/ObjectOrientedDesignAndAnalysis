@@ -7,10 +7,13 @@
 #include "stdafx.h"
 #include "Account.h"
 
-/*
-	Account constructer
-	Takes two parameters, one is the name of the account, the other is the balance of the account
-*/
+/**
+ * \brief
+ * Account constructer
+ * takes two parameters, one is the name of the account, the other is the balance of the account
+ * \param account
+ * \param value
+ */
 Account::Account(string account, double value)
 {
 	accountType = account;
@@ -22,10 +25,11 @@ Account::~Account()
 {
 }
 
-/*
-	Delete function for account
-	Deletes this Account if the balance is equal to 0
-*/
+/**
+ * \brief
+ * Delete function for account
+ * deletes this Account if the balance is equal to 0
+ */
 void Account::deleteAccount()
 {
 	if (balance == 0)
@@ -37,13 +41,15 @@ void Account::deleteAccount()
 		cout << "Sorry, this account cannot be deleted since it's balance is not zero." << endl;
 }
 
-/*
-	Withdraw function for account
-	Takes a parameter value that is deducted from the account (if suitable)
-*/
+/**
+ * \brief
+ * Withdraw function for account
+ * takes a parameter value that is deducted from the account (if suitable)
+ * \param value
+ */
 void Account::withdraw(double value)
 {
-	if(value <= 0)
+	if (value <= 0)
 	{
 		cout << "\n Sorry, this value cannt be withdrawn." << endl;
 	}
@@ -77,10 +83,12 @@ void Account::withdraw(double value)
 	}
 }
 
-/*
-Deposit function for account
-Takes parameter value that is added to the account
-*/
+/**
+ * \brief
+ * Deposit function for account
+ * takes parameter value that is added to the account balance
+ * \param value
+ */
 void Account::deposit(double value)
 {
 	if (value > 0)

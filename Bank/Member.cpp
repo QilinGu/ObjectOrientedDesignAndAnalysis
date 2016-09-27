@@ -15,10 +15,16 @@ Member::~Member()
 {
 }
 
-/*
-	Initialize Member Function
-	This function allows for the program to add a member with basic parameters
-*/
+/**
+ * \brief
+ * Initialize Member Function
+ * this function allows for the program to add a member with basic parameters
+ * \param first
+ * \param last
+ * \param user
+ * \param pass
+ * \param account
+ */
 void Member::initialize(string first, string last, string user, string pass, Account account)
 {
 	firstname = first;
@@ -28,18 +34,23 @@ void Member::initialize(string first, string last, string user, string pass, Acc
 	addAccount(account);
 }
 
-/*
-	Additional Account Function
-	Takes a parameter of an account and adds it to the vector
-*/
+/**
+ * \brief
+ * Additional Account Function
+ * takes a parameter of an account and adds it to the accounts vector
+ * \param account
+ */
 void Member::addAccount(Account account)
 {
 	accounts.push_back(account);
 }
 
-/*
-	Remove Account Functions
-*/
+/**
+ * \brief
+ * Remove Account Functions
+ * removes a specified account from the members account
+ * \param account
+ */
 void Member::removeAccount(Account account)
 {
 	int location = 0;
@@ -57,9 +68,13 @@ void Member::removeAccount(Account account)
 	accounts.erase(accounts.begin() + location);
 }
 
-/*
-	Account Selector Function
-*/
+/**
+ * \brief
+ * Account Selector Function
+ * Finds the account the user wishes to use
+ * If there is only one account present automatically returns that account
+ * \return
+ */
 Account *Member::selectAccount()
 {
 	if (accounts.size() == 1)
@@ -67,9 +82,9 @@ Account *Member::selectAccount()
 	else
 	{
 		cout << "\n Which account would you like to make changes to?" << endl;
-		for(size_t i = 0; i < accounts.size(); i++)
+		for (size_t i = 0; i < accounts.size(); i++)
 		{
-			cout << " " << i + 1<< ". " << accounts[i].getAccountType() << endl;
+			cout << " " << i + 1 << ". " << accounts[i].getAccountType() << endl;
 		}
 		cout << " Please enter the corresponding number to the account: ";
 
@@ -91,10 +106,11 @@ Account *Member::selectAccount()
 	}
 }
 
-/*
-	Print Account Function
-	This prints all the accounts and the balances of them
-*/
+/**
+ * \brief
+ * Print Account Function
+ * This prints all the accounts and the balances of them
+ */
 void Member::printAccount()
 {
 	cout << "--------------------------------------------------------------------------\n";

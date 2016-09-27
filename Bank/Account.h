@@ -22,4 +22,3 @@ class Account
 	void transfer(double value, Account account);
 	void deleteAccount();
 };
-
