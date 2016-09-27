@@ -92,7 +92,10 @@ void Account::withdraw(double value)
 void Account::deposit(double value)
 {
 	if (value > 0)
+	{
 		balance += value;
+		cout << "\n Successfully deposited $" << value << " to " << accountType << ".\n";
+	}
 	else
 		cout << "\n Sorry, the value $" << value << " cannot be deposited." << endl;
 }
@@ -101,33 +104,15 @@ void Account::deposit(double value)
 Transfer function for account
 Takes parameter value, which is deducted from the account and moved to another account
 */
-void Account::transfer(double value, Account account)
+void Account::transfer(double value, Account *account)
 {
-	/*
-		N
-		E
-		E
-		D
-		S
-
-		T
-		O
-
-		B
-		E
-
-		I
-		M
-		P
-		L
-		E
-		M
-		E
-		N
-		T
-		E
-		D
-	*/
+	if (this == account)
+		cout << "\n Sorry, you are unable to transfer funds to the same account." << endl;
+	else
+	{
+		withdraw(value);
+		account->deposit(value);
+	}
 }
 
 /*Getter for account type*/

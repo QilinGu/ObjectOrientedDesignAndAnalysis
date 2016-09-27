@@ -25,7 +25,7 @@ class Member
 	void setPassword(string pass);
 	void addAccount(Account account);
 	void removeAccount(Account account);
-	Account *selectAccount();
+	Account *selectAccount(string option);
 	vector<Account> getAccounts();
 	void printAccount();
 };

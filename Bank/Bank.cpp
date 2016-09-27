@@ -193,6 +193,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 	switch (choice)
 	{
 		case 1:
+			// Print Account Balances
 			if (type == "client")
 				clients[element].printAccount();
 			else if (type == "manager")
@@ -204,6 +205,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			break;
 
 		case 2:
+			// Withdraw Money From Account
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " Please enter a value you would like to withdraw: $";
 			do
@@ -215,11 +217,11 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			} while (inputFail == true);
 
 			if (type == "client")
-				clients[element].selectAccount()->withdraw(value);
+				clients[element].selectAccount("withdraw from")->withdraw(value);
 			else if (type == "manager")
-				managers[element].selectAccount()->withdraw(value);
+				managers[element].selectAccount("withdraw from")->withdraw(value);
 			else if (type == "maintainer")
-				maintainers[element].selectAccount()->withdraw(value);
+				maintainers[element].selectAccount("withdraw from")->withdraw(value);
 
 			cout << endl;
 			saveMembers(clients, managers, maintainers);
@@ -227,6 +229,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			break;
 
 		case 3:
+			// Deposit Money To Account
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " Please enter a value you would like to deposit: $";
 			do
@@ -238,20 +241,43 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			} while (inputFail == true);
 
 			if (type == "client")
-				clients[element].selectAccount()->deposit(value);
+				clients[element].selectAccount("deposit to")->deposit(value);
 			else if (type == "manager")
-				managers[element].selectAccount()->deposit(value);
+				managers[element].selectAccount("deposit to")->deposit(value);
 			else if (type == "maintainer")
-				maintainers[element].selectAccount()->deposit(value);
+				maintainers[element].selectAccount("deposit to")->deposit(value);
 
 			cout << endl;
 			saveMembers(clients, managers, maintainers);
 			optionMenu(username, password, clients, managers, maintainers, type, element);
-
 			break;
 
 		case 4:
+			// Transfer Money To Account
+			cout << "--------------------------------------------------------------------------\n\n";
+			cout << " Please enter a value you would like to transfer: $";
+			do
+			{
+				cin >> value;
+				inputFail = cin.fail();
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				if (value <= 0)
+					inputFail = true;
+			} while (inputFail == true);
+
+			if (type == "client")
+				clients[element].selectAccount("transfer from")->transfer(value, clients[element].selectAccount("transfer to"));
+			else if (type == "manager")
+				managers[element].selectAccount("transfer from")->transfer(value, managers[element].selectAccount("transfer to"));
+			else if (type == "maintainer")
+				maintainers[element].selectAccount("transfer from")->transfer(value, maintainers[element].selectAccount("transfer to"));
+
+			cout << endl;
+			saveMembers(clients, managers, maintainers);
+			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
+
 		case 5:
 			break;
 		case 6:

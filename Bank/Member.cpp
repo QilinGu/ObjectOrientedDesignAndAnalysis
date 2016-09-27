@@ -75,13 +75,13 @@ void Member::removeAccount(Account account)
  * If there is only one account present automatically returns that account
  * \return
  */
-Account *Member::selectAccount()
+Account *Member::selectAccount(string option)
 {
 	if (accounts.size() == 1)
 		return &accounts[0];
 	else
 	{
-		cout << "\n Which account would you like to make changes to?" << endl;
+		cout << "\n Which account would you like to " << option << "?" << endl;
 		for (size_t i = 0; i < accounts.size(); i++)
 		{
 			cout << " " << i + 1 << ". " << accounts[i].getAccountType() << endl;
