@@ -123,9 +123,10 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 	if (type == "manager")
 	{
 		cout << " Additional Manager Options:" << endl;
-		cout << " 7. Open Account" << endl;
-		cout << " 8. Close Account" << endl;
-		cout << " 9. View Details of Account(s)\n" << endl;
+		cout << " 7. Create New Member" << endl;
+		cout << " 8. Open Account" << endl;
+		cout << " 9. Close Account" << endl;
+		cout << " 10. View Details of Account(s)\n" << endl;
 	}
 
 	if (type == "maintainer")
@@ -152,7 +153,7 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 		}
 		else if (type == "manager")
 		{
-			if (choice <= 0 || choice >= 10)
+			if (choice <= 0 || choice >= 11)
 				inputFail = true;
 		}
 		else if (type == "maintainer")
@@ -332,7 +333,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			break;
 
 		case 7:
-			// Open New Account if you are a Manager
+			// Create New Member if you are a Manager
 			if (type == "manager")
 			{
 				int selection = managers[element].createMember();
@@ -362,11 +363,14 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			break;
 
 		case 8:
-			// Close Account if you are a Manager
+			// Open Account if you are a Manager
 			break;
 
 		case 9:
-		// View Details of Accounts if you are a Manager
+			// Close Details of Accounts if you are a Manager
+			break;
+			// View Details of Accounts if you are a Manager
+		case 10:
 			break;
 		default:
 			cout << "--------------------------------------------------------------------------\n\n";
