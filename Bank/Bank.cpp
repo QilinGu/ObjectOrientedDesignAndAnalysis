@@ -26,24 +26,6 @@ int main()
 	loadMembers(clients, managers, maintainers);
 	startMenu(username, password, clients, managers, maintainers);
 
-	/*int selection = managers[0].createMember();
-
-	if (selection == 1)
-	{
-	Client client = managers[0].initializeClient();
-	client.printAccount();
-	}
-	else if (selection == 2)
-	{
-	Manager manager = managers[0].initializeManager();
-	manager.printAccount();
-	}
-	else if (selection == 3)
-	{
-	Maintainer maintainer = managers[0].initializeMaintainer();
-	maintainer.printAccount();
-	}*/
-
 	return 0;
 }
 
@@ -335,20 +317,56 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 				cout << " " << i + 1 << ". " << transactions[i] << endl;
 			}
 
+			if (transactions.empty())
+				cout << " Sorry, you do not have any recent transactions." << endl;
+
 			cout << endl;
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
 		case 6:
+			// Log out
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " Logging out, thank you for choosing PR Bank.\n" << endl;
 			startMenu(username, password, clients, managers, maintainers);
 			break;
+
 		case 7:
+			// Open New Account if you are a Manager
+			if (type == "manager")
+			{
+				int selection = managers[element].createMember();
+
+				if (selection == 1)
+				{
+					Client client = managers[element].initializeClient();
+					clients.push_back(client);
+					client.printAccount();
+				}
+				else if (selection == 2)
+				{
+					Manager manager = managers[element].initializeManager();
+					managers.push_back(manager);
+					manager.printAccount();
+				}
+				else if (selection == 3)
+				{
+					Maintainer maintainer = managers[element].initializeMaintainer();
+					maintainers.push_back(maintainer);
+					maintainer.printAccount();
+				}
+			}
+
+			saveMembers(clients, managers, maintainers);
+			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
+
 		case 8:
+			// Close Account if you are a Manager
 			break;
+
 		case 9:
+		// View Details of Accounts if you are a Manager
 			break;
 		default:
 			cout << "--------------------------------------------------------------------------\n\n";

@@ -184,8 +184,8 @@ vector<Account> Member::getAccounts()
 
 vector<string> Member::getTransactions()
 {
-	if (transactions.empty())
-		cout << " Sorry, you do not have any recent transactions." << endl;
+	/*if (transactions.empty())
+		cout << " Sorry, you do not have any recent transactions." << endl;*/
 		
 	return transactions;
 }

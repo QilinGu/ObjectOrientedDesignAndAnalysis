@@ -47,7 +47,7 @@ int Manager::createMember()
 	cout << " What type of member is this?" << endl;
 	cout << " 1. Client" << endl;
 	cout << " 2. Manager" << endl;
-	cout << " 3, Maintainer" << endl;
+	cout << " 3. Maintainer" << endl;
 	cout << " Please enter a value from above: ";
 
 	bool inputFail;
@@ -200,7 +200,6 @@ Manager Manager::initializeManager()
 */
 Maintainer Manager::initializeMaintainer()
 {
-	int choice;
 	vector<Account> accounts;
 	string firstname, lastname, username, password;
 
@@ -216,4 +215,9 @@ Maintainer Manager::initializeMaintainer()
 		maintainer.addAccount(accounts[i]);
 
 	return maintainer;
+}
+
+void Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
+{
+	
 }
