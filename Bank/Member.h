@@ -9,12 +9,18 @@ class Member
 	string firstname, lastname;
 	string username;
 	string password;
-	vector<Account> accounts;
+	vector<Account> accounts;	
+	vector<string> transactions;
 
 	public:
 	Member();
 	~Member();
 	void initialize(string first, string last, string user, string pass, Account account);
+	void addAccount(Account account);
+	void removeAccount(Account account);
+	Account *selectAccount(string option);
+	vector<Account> getAccounts();
+	void printAccount();
 	string getFirstname();
 	void setFirtname(string first);
 	string getLastname();
@@ -23,9 +29,6 @@ class Member
 	void setUsername(string user);
 	string getPassword();
 	void setPassword(string pass);
-	void addAccount(Account account);
-	void removeAccount(Account account);
-	Account *selectAccount(string option);
-	vector<Account> getAccounts();
-	void printAccount();
+	vector<string> getTransactions();
+	void addTransaction(string transaction);
 };

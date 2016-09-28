@@ -32,6 +32,7 @@ void Member::initialize(string first, string last, string user, string pass, Acc
 	username = user;
 	password = pass;
 	addAccount(account);
+	transactions.shrink_to_fit();
 }
 
 /**
@@ -179,4 +180,20 @@ void Member::setPassword(string pass)
 vector<Account> Member::getAccounts()
 {
 	return accounts;
+}
+
+vector<string> Member::getTransactions()
+{
+	return transactions;
+}
+
+void Member::addTransaction(string transaction)
+{
+	if(transactions.size() == 10)
+	{
+		transactions.erase(transactions.begin());
+		transactions.shrink_to_fit();
+	}
+
+	transactions.push_back(transaction);
 }
