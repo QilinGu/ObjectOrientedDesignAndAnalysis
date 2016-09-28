@@ -44,6 +44,11 @@ void Serializable::saveClients(vector<Client>& clients)
 				fileWriter << clients[i].getAccounts()[j].getAccountType() << "\n";
 				fileWriter << clients[i].getAccounts()[j].getBalance() << "\n";
 			}
+
+			fileWriter << clients[i].getTransactions().size() << "\n";
+
+			for (size_t j = 0; j < clients[i].getTransactions().size(); j++)
+				fileWriter << clients[i].getTransactions()[j] << "\n";
 		}
 	}
 
@@ -91,6 +96,16 @@ vector<Client> Serializable::loadClients()
 			Account account(accountType, balance);
 			client.addAccount(account);
 		}
+		
+		getline(fileReader, line);
+		int transNum = stoi(line);
+
+		for (int j = 0; j < transNum; j++)
+		{
+			getline(fileReader, line);
+			client.addTransaction(line);
+		}
+
 		newClients.push_back(client);
 	}
 
@@ -125,6 +140,11 @@ void Serializable::saveManagers(vector<Manager>& managers)
 				fileWriter << managers[i].getAccounts()[j].getAccountType() << "\n";
 				fileWriter << managers[i].getAccounts()[j].getBalance() << "\n";
 			}
+
+			fileWriter << managers[i].getTransactions().size() << "\n";
+
+			for (size_t j = 0; j < managers[i].getTransactions().size(); j++)
+				fileWriter << managers[i].getTransactions()[j] << "\n";
 		}
 	}
 
@@ -171,6 +191,16 @@ vector<Manager> Serializable::loadManagers()
 			Account account(accountType, balance);
 			manager.addAccount(account);
 		}
+
+		getline(fileReader, line);
+		int transNum = stoi(line);
+
+		for (int j = 0; j < transNum; j++)
+		{
+			getline(fileReader, line);
+			manager.addTransaction(line);
+		}
+
 		newManagers.push_back(manager);
 	}
 
@@ -205,6 +235,11 @@ void Serializable::saveMaintainers(vector<Maintainer>& maintainers)
 				fileWriter << maintainers[i].getAccounts()[j].getAccountType() << "\n";
 				fileWriter << maintainers[i].getAccounts()[j].getBalance() << "\n";
 			}
+
+			fileWriter << maintainers[i].getTransactions().size() << "\n";
+
+			for (size_t j = 0; j < maintainers[i].getTransactions().size(); j++)
+				fileWriter << maintainers[i].getTransactions()[j] << "\n";
 		}
 	}
 
@@ -251,6 +286,16 @@ vector<Maintainer> Serializable::loadMaintainers()
 			Account account(accountType, balance);
 			maintainer.addAccount(account);
 		}
+
+		getline(fileReader, line);
+		int transNum = stoi(line);
+
+		for (int j = 0; j < transNum; j++)
+		{
+			getline(fileReader, line);
+			maintainer.addTransaction(line);
+		}
+
 		newMaintainers.push_back(maintainer);
 	}
 

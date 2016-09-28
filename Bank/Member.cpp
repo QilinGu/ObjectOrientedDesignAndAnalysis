@@ -184,12 +184,15 @@ vector<Account> Member::getAccounts()
 
 vector<string> Member::getTransactions()
 {
+	if (transactions.empty())
+		cout << " Sorry, you do not have any recent transactions." << endl;
+		
 	return transactions;
 }
 
 void Member::addTransaction(string transaction)
 {
-	if(transactions.size() == 10)
+	if (transactions.size() == 10)
 	{
 		transactions.erase(transactions.begin());
 		transactions.shrink_to_fit();
