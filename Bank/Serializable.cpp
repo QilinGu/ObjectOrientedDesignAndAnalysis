@@ -96,7 +96,7 @@ vector<Client> Serializable::loadClients()
 			Account account(accountType, balance);
 			client.addAccount(account);
 		}
-		
+
 		getline(fileReader, line);
 		int transNum = stoi(line);
 
@@ -302,4 +302,38 @@ vector<Maintainer> Serializable::loadMaintainers()
 	fileReader.close();
 
 	return newMaintainers;
+}
+
+void Serializable::saveTrace(vector<string>& traces)
+{
+	ofstream fileWriter("traces.pr");
+
+	if (fileWriter.is_open())
+	{
+		fileWriter << traces.size() << "\n";
+
+		for (size_t i = 0; i < traces.size(); i++)
+			fileWriter << traces[i] << "\n";
+	}
+
+	fileWriter.close();
+}
+
+vector<string> Serializable::loadTrace()
+{
+	ifstream fileReader("traces.pr");
+	string line;
+	getline(fileReader, line);
+	int numTrace = stoi(line);
+	vector<string> traces;
+
+	for (int i = 0; i < numTrace; i++)
+	{
+		getline(fileReader, line);
+		traces.push_back(line);
+	}
+
+	fileReader.close();
+
+	return traces;
 }

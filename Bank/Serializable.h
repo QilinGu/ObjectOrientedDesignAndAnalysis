@@ -11,10 +11,12 @@ class Serializable
 	public:
 	Serializable();
 	~Serializable();
-	void Serializable::saveClients(vector<Client> &clients);
-	vector<Client> Serializable::loadClients();
-	void Serializable::saveManagers(vector<Manager> &managers);
-	vector<Manager> Serializable::loadManagers();
-	void Serializable::saveMaintainers(vector<Maintainer> &maintainers);
-	vector<Maintainer> Serializable::loadMaintainers();
+	void saveClients(vector<Client> &clients);
+	vector<Client> loadClients();
+	void saveManagers(vector<Manager> &managers);
+	vector<Manager> loadManagers();
+	void saveMaintainers(vector<Maintainer> &maintainers);
+	vector<Maintainer> loadMaintainers();
+	void saveTrace(vector<string> &traces);
+	vector<string> loadTrace();
 };
