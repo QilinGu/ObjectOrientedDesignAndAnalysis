@@ -80,23 +80,29 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 		}
 	}
 
-	for (size_t i = 0; i < managers.size(); i++)
+	if (!found)
 	{
-		if (managers[i].getUsername() == username && managers[i].getPassword() == password)
+		for (size_t i = 0; i < managers.size(); i++)
 		{
-			found = true;
-			cout << " We have found your account, " << managers[i].getFirstname() << " " << managers[i].getLastname() << "." << endl << endl;
-			optionMenu(username, password, clients, managers, maintainers, "manager", i);
+			if (managers[i].getUsername() == username && managers[i].getPassword() == password)
+			{
+				found = true;
+				cout << " We have found your account, " << managers[i].getFirstname() << " " << managers[i].getLastname() << "." << endl << endl;
+				optionMenu(username, password, clients, managers, maintainers, "manager", i);
+			}
 		}
 	}
 
-	for (size_t i = 0; i < maintainers.size(); i++)
+	if (!found)
 	{
-		if (maintainers[i].getUsername() == username && maintainers[i].getPassword() == password)
+		for (size_t i = 0; i < maintainers.size(); i++)
 		{
-			found = true;
-			cout << " We have found your account, " << maintainers[i].getFirstname() << " " << maintainers[i].getLastname() << "." << endl << endl;
-			optionMenu(username, password, clients, managers, maintainers, "maintainer", i);
+			if (maintainers[i].getUsername() == username && maintainers[i].getPassword() == password)
+			{
+				found = true;
+				cout << " We have found your account, " << maintainers[i].getFirstname() << " " << maintainers[i].getLastname() << "." << endl << endl;
+				optionMenu(username, password, clients, managers, maintainers, "maintainer", i);
+			}
 		}
 	}
 
@@ -364,14 +370,32 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 
 		case 8:
 			// Open Account if you are a Manager
+			if (type == "manager")
+			{
+				managers[element].openAccount(clients, managers, maintainers);
+				saveMembers(clients, managers, maintainers);
+				optionMenu(username, password, clients, managers, maintainers, type, element);
+			}
 			break;
 
 		case 9:
 			// Close Details of Accounts if you are a Manager
+			if (type == "manager")
+			{
+				managers[element].closeAccount(clients, managers, maintainers);
+				saveMembers(clients, managers, maintainers);
+				optionMenu(username, password, clients, managers, maintainers, type, element);
+			}
 			break;
-			// View Details of Accounts if you are a Manager
+
 		case 10:
+			// View Details of Accounts if you are a Manager
+			if (type == "manager")
+			{
+
+			}
 			break;
+
 		default:
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " INTERNAL ERROR: Returning to main menu...\n" << endl;

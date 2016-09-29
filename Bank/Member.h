@@ -17,7 +17,7 @@ class Member
 	~Member();
 	void initialize(string first, string last, string user, string pass, Account account);
 	void addAccount(Account account);
-	void removeAccount(Account account);
+	bool deleteAccount(Account &account);
 	Account *selectAccount(string option);
 	vector<Account> getAccounts();
 	void printAccount();

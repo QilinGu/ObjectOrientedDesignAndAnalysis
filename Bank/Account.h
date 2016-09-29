@@ -2,7 +2,7 @@
 #include <iostream>
 #include <string>
 using namespace std;
-//dsfs
+
 class Account
 {
 	private:
@@ -20,5 +20,4 @@ class Account
 	void withdraw(double value);
 	void deposit(double value);
 	void transfer(double value, Account* account);
-	void deleteAccount();
 };

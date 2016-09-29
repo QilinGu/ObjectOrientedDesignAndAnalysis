@@ -48,25 +48,36 @@ void Member::addAccount(Account account)
 
 /**
  * \brief
- * Remove Account Functions
- * removes a specified account from the members account
+ * Delete Account Functions
+ * removes a specified account from the members account if it has a balance of zero
  * \param account
  */
-void Member::removeAccount(Account account)
+bool Member::deleteAccount(Account &account)
 {
-	int location = 0;
-	int size = accounts.size();
-	Account *accountLocation = &account;
-	Account *vectorLocation;
-
-	for (int i = 0; i < size; i++)
+	if (account.getBalance() == 0)
 	{
-		vectorLocation = &accounts[i];
-		if (accountLocation == vectorLocation)
-			location = i;
-	}
+		int location = 0;
+		int size = accounts.size();
+		Account *accountLocation = &account;
+		Account *vectorLocation;
 
-	accounts.erase(accounts.begin() + location);
+		for (int i = 0; i < size; i++)
+		{
+			vectorLocation = &accounts[i];
+			if (accountLocation == vectorLocation)
+				location = i;
+		}
+
+		accounts.erase(accounts.begin() + location);
+
+		cout << "\n The account has been deleted.\n" << endl;
+		return true;
+	}
+	else
+	{
+		cout << "\n Sorry, the balance of " << getFirstname() << " " << getLastname() << "'s account must be zero to close it.\n" << endl;
+		return false;
+	}
 }
 
 /**
@@ -186,7 +197,7 @@ vector<string> Member::getTransactions()
 {
 	/*if (transactions.empty())
 		cout << " Sorry, you do not have any recent transactions." << endl;*/
-		
+
 	return transactions;
 }
 

@@ -304,6 +304,12 @@ vector<Maintainer> Serializable::loadMaintainers()
 	return newMaintainers;
 }
 
+/**
+ * \brief 
+ * Save Trace Function 
+ * This function takes a vector of strings and write them to a file
+ * \param traces 
+ */
 void Serializable::saveTrace(vector<string>& traces)
 {
 	ofstream fileWriter("traces.pr");
@@ -319,6 +325,12 @@ void Serializable::saveTrace(vector<string>& traces)
 	fileWriter.close();
 }
 
+/**
+ * \brief 
+ * Load Trace Function
+ * This function reads strings from a file a saves it to a vector that it later returns
+ * \return 
+ */
 vector<string> Serializable::loadTrace()
 {
 	ifstream fileReader("traces.pr");

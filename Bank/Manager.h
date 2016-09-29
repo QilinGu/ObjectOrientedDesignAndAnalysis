@@ -17,4 +17,5 @@ class Manager : public Member
 	Manager initializeManager();
 	Maintainer initializeMaintainer();
 	void closeAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
+	void openAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 };

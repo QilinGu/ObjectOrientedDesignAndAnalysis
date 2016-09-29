@@ -3,15 +3,27 @@ Pearson
 Radu
 pradu
 123
-1
+3
 Savings
-1000
-0
+1050
+Loan
+1
+Loan
+1
+8
+Pearson deposited $50.000000 to Savings
+Pearson withdrew $0.000000 from Loan
+Pearson withdrew $999.000000 from Loan
+Pearson deposited $1.000000 to Loan
+Pearson withdrew $1000.000000 from Loan
+Pearson withdrew $999.000000 from Loan
+Pearson deposited $50.000000 to Loan
+Pearson withdrew $49.000000 from Loan
 Perry
 Radu
 perryradu
 111
 1
-Savings
+Chequing
 1000
 0

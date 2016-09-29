@@ -27,22 +27,6 @@ Account::~Account()
 
 /**
  * \brief
- * Delete function for account
- * deletes this Account if the balance is equal to 0
- */
-void Account::deleteAccount()
-{
-	if (balance == 0)
-	{
-		cout << "This account has been deleted." << endl;
-		delete this;
-	}
-	else
-		cout << "Sorry, this account cannot be deleted since it's balance is not zero." << endl;
-}
-
-/**
- * \brief
  * Withdraw function for account
  * takes a parameter value that is deducted from the account (if suitable)
  * \param value
@@ -57,10 +41,6 @@ void Account::withdraw(double value)
 	{
 		cout << "\n Sorry, this transaction cannot be completed since this it will result in a \n negative balance in your account." << endl;
 	}
-	else if ((balance - value) == 1)
-	{
-		cout << " Sorry, this transaction cannot be completed since this will result in a negative balance in your account if you accept the charges." << endl;
-	}
 	else if ((balance - value) < 1000 && balance >= 1000)
 	{
 		cout << "\n If you continue your " << getAccountType() << " account will have less than $1000 in it." << endl;
@@ -72,14 +52,22 @@ void Account::withdraw(double value)
 
 		if (answer == 1)
 		{
-			balance -= 2;
-			balance -= value;
+			if ((balance - value) == 1)
+			{
+				cout << "\n Sorry, this transaction cannot be completed since this will result in a \n negative balance in your account if you accept the charges." << endl;
+			}
+			else
+			{
+				balance -= 2;
+				balance -= value;
+				cout << "\n Successfully withdrew $" << value << " from " << accountType << ".\n";
+			}
 		}
 	}
 	else
 	{
-		cout << "\n Successfully withdrew $" << value << " from " << accountType << ".\n";
 		balance -= value;
+		cout << "\n Successfully withdrew $" << value << " from " << accountType << ".\n";
 	}
 }
 
@@ -100,10 +88,13 @@ void Account::deposit(double value)
 		cout << "\n Sorry, the value $" << value << " cannot be deposited." << endl;
 }
 
-/*
-Transfer function for account
-Takes parameter value, which is deducted from the account and moved to another account
-*/
+/**
+ * \brief 
+ * Transfer function for account
+ * Takes parameter value, which is deducted from the account and moved to another account
+ * \param value 
+ * \param account 
+ */
 void Account::transfer(double value, Account *account)
 {
 	if (this == account)
