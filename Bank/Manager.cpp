@@ -221,12 +221,12 @@ Maintainer Manager::initializeMaintainer()
 
 
 /**
- * \brief 
+ * \brief
  * Find Client Function
  * Trys to return a pointer to a client if they match the username
- * \param username 
- * \param clients 
- * \return 
+ * \param username
+ * \param clients
+ * \return
  */
 Client* Manager::findClient(string username, vector<Client>& clients)
 {
@@ -242,12 +242,12 @@ Client* Manager::findClient(string username, vector<Client>& clients)
 }
 
 /**
- * \brief 
+ * \brief
  * Find Manager Function
  * Trys to return a pointer to a manager if they match the username
- * \param username 
- * \param managers 
- * \return 
+ * \param username
+ * \param managers
+ * \return
  */
 Manager* Manager::findManager(string username, vector<Manager>& managers)
 {
@@ -264,12 +264,12 @@ Manager* Manager::findManager(string username, vector<Manager>& managers)
 }
 
 /**
- * \brief 
+ * \brief
  * Find Maintainer Function
  * Trys to return a pointer to a maintainer if they match the username
- * \param username 
- * \param maintainers 
- * \return 
+ * \param username
+ * \param maintainers
+ * \return
  */
 Maintainer* Manager::findMaintainer(string username, vector<Maintainer>& maintainers)
 {
@@ -416,6 +416,14 @@ void Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, ve
 		cout << " The account has been added.\n" << endl;
 }
 
+/**
+ * \brief 
+ * View Details Function
+ * Allows a manager to choice if they want to view all details of bank members or search by username
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ */
 void Manager::viewDetails(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	int choice = 0;;
