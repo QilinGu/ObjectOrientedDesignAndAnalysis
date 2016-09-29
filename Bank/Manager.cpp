@@ -219,21 +219,85 @@ Maintainer Manager::initializeMaintainer()
 	return maintainer;
 }
 
+
 /**
  * \brief 
+ * Find Client Function
+ * Trys to return a pointer to a client if they match the username
+ * \param username 
+ * \param clients 
+ * \return 
+ */
+Client* Manager::findClient(string username, vector<Client>& clients)
+{
+	Client * client = NULL;
+
+	for (size_t i = 0; i < clients.size(); i++)
+	{
+		if (username == clients[i].getUsername())
+			return &clients[i];
+	}
+
+	return client;
+}
+
+/**
+ * \brief 
+ * Find Manager Function
+ * Trys to return a pointer to a manager if they match the username
+ * \param username 
+ * \param managers 
+ * \return 
+ */
+Manager* Manager::findManager(string username, vector<Manager>& managers)
+{
+	Manager * manager = NULL;
+	bool found = false;
+
+	for (size_t i = 0; i < managers.size(); i++)
+	{
+		if (username == managers[i].getUsername())
+			return &managers[i];
+	}
+
+	return manager;
+}
+
+/**
+ * \brief 
+ * Find Maintainer Function
+ * Trys to return a pointer to a maintainer if they match the username
+ * \param username 
+ * \param maintainers 
+ * \return 
+ */
+Maintainer* Manager::findMaintainer(string username, vector<Maintainer>& maintainers)
+{
+	Maintainer  * maintainer = NULL;
+
+	for (size_t i = 0; i < maintainers.size(); i++)
+	{
+		if (username == maintainers[i].getUsername())
+			return &maintainers[i];
+	}
+
+	return maintainer;
+}
+
+/**
+ * \brief
  * Close Account Function
  * This function takes all the members of the bank and search for a username, if it finds the user account it will ask what account you want
  * to delete, and if there is only one account it will delete that.
  * The account will only be deleted if there is zero dollars in it
- * \param clients 
- * \param managers 
- * \param maintainers 
+ * \param clients
+ * \param managers
+ * \param maintainers
  */
 void Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	string username;
 	bool deleted = false;
-	bool found = false;
 
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                            Close Member Account\n";
@@ -241,66 +305,49 @@ void Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers, v
 	cout << " What is the username of the member you wish to close: ";
 	cin >> username;
 
-	// Delete the users account if they are a client
+
+	Client * client = findClient(username, clients);
+	if (client != NULL)
+	{
+		deleted = client->deleteAccount(*client->selectAccount("close for " + client->getFirstname() + " " + client->getLastname()));
+		if (deleted)
+			addTransaction(getFirstname() + " deleted one of " + client->getFirstname() + " " + client->getLastname() + "'s accounts.");
+	}
+
 	if (!deleted)
 	{
-		for (size_t i = 0; i < clients.size(); i++)
+		Manager * manager = findManager(username, managers);
+		if (manager != NULL)
 		{
-			if (username == clients[i].getUsername())
-			{
-				deleted = clients[i].deleteAccount(*(clients[i].selectAccount("close for " + clients[i].getFirstname() + " " + clients[i].getLastname())));
-				if (deleted)
-					addTransaction(getFirstname() + " deleted one of " + clients[i].getFirstname() + " " + clients[i].getLastname() + "'s accounts.");
-				found = true;
-				break;
-			}
+			deleted = manager->deleteAccount(*manager->selectAccount("close for " + manager->getFirstname() + " " + manager->getLastname()));
+			if (deleted)
+				addTransaction(getFirstname() + " deleted one of " + manager->getFirstname() + " " + manager->getLastname() + "'s accounts.");
 		}
 	}
 
-	// Delete the users account if they are a manager
 	if (!deleted)
 	{
-		for (size_t i = 0; i < managers.size(); i++)
+		Maintainer * maintainer = findMaintainer(username, maintainers);
+		if (maintainer != NULL)
 		{
-			if (username == managers[i].getUsername())
-			{
-				deleted = managers[i].deleteAccount(*(managers[i].selectAccount("close for " + managers[i].getFirstname() + " " + managers[i].getLastname())));
-				if (deleted)
-					addTransaction(getFirstname() + " deleted one of " + managers[i].getFirstname() + " " + managers[i].getLastname() + "'s accounts.");
-				found = true;
-				break;
-			}
+			deleted = maintainer->deleteAccount(*maintainer->selectAccount("close for " + maintainer->getFirstname() + " " + maintainer->getLastname()));
+			if (deleted)
+				addTransaction(getFirstname() + " deleted one of " + maintainer->getFirstname() + " " + maintainer->getLastname() + "'s accounts.");
 		}
 	}
 
-	// Delete the users account if they are a maintainer
 	if (!deleted)
-	{
-		for (size_t i = 0; i < maintainers.size(); i++)
-		{
-			if (username == maintainers[i].getUsername())
-			{
-				deleted = maintainers[i].deleteAccount(*(maintainers[i].selectAccount("close for " + maintainers[i].getFirstname() + " " + maintainers[i].getLastname())));
-				if (deleted)
-					addTransaction(getFirstname() + " deleted one of " + maintainers[i].getFirstname() + " " + maintainers[i].getLastname() + "'s accounts.");
-				found = true;
-				break;
-			}
-		}
-	}
-
-	if (!found)
 		cout << "\n Sorry, we could not find a member matching that username.\n" << endl;
 }
 
 /**
- * \brief 
+ * \brief
  * Open Account Function
  * This function takes all members of the bank as a parameter and finds the current user accounts based on a username.
  * If it finds the user, it will add a new account to their current ones.
- * \param clients 
- * \param managers 
- * \param maintainers 
+ * \param clients
+ * \param managers
+ * \param maintainers
  */
 void Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
@@ -333,48 +380,33 @@ void Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, ve
 
 	Account account(accountType, balance);
 
-	//Add account if they are a client
-	if(!opened)
+	Client * client = findClient(username, clients);
+	if (client != NULL)
 	{
-		for(size_t i = 0; i < clients.size(); i++)
+		opened = true;
+		client->addAccount(account);
+		addTransaction(getFirstname() + " opened a new account for " + client->getFirstname() + " " + client->getLastname());
+	}
+
+	if (!opened)
+	{
+		Manager * manager = findManager(username, managers);
+		if (manager != NULL)
 		{
-			if(username == clients[i].getUsername())
-			{
-				opened = true;
-				clients[i].addAccount(account);
-				addTransaction(getFirstname() + " opened a new account for " + clients[i].getFirstname() + " " + clients[i].getLastname());
-				break;
-			}
+			opened = true;
+			manager->addAccount(account);
+			addTransaction(getFirstname() + " opened a new account for " + manager->getFirstname() + " " + manager->getLastname());
 		}
 	}
 
-	//Add account if they are a manager
 	if (!opened)
 	{
-		for (size_t i = 0; i < managers.size(); i++)
+		Maintainer * maintainer = findMaintainer(username, maintainers);
+		if (maintainer != NULL)
 		{
-			if (username == managers[i].getUsername())
-			{
-				opened = true;
-				managers[i].addAccount(account);
-				addTransaction(getFirstname() + " opened a new account for " + managers[i].getFirstname() + " " + managers[i].getLastname());
-				break;
-			}
-		}
-	}
-
-	//Add account if they are a maintainer
-	if (!opened)
-	{
-		for (size_t i = 0; i < maintainers.size(); i++)
-		{
-			if (username == maintainers[i].getUsername())
-			{
-				opened = true;
-				maintainers[i].addAccount(account);
-				addTransaction(getFirstname() + " opened a new account for " + maintainers[i].getFirstname() + " " + maintainers[i].getLastname());
-				break;
-			}
+			opened = true;
+			maintainer->addAccount(account);
+			addTransaction(getFirstname() + " opened a new account for " + maintainer->getFirstname() + " " + maintainer->getLastname());
 		}
 	}
 
@@ -382,4 +414,62 @@ void Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, ve
 		cout << " Sorry, we could not find a member matching that username.\n" << endl;
 	else
 		cout << " The account has been added.\n" << endl;
+}
+
+void Manager::viewDetails(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
+{
+	int choice = 0;;
+	string username;
+	bool found = false;
+	bool inputFail;
+
+	cout << "--------------------------------------------------------------------------\n";
+	cout << "                           View Member Details\n";
+	cout << "--------------------------------------------------------------------------\n" << endl;
+	cout << " Here are some options that you can sort the members of the bank: " << endl;
+	cout << " 1. View All Members" << endl;
+	cout << " 2. Find A Member By Username" << endl;
+	cout << " How would you like to proceed: ";
+
+	do
+	{
+		cin >> choice;
+		inputFail = cin.fail();
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		if (choice <= 0 || choice >= 3)
+			inputFail = true;
+	} while (inputFail == true);
+
+	cout << endl;
+
+
+	if (choice == 1)
+	{
+		for (size_t i = 0; i < clients.size(); i++)
+			clients[i].printAccount();
+		for (size_t i = 0; i < managers.size(); i++)
+			managers[i].printAccount();
+		for (size_t i = 0; i < maintainers.size(); i++)
+			maintainers[i].printAccount();
+	}
+
+	if (choice == 2)
+	{
+		cout << " What is the username of the member you wish to open: ";
+		cin >> username;
+		cout << endl;
+
+		Client * client = findClient(username, clients);
+		if (client != NULL)
+			client->printAccount();
+
+		Manager * manager = findManager(username, managers);
+		if (manager != NULL)
+			manager->printAccount();
+
+		Maintainer * maintainer = findMaintainer(username, maintainers);
+		if (maintainer != NULL)
+			maintainer->printAccount();
+	}
 }

@@ -116,7 +116,7 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 void optionMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	cout << "--------------------------------------------------------------------------\n";
-	cout << "                                 Main Menu\n";
+	cout << "                                Main Menu\n";
 	cout << "--------------------------------------------------------------------------\n" << endl;
 	cout << " Please select an option from below:" << endl;
 	cout << " 1. Account Summary" << endl;
@@ -392,7 +392,8 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			// View Details of Accounts if you are a Manager
 			if (type == "manager")
 			{
-
+				managers[element].viewDetails(clients, managers, maintainers);
+				optionMenu(username, password, clients, managers, maintainers, type, element);
 			}
 			break;
 

@@ -39,7 +39,7 @@ void Account::withdraw(double value)
 	}
 	else if ((balance - value) < 0)
 	{
-		cout << "\n Sorry, this transaction cannot be completed since this it will result in a \n negative balance in your account." << endl;
+		cout << "\n Sorry, this transaction cannot be completed since this it will result in \n a negative balance in your account." << endl;
 	}
 	else if ((balance - value) < 1000 && balance >= 1000)
 	{
