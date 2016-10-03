@@ -5,11 +5,10 @@ pradu
 123
 2
 Savings
-1050
+1040
 Chequing
-100
+110
 10
-Pearson withdrew $1000.000000 from Loan
 Pearson withdrew $999.000000 from Loan
 Pearson deposited $50.000000 to Loan
 Pearson withdrew $49.000000 from Loan
@@ -19,6 +18,7 @@ Pearson withdrew $1.000000 from Loan
 Pearson withdrew $1049.000000 from Savings
 Pearson withdrew $1048.000000 from Savings
 Pearson withdrew $1.000000 from Chequing
+Pearson transfered $10.000000 from Savings to Chequing
 Perry
 Radu
 perryradu
