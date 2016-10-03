@@ -305,11 +305,11 @@ vector<Maintainer> Serializable::loadMaintainers()
 }
 
 /**
- * \brief 
+ * \brief
  * Save Trace Function
  * This function takes a vector of strings, as well as a size and bool and writes it to a file
- * \param traces 
- * \param toggle 
+ * \param traces
+ * \param toggle
  */
 void Serializable::saveTrace(vector<string>& traces, bool toggle)
 {
@@ -321,19 +321,19 @@ void Serializable::saveTrace(vector<string>& traces, bool toggle)
 		fileWriter << traces.size() << "\n";
 
 		for (size_t i = 0; i < traces.size(); i++)
-			fileWriter << traces[i] << "\n";
+			fileWriter << traces[i];
 	}
 
 	fileWriter.close();
 }
 
 /**
- * \brief 
+ * \brief
  * Load Trace Function
- * This function reads strings from a file and saves it to a vector 
+ * This function reads strings from a file and saves it to a vector
  * It returns a boolean to show the if the trace was on or off previously
- * \param traces 
- * \return 
+ * \param traces
+ * \return
  */
 bool Serializable::loadTrace(vector<string> &traces)
 {

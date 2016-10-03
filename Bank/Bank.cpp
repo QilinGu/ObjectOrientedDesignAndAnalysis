@@ -413,7 +413,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			if (type == "maintainer")
 			{
 				if (toggle)
-					cout << " The execution trace function is alreayd turned on.\n" << endl;
+					cout << " The execution trace function is already turned on.\n" << endl;
 				else
 				{
 					toggle = true;
@@ -441,9 +441,9 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 					cout << " The execution trace function is already turned off.\n" << endl;
 				else
 				{
+					addTrace(" " + username + " turned the execution trace off");
 					toggle = false;
 					cout << " You have turned the execution trace function off.\n" << endl;
-					addTrace(" " + username + " turned the execution trace off");
 				}
 			}
 
@@ -462,8 +462,8 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			//Print Execution Trace if you are a Maintainer
 			if (type == "maintainer")
 			{
-				maintainers[element].printTrace();
 				addTrace(" " + username + " printed the execution trace");
+				maintainers[element].printTrace();
 			}
 
 			optionMenu(username, password, clients, managers, maintainers, type, element);

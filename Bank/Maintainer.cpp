@@ -45,6 +45,7 @@ void Maintainer::printTrace()
 	cout << "                           System Functions Log" << endl;
 	cout << "--------------------------------------------------------------------------\n" << endl;
 
+
 	if (traces.size() == 0)
 		cout << " Sorry, no traces of action have been executed yet." << endl;
 	else
