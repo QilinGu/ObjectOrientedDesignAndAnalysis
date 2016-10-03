@@ -306,16 +306,18 @@ vector<Maintainer> Serializable::loadMaintainers()
 
 /**
  * \brief 
- * Save Trace Function 
- * This function takes a vector of strings and write them to a file
+ * Save Trace Function
+ * This function takes a vector of strings, as well as a size and bool and writes it to a file
  * \param traces 
+ * \param toggle 
  */
-void Serializable::saveTrace(vector<string>& traces)
+void Serializable::saveTrace(vector<string>& traces, bool toggle)
 {
 	ofstream fileWriter("traces.pr");
 
 	if (fileWriter.is_open())
 	{
+		fileWriter << toggle << "\n";
 		fileWriter << traces.size() << "\n";
 
 		for (size_t i = 0; i < traces.size(); i++)
@@ -328,16 +330,21 @@ void Serializable::saveTrace(vector<string>& traces)
 /**
  * \brief 
  * Load Trace Function
- * This function reads strings from a file a saves it to a vector that it later returns
+ * This function reads strings from a file and saves it to a vector 
+ * It returns a boolean to show the if the trace was on or off previously
+ * \param traces 
  * \return 
  */
-vector<string> Serializable::loadTrace()
+bool Serializable::loadTrace(vector<string> &traces)
 {
 	ifstream fileReader("traces.pr");
 	string line;
 	getline(fileReader, line);
+	bool toggle = true;
+	if (line == "0")
+		toggle = false;
+	getline(fileReader, line);
 	int numTrace = stoi(line);
-	vector<string> traces;
 
 	for (int i = 0; i < numTrace; i++)
 	{
@@ -347,5 +354,5 @@ vector<string> Serializable::loadTrace()
 
 	fileReader.close();
 
-	return traces;
+	return toggle;
 }

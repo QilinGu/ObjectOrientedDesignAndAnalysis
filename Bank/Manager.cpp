@@ -285,16 +285,17 @@ Maintainer* Manager::findMaintainer(string username, vector<Maintainer>& maintai
 }
 
 /**
- * \brief
+ * \brief 
  * Close Account Function
  * This function takes all the members of the bank and search for a username, if it finds the user account it will ask what account you want
  * to delete, and if there is only one account it will delete that.
  * The account will only be deleted if there is zero dollars in it
- * \param clients
- * \param managers
- * \param maintainers
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \return 
  */
-void Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
+string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	string username;
 	bool deleted = false;
@@ -337,19 +338,25 @@ void Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers, v
 	}
 
 	if (!deleted)
+	{
 		cout << "\n Sorry, we could not find a member matching that username.\n" << endl;
+		return " failed to close an account for" + username;
+	}
+	else
+		return " closed an account for" + username;
 }
 
 /**
- * \brief
- * Open Account Function
+ * \brief 
+ * * Open Account Function
  * This function takes all members of the bank as a parameter and finds the current user accounts based on a username.
  * If it finds the user, it will add a new account to their current ones.
- * \param clients
- * \param managers
- * \param maintainers
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \return 
  */
-void Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
+string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	string username;
 	bool opened = false;
@@ -411,9 +418,15 @@ void Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, ve
 	}
 
 	if (!opened)
+	{
 		cout << " Sorry, we could not find a member matching that username.\n" << endl;
+		return " failed to open an account for " + username;
+	}
 	else
+	{
 		cout << " The account has been added.\n" << endl;
+		return " opened a new account for " + username;
+	}
 }
 
 /**

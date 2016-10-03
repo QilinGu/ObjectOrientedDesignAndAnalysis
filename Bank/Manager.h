@@ -20,7 +20,7 @@ class Manager : public Member
 	Client initializeClient();
 	Manager initializeManager();
 	Maintainer initializeMaintainer();
-	void closeAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
-	void openAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
+	string closeAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
+	string openAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 	void viewDetails(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 };

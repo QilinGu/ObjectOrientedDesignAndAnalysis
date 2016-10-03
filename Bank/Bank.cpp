@@ -2,13 +2,20 @@
 //
 
 #include "stdafx.h"
+#pragma warning(disable : 4996)
+
 #include <iostream>
+#include <ctime>
 #include "Account.h"
 #include "Client.h"
 #include "Manager.h"
 #include "Maintainer.h"
 #include "serializable.h"
 using namespace std;
+
+// Two Public Variables that maintain the execution traces and if the trace is turned on or off
+vector<string> traces;
+bool toggle = false;
 
 void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
@@ -20,10 +27,15 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 int main()
 {
 	string username, password;
+
 	vector<Client> clients;
 	vector<Manager> managers;
 	vector<Maintainer> maintainers;
 	loadMembers(clients, managers, maintainers);
+
+	Serializable objSerial;
+	toggle = objSerial.loadTrace(traces);
+
 	startMenu(username, password, clients, managers, maintainers);
 
 	return 0;
@@ -46,6 +58,25 @@ void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Main
 	memberSerial.saveClients(clients);
 	memberSerial.saveManagers(managers);
 	memberSerial.saveMaintainers(maintainers);
+}
+
+void addTrace(string trace)
+{
+	if (toggle)
+	{
+		// Get the starting value of clock
+		clock_t start = clock();
+		tm* my_time;
+		// Get current time in format of time_t
+		time_t t = time(NULL);
+		// Convert time_t to char*, and charTime will be the current time
+		// Need to put in the header something to ignore the error for ctime
+		char* charTime = ctime(&t);
+
+		traces.push_back(trace + "\t" + charTime);
+		Serializable objSerial;
+		objSerial.saveTrace(traces, toggle);
+	}
 }
 
 void startMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
@@ -76,6 +107,7 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 		{
 			found = true;
 			cout << " We have found your account, " << clients[i].getFirstname() << " " << clients[i].getLastname() << "." << endl << endl;
+			addTrace(" " + clients[i].getUsername() + " successfully logged into PR Bank");
 			optionMenu(username, password, clients, managers, maintainers, "client", i);
 		}
 	}
@@ -88,6 +120,7 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 			{
 				found = true;
 				cout << " We have found your account, " << managers[i].getFirstname() << " " << managers[i].getLastname() << "." << endl << endl;
+				addTrace(" " + managers[i].getUsername() + " successfully logged into PR Bank");
 				optionMenu(username, password, clients, managers, maintainers, "manager", i);
 			}
 		}
@@ -101,6 +134,7 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 			{
 				found = true;
 				cout << " We have found your account, " << maintainers[i].getFirstname() << " " << maintainers[i].getLastname() << "." << endl << endl;
+				addTrace(" " + maintainers[i].getUsername() + " successfully logged into PR Bank");
 				optionMenu(username, password, clients, managers, maintainers, "maintainer", i);
 			}
 		}
@@ -119,7 +153,7 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 	cout << "                                Main Menu\n";
 	cout << "--------------------------------------------------------------------------\n" << endl;
 	cout << " Please select an option from below:" << endl;
-	cout << " 1. Account Summary" << endl;
+	cout << " 1. Print Account Summary" << endl;
 	cout << " 2. Withdraw Funds" << endl;
 	cout << " 3. Deposit Funds" << endl;
 	cout << " 4. Transfer Funds" << endl;
@@ -139,7 +173,8 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 	{
 		cout << " Additional Maintenance Options" << endl;
 		cout << " 7. Turn On Execution Trace" << endl;
-		cout << " 8. Turn Off Execution Trace\n" << endl;
+		cout << " 8. Turn Off Execution Trace" << endl;
+		cout << " 9. Print Execution Trace\n" << endl;
 	}
 
 	cout << " How would you like to proceed: ";
@@ -164,7 +199,7 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 		}
 		else if (type == "maintainer")
 		{
-			if (choice <= 0 || choice >= 9)
+			if (choice <= 0 || choice >= 10)
 				inputFail = true;
 		}
 	} while (inputFail == true);
@@ -191,6 +226,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			else if (type == "maintainer")
 				maintainers[element].printAccount();
 
+			addTrace(" " + username + " printed a summary of their accounts");
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
@@ -226,6 +262,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			}
 
 			cout << endl;
+			addTrace(" " + username + " withdrew money from their account");
 			saveMembers(clients, managers, maintainers);
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
@@ -262,6 +299,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			}
 
 			cout << endl;
+			addTrace(" " + username + " deposited money into their account");
 			saveMembers(clients, managers, maintainers);
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
@@ -303,6 +341,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			}
 
 			cout << endl;
+			addTrace(" " + username + " transferred money between their accounts");
 			saveMembers(clients, managers, maintainers);
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
@@ -328,6 +367,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 				cout << " Sorry, you do not have any recent transactions." << endl;
 
 			cout << endl;
+			addTrace(" " + username + " printed their recent transactions");
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
@@ -335,6 +375,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			// Log out
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " Logging out, thank you for choosing PR Bank.\n" << endl;
+			addTrace(" " + username + " logged out of PR Bank");
 			startMenu(username, password, clients, managers, maintainers);
 			break;
 
@@ -349,22 +390,38 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 					Client client = managers[element].initializeClient();
 					clients.push_back(client);
 					client.printAccount();
+					addTrace(" " + username + " added " + client.getUsername() + " to PR Bank");
 				}
 				else if (selection == 2)
 				{
 					Manager manager = managers[element].initializeManager();
 					managers.push_back(manager);
 					manager.printAccount();
+					addTrace(" " + username + " added " + manager.getUsername() + " to PR Bank");
 				}
 				else if (selection == 3)
 				{
 					Maintainer maintainer = managers[element].initializeMaintainer();
 					maintainers.push_back(maintainer);
 					maintainer.printAccount();
+					addTrace(" " + username + " added " + maintainer.getUsername() + " to PR Bank");
+				}
+				saveMembers(clients, managers, maintainers);
+			}
+
+			// Turn Execution Trace on if you are a Maintainer
+			if (type == "maintainer")
+			{
+				if (toggle)
+					cout << " The execution trace function is alreayd turned on.\n" << endl;
+				else
+				{
+					toggle = true;
+					cout << " You have turned the execution trace function on.\n" << endl;
+					addTrace(" " + username + " turned the execution trace on");
 				}
 			}
 
-			saveMembers(clients, managers, maintainers);
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
@@ -372,20 +429,44 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			// Open Account if you are a Manager
 			if (type == "manager")
 			{
-				managers[element].openAccount(clients, managers, maintainers);
+				string accountHolder = managers[element].openAccount(clients, managers, maintainers);
+				addTrace(" " + username + accountHolder);
 				saveMembers(clients, managers, maintainers);
-				optionMenu(username, password, clients, managers, maintainers, type, element);
 			}
+
+			// Turn Execution Trace off if you are a Maintainer
+			if (type == "maintainer")
+			{
+				if (toggle == false)
+					cout << " The execution trace function is already turned off.\n" << endl;
+				else
+				{
+					toggle = false;
+					cout << " You have turned the execution trace function off.\n" << endl;
+					addTrace(" " + username + " turned the execution trace off");
+				}
+			}
+
+			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
 		case 9:
-			// Close Details of Accounts if you are a Manager
+			// Close Account if you are a Manager
 			if (type == "manager")
 			{
-				managers[element].closeAccount(clients, managers, maintainers);
+				string accountHolder = managers[element].closeAccount(clients, managers, maintainers);
+				addTrace(" " + username + accountHolder);
 				saveMembers(clients, managers, maintainers);
-				optionMenu(username, password, clients, managers, maintainers, type, element);
 			}
+
+			//Print Execution Trace if you are a Maintainer
+			if (type == "maintainer")
+			{
+				maintainers[element].printTrace();
+				addTrace(" " + username + " printed the execution trace");
+			}
+
+			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
 		case 10:
@@ -393,6 +474,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			if (type == "manager")
 			{
 				managers[element].viewDetails(clients, managers, maintainers);
+				addTrace(" " + username + " viewed details of accounts");
 				optionMenu(username, password, clients, managers, maintainers, type, element);
 			}
 			break;
@@ -400,6 +482,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 		default:
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " INTERNAL ERROR: Returning to main menu...\n" << endl;
+			addTrace(" " + username + " encountered an error while using PR Bank");
 			startMenu(username, password, clients, managers, maintainers);
 	}
 }

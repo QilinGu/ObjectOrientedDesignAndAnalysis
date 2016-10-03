@@ -7,6 +7,7 @@
 
 #include "stdafx.h"
 #include "Maintainer.h"
+#include "Serializable.h"
 
 Maintainer::Maintainer()
 {
@@ -28,4 +29,28 @@ Maintainer::Maintainer(string firstname, string lastname, string username, strin
 
 Maintainer::~Maintainer()
 {
+}
+
+/**
+ * \brief 
+ * Print Traces Functio
+ */
+void Maintainer::printTrace()
+{
+	Serializable objSerial;
+	vector<string> traces;
+	objSerial.loadTrace(traces);
+
+	cout << "--------------------------------------------------------------------------\n";
+	cout << "                            System Functions Log" << endl;
+	cout << "--------------------------------------------------------------------------\n" << endl;
+
+
+	if (traces.size() == 0)
+		cout << " Sorry, no traces of action have been executed yet." << endl;
+	else
+		for (size_t i = 0; i < traces.size(); i++)
+			cout << traces[i] << endl;
+
+	cout << endl;
 }

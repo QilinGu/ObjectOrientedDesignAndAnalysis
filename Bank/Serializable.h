@@ -17,6 +17,6 @@ class Serializable
 	vector<Manager> loadManagers();
 	void saveMaintainers(vector<Maintainer> &maintainers);
 	vector<Maintainer> loadMaintainers();
-	void saveTrace(vector<string> &traces);
-	vector<string> loadTrace();
+	void saveTrace(vector<string> &traces, bool toggle);
+	bool loadTrace(vector<string> &traces);
 };
