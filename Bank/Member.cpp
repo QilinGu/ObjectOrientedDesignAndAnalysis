@@ -68,14 +68,16 @@ bool Member::deleteAccount(Account &account)
 				location = i;
 		}
 
+		cout << "\n " << getFirstname() << " " << getLastname() << "'s " << account.getAccountType() << " account has been deleted.\n" << endl;
+		
+		
+		//The account has been deleted.\n" << endl;
 		accounts.erase(accounts.begin() + location);
-
-		cout << "\n The account has been deleted.\n" << endl;
 		return true;
 	}
 	else
 	{
-		cout << "\n Sorry, the balance of " << getFirstname() << " " << getLastname() << "'s account must be zero to close it.\n" << endl;
+		cout << "\n The balance of " << getFirstname() << " " << getLastname() << "'s account must be zero to close it." << endl;
 		return false;
 	}
 }

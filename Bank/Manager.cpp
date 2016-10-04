@@ -307,8 +307,10 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 	cin >> username;
 
 
+	//Find the clinet
 	Client * client = findClient(username, clients);
-	if (client != NULL)
+	// If the client is not NULL, which means we found them and that they have more than one account
+	if (client != NULL && client->getAccounts().size() > 1)
 	{
 		deleted = client->deleteAccount(*client->selectAccount("close for " + client->getFirstname() + " " + client->getLastname()));
 		if (deleted)
@@ -317,8 +319,10 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 
 	if (!deleted)
 	{
+		// Find the manager
 		Manager * manager = findManager(username, managers);
-		if (manager != NULL)
+		// If the manager is not NULL, which means we found them and that they have more than one account
+		if (manager != NULL && manager->getAccounts().size() > 1)
 		{
 			deleted = manager->deleteAccount(*manager->selectAccount("close for " + manager->getFirstname() + " " + manager->getLastname()));
 			if (deleted)
@@ -328,8 +332,10 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 
 	if (!deleted)
 	{
+		// Find the maintainer
 		Maintainer * maintainer = findMaintainer(username, maintainers);
-		if (maintainer != NULL)
+		// If the maintainer is not NULL, which means we found them and that they have more than one account
+		if (maintainer != NULL && maintainer->getAccounts().size() > 1)
 		{
 			deleted = maintainer->deleteAccount(*maintainer->selectAccount("close for " + maintainer->getFirstname() + " " + maintainer->getLastname()));
 			if (deleted)
@@ -339,10 +345,11 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 
 	if (!deleted)
 	{
-		cout << "\n Sorry, we could not find a member matching that username.\n" << endl;
+		cout << "\n Sorry, there was a problem closing the requested account.\n" << endl;
 		return " failed to close an account for" + username;
 	}
-	else
+	
+	if (deleted)
 		return " closed an account for" + username;
 }
 
@@ -387,6 +394,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 
 	Account account(accountType, balance);
 
+	// Find the client and if they are not NULL we have found them
 	Client * client = findClient(username, clients);
 	if (client != NULL)
 	{
@@ -397,6 +405,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 
 	if (!opened)
 	{
+		// Find the client and if they are not NULL we have found them
 		Manager * manager = findManager(username, managers);
 		if (manager != NULL)
 		{
@@ -408,6 +417,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 
 	if (!opened)
 	{
+		// Find the client and if they are not NULL we have found them
 		Maintainer * maintainer = findMaintainer(username, maintainers);
 		if (maintainer != NULL)
 		{

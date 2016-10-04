@@ -164,7 +164,7 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 	{
 		cout << " Additional Manager Options:" << endl;
 		cout << " 7. Create New Member" << endl;
-		cout << " 8. Open Account" << endl;
+		cout << " 8. Add Account" << endl;
 		cout << " 9. Close Account" << endl;
 		cout << " 10. View Details of Account(s)\n" << endl;
 	}
@@ -426,7 +426,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			break;
 
 		case 8:
-			// Open Account if you are a Manager
+			// Add Account if you are a Manager
 			if (type == "manager")
 			{
 				string accountHolder = managers[element].openAccount(clients, managers, maintainers);
