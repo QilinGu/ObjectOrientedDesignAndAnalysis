@@ -228,16 +228,18 @@ Maintainer Manager::initializeMaintainer()
  * \param clients
  * \return
  */
-Client* Manager::findClient(string username, vector<Client>& clients)
+Client* Manager::findClient(string username, vector<Client>& clients, int &location)
 {
 	Client * client = NULL;
 
 	for (size_t i = 0; i < clients.size(); i++)
 	{
 		if (username == clients[i].getUsername())
+		{
+			location = i;
 			return &clients[i];
+		}
 	}
-
 	return client;
 }
 
@@ -249,7 +251,7 @@ Client* Manager::findClient(string username, vector<Client>& clients)
  * \param managers
  * \return
  */
-Manager* Manager::findManager(string username, vector<Manager>& managers)
+Manager* Manager::findManager(string username, vector<Manager>& managers, int &location)
 {
 	Manager * manager = NULL;
 	bool found = false;
@@ -257,7 +259,10 @@ Manager* Manager::findManager(string username, vector<Manager>& managers)
 	for (size_t i = 0; i < managers.size(); i++)
 	{
 		if (username == managers[i].getUsername())
+		{
+
 			return &managers[i];
+		}
 	}
 
 	return manager;
@@ -271,14 +276,17 @@ Manager* Manager::findManager(string username, vector<Manager>& managers)
  * \param maintainers
  * \return
  */
-Maintainer* Manager::findMaintainer(string username, vector<Maintainer>& maintainers)
+Maintainer* Manager::findMaintainer(string username, vector<Maintainer>& maintainers, int & location)
 {
 	Maintainer  * maintainer = NULL;
 
 	for (size_t i = 0; i < maintainers.size(); i++)
 	{
 		if (username == maintainers[i].getUsername())
+		{
+			location = i;
 			return &maintainers[i];
+		}
 	}
 
 	return maintainer;
@@ -299,6 +307,8 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 {
 	string username;
 	bool deleted = false;
+	bool removed = false;
+	int location = 0;
 
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                            Close Member Account\n";
@@ -308,7 +318,7 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 
 
 	//Find the clinet
-	Client * client = findClient(username, clients);
+	Client * client = findClient(username, clients, location);
 	// If the client is not NULL, which means we found them and that they have more than one account
 	if (client != NULL && client->getAccounts().size() > 1)
 	{
@@ -316,11 +326,21 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 		if (deleted)
 			addTransaction(getFirstname() + " deleted one of " + client->getFirstname() + " " + client->getLastname() + "'s accounts.");
 	}
+	else if (client != NULL && client->getAccounts().size() == 1)
+	{
+		bool choice = getChoice(client->getFirstname() + " " + client->getLastname() + " only has one account, do you want to remove them?");
+		if (choice)
+		{
+			removed = choice;
+			addTransaction(getFirstname() + " deleted " + client->getFirstname() + " " + client->getLastname() + " from PR Bank.");
+			clients.erase(clients.begin() + location);
+		}
+	}
 
 	if (!deleted)
 	{
 		// Find the manager
-		Manager * manager = findManager(username, managers);
+		Manager * manager = findManager(username, managers, location);
 		// If the manager is not NULL, which means we found them and that they have more than one account
 		if (manager != NULL && manager->getAccounts().size() > 1)
 		{
@@ -328,18 +348,38 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 			if (deleted)
 				addTransaction(getFirstname() + " deleted one of " + manager->getFirstname() + " " + manager->getLastname() + "'s accounts.");
 		}
+		else if (manager != NULL && manager->getAccounts().size() == 1)
+		{
+			bool choice = getChoice(manager->getFirstname() + " " + manager->getLastname() + " only has one account, do you want to remove them?");
+			if (choice)
+			{
+				removed = choice;
+				addTransaction(getFirstname() + " deleted " + manager->getFirstname() + " " + manager->getLastname() + " from PR Bank.");
+				managers.erase(managers.begin() + location);
+			}
+		}
 	}
 
 	if (!deleted)
 	{
 		// Find the maintainer
-		Maintainer * maintainer = findMaintainer(username, maintainers);
+		Maintainer * maintainer = findMaintainer(username, maintainers, location);
 		// If the maintainer is not NULL, which means we found them and that they have more than one account
 		if (maintainer != NULL && maintainer->getAccounts().size() > 1)
 		{
 			deleted = maintainer->deleteAccount(*maintainer->selectAccount("close for " + maintainer->getFirstname() + " " + maintainer->getLastname()));
 			if (deleted)
 				addTransaction(getFirstname() + " deleted one of " + maintainer->getFirstname() + " " + maintainer->getLastname() + "'s accounts.");
+		}
+		else if (maintainer != NULL && maintainer->getAccounts().size() == 1)
+		{
+			bool choice = getChoice(maintainer->getFirstname() + " " + maintainer->getLastname() + " only has one account, do you want to remove them?");
+			if (choice)
+			{
+				removed = choice;
+				addTransaction(getFirstname() + " deleted " + maintainer->getFirstname() + " " + maintainer->getLastname() + " from PR Bank.");
+				maintainers.erase(maintainers.begin() + location);
+			}
 		}
 	}
 
@@ -370,6 +410,8 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	bool inputFail;
 	string accountType;
 	double balance;
+	// dummy variable
+	int location = 0;
 
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                           Open Member Account\n";
@@ -395,7 +437,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	Account account(accountType, balance);
 
 	// Find the client and if they are not NULL we have found them
-	Client * client = findClient(username, clients);
+	Client * client = findClient(username, clients, location);
 	if (client != NULL)
 	{
 		opened = true;
@@ -406,7 +448,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	if (!opened)
 	{
 		// Find the client and if they are not NULL we have found them
-		Manager * manager = findManager(username, managers);
+		Manager * manager = findManager(username, managers, location);
 		if (manager != NULL)
 		{
 			opened = true;
@@ -418,7 +460,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	if (!opened)
 	{
 		// Find the client and if they are not NULL we have found them
-		Maintainer * maintainer = findMaintainer(username, maintainers);
+		Maintainer * maintainer = findMaintainer(username, maintainers, location);
 		if (maintainer != NULL)
 		{
 			opened = true;
@@ -491,16 +533,41 @@ void Manager::viewDetails(vector<Client> &clients, vector<Manager> &managers, ve
 		cin >> username;
 		cout << endl;
 
-		Client * client = findClient(username, clients);
+		// dummy variable
+		int location = 0;
+
+		Client * client = findClient(username, clients, location);
 		if (client != NULL)
 			client->printAccount();
 
-		Manager * manager = findManager(username, managers);
+		Manager * manager = findManager(username, managers, location);
 		if (manager != NULL)
 			manager->printAccount();
 
-		Maintainer * maintainer = findMaintainer(username, maintainers);
+		Maintainer * maintainer = findMaintainer(username, maintainers, location);
 		if (maintainer != NULL)
 			maintainer->printAccount();
 	}
+}
+
+bool Manager::getChoice(string text)
+{
+	int choice = 0;
+	bool inputFail;
+	bool result = false;
+
+	cout << "\n " << text << endl;
+	cout << " Press 1 to confirm, press any other button to decline: ";
+
+	do
+	{
+		cin >> choice;
+		inputFail = cin.fail();
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		if (choice == 1)
+			result = true;
+	} while (inputFail == true);
+
+	return result;
 }
