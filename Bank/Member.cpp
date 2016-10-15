@@ -134,7 +134,7 @@ void Member::printAccount()
 	int size = accounts.size();
 	for (int i = 0; i < size; i++)
 	{
-		cout << " Account " << i + 1 << endl;
+		cout << " Account: " << i + 1 << endl;
 
 		cout << " Account: " << accounts[i].getAccountType() << endl;
 		cout << " Balance: $" << accounts[i].getBalance() << endl << endl;

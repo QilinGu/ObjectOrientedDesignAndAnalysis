@@ -39,7 +39,7 @@ Manager::~Manager()
  * 1 (Client), 2 (Manager), and 3 (Maintainer)
  * \return
  */
-int Manager::createMember()
+int Manager::chooseMemberType()
 {
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                             New Member of PR Bank\n";
@@ -68,82 +68,13 @@ int Manager::createMember()
 }
 
 /**
- * \brief
- * Member Input Function
- * This function is called from the Member Initializer functions
- * This function gathers the information needed to create a new member
- * \param firstname
- * \param lastname
- * \param username
- * \param password
- * \param accounts
- */
-void Manager::memberInput(string &firstname, string &lastname, string &username, string &password, vector<Account> &accounts)
-{
-	cout << "Please enter the member's first name: ";
-	cin >> firstname;
-	cout << "Please enter the member's last name: ";
-	cin >> lastname;
-	cout << "Please enter the member's username: ";
-	cin >> username;
-	cout << "Please enter the member's password: ";
-	cin >> password;
-	cout << "How many accounts do you want to create for " << firstname << ": ";
-	bool inputFail;
-	int choice;
-	do
-	{
-		cin >> choice;
-		inputFail = cin.fail();
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		if (choice <= 0)
-			inputFail = true;
-	} while (inputFail == true);
-
-	cout << endl;
-
-	for (int i = 0; i < choice; i++)
-	{
-		bool inputFail2;
-		string accountType;
-		double balance;
-		cout << "--------------------------------------------------------------------------\n";
-		cout << "                                  Account " << i + 1 << endl;
-		cout << "--------------------------------------------------------------------------\n" << endl;
-		cout << " What type of account is this: ";
-		cin >> accountType;
-		cout << " How much money is going to be deposited in this account: $";
-
-		do
-		{
-			cin >> balance;
-			inputFail2 = cin.fail();
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			if (balance <= 0)
-				inputFail2 = true;
-		} while (inputFail2 == true);
-
-		cout << endl;
-
-		Account account(accountType, balance);
-		accounts.push_back(account);
-	}
-
-	cout << "--------------------------------------------------------------------------\n";
-	cout << "                         Finished Creating Account" << endl;
-	cout << "--------------------------------------------------------------------------" << endl;
-}
-
-/**
- * \brief
- * Initialize Client Function
- * This is the second step for a Manager to create a new member
- * The reason this function cannot be called from the first step is because we do not yet know which type of memebr we will return
- * This function also calls Member Input, which is called with each Member Initializer that gets all new Member info
- * \return
- */
+* \brief
+* Initialize Client Function
+* This is the second step for a Manager to create a new member
+* The reason this function cannot be called from the first step is because we do not yet know which type of memebr we will return
+* This function also calls Member Input, which is called with each Member Initializer that gets all new Member info
+* \return
+*/
 Client Manager::initializeClient()
 {
 	int choice;
@@ -219,6 +150,76 @@ Maintainer Manager::initializeMaintainer()
 	return maintainer;
 }
 
+/**
+ * \brief
+ * Member Input Function
+ * This function is called from the Member Initializer functions
+ * This function gathers the information needed to create a new member
+ * \param firstname
+ * \param lastname
+ * \param username
+ * \param password
+ * \param accounts
+ */
+void Manager::memberInput(string &firstname, string &lastname, string &username, string &password, vector<Account> &accounts)
+{
+	cout << " Please enter the member's first name: ";
+	cin >> firstname;
+	cout << " Please enter the member's last name: ";
+	cin >> lastname;
+	cout << " Please enter the member's username: ";
+	cin >> username;
+	cout << " Please enter the member's password: ";
+	cin >> password;
+	cout << "\n How many accounts do you want to create for " << firstname << "?" << endl;
+	cout << " The member must have a minimum of 1 and maximum of 4 accounts: ";
+	bool inputFail;
+	int choice;
+	do
+	{
+		cin >> choice;
+		inputFail = cin.fail();
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		if (choice <= 0 || choice >= 5)
+			inputFail = true;
+	} while (inputFail == true);
+	cout << endl;
+
+	for (int i = 0; i < choice; i++)
+	{
+		bool inputFail2;
+		double balance;
+		cout << "--------------------------------------------------------------------------\n";
+		cout << "                                  Account " << i + 1 << endl;
+		cout << "--------------------------------------------------------------------------\n" << endl;
+
+		string accountType = "";
+		while(accountType == "")
+			accountType = chooseAccount(accounts);		
+		
+		cout << " How much money is going to be deposited in this account: $";
+
+		do
+		{
+			cin >> balance;
+			inputFail2 = cin.fail();
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			if (balance <= 0)
+				inputFail2 = true;
+		} while (inputFail2 == true);
+
+		cout << endl;
+
+		Account account(accountType, balance);
+		accounts.push_back(account);
+	}
+
+	cout << "--------------------------------------------------------------------------\n";
+	cout << "                         Finished Creating Account" << endl;
+	cout << "--------------------------------------------------------------------------" << endl;
+}
 
 /**
  * \brief
@@ -408,7 +409,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	string username;
 	bool opened = false;
 	bool inputFail;
-	string accountType;
+	string accountType = "";
 	double balance;
 	// dummy variable
 	int location = 0;
@@ -418,10 +419,8 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	cout << "--------------------------------------------------------------------------\n" << endl;
 	cout << " What is the username of the member you wish to open: ";
 	cin >> username;
-	cout << "\n What type of account is this: ";
-	cin >> accountType;
-	cout << " How much money is going to be deposited in this account: $";
 
+	cout << " What is the balance of this account going to be: $";
 	do
 	{
 		cin >> balance;
@@ -431,16 +430,16 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 		if (balance <= 0)
 			inputFail = true;
 	} while (inputFail == true);
-
 	cout << endl;
-
-	Account account(accountType, balance);
 
 	// Find the client and if they are not NULL we have found them
 	Client * client = findClient(username, clients, location);
-	if (client != NULL)
+	if (client != NULL && client->getAccounts().size() < 4)
 	{
 		opened = true;
+		while (accountType == "")
+			accountType = chooseAccount(client->getAccounts());
+		Account account(accountType, balance);
 		client->addAccount(account);
 		addTransaction(getFirstname() + " opened a new account for " + client->getFirstname() + " " + client->getLastname());
 	}
@@ -449,9 +448,12 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	{
 		// Find the client and if they are not NULL we have found them
 		Manager * manager = findManager(username, managers, location);
-		if (manager != NULL)
+		if (manager != NULL && manager->getAccounts().size() < 4)
 		{
 			opened = true;
+			while (accountType == "")
+				accountType = chooseAccount(manager->getAccounts());
+			Account account(accountType, balance);
 			manager->addAccount(account);
 			addTransaction(getFirstname() + " opened a new account for " + manager->getFirstname() + " " + manager->getLastname());
 		}
@@ -461,9 +463,12 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	{
 		// Find the client and if they are not NULL we have found them
 		Maintainer * maintainer = findMaintainer(username, maintainers, location);
-		if (maintainer != NULL)
+		if (maintainer != NULL && maintainer->getAccounts().size() < 4)
 		{
 			opened = true;
+			while (accountType == "")
+				accountType = chooseAccount(maintainer->getAccounts());
+			Account account(accountType, balance);
 			maintainer->addAccount(account);
 			addTransaction(getFirstname() + " opened a new account for " + maintainer->getFirstname() + " " + maintainer->getLastname());
 		}
@@ -471,7 +476,8 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 
 	if (!opened)
 	{
-		cout << " Sorry, we could not find a member matching that username.\n" << endl;
+		cout << " Sorry, we could not find a member matching that username,\n";
+		cout << " or the user currently has the maximum number of accounts." << endl;
 		return " failed to open an account for " + username;
 	}
 	else
@@ -479,6 +485,52 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 		cout << " The account has been added.\n" << endl;
 		return " opened a new account for " + username;
 	}
+}
+
+string Manager::chooseAccount(vector<Account> &accounts)
+{
+	cout << " What type of account is this?" << endl;
+	cout << " 1. Savings" << endl;
+	cout << " 2. Chequing" << endl;
+	cout << " 3. Credit" << endl;
+	cout << " 4. Loan" << endl;
+	cout << " Please choose an option from above: ";
+
+	bool inputFail;
+	int choice;
+	do
+	{
+		cin >> choice;
+		inputFail = cin.fail();
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		if (choice <= 0 && choice >= 5)
+			inputFail = true;
+	} while (inputFail == true);
+	cout << endl;
+
+	string accountType = "";
+	if (choice == 1)
+		accountType = "Savings";
+	else if (choice == 2)
+		accountType = "Chequing";
+	else if (choice == 3)
+		accountType = "Credit";
+	else if (choice == 4)
+		accountType = "Loan";
+
+	bool alreadyExists = false;
+	for (size_t j = 0; j < accounts.size(); j++)
+		if (accounts[j].getAccountType() == accountType)
+			alreadyExists = true;
+
+	if (alreadyExists)
+	{
+		cout << " Sorry, this user already has a " << accountType << " account, please choose another.\n" << endl;
+		return "";
+	}
+	
+	return accountType;
 }
 
 /**

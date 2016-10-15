@@ -12,12 +12,13 @@ class Manager : public Member
 	Manager* findManager(string username, vector<Manager> &managers, int &location);
 	Maintainer* findMaintainer(string username, vector<Maintainer> &maintainers, int &location);
 	bool getChoice(string text);
+	string chooseAccount(vector<Account> &accounts);
 
 	public:
 	Manager();
 	Manager(string firstname, string lastname, string username, string password, Account account);
 	~Manager();
-	int createMember();
+	int chooseMemberType();
 	Client initializeClient();
 	Manager initializeManager();
 	Maintainer initializeMaintainer();

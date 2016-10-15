@@ -521,7 +521,7 @@ void printRecentTransactions(string &username, string &password, vector<Client> 
 
 void createMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
-	int selection = managers[element].createMember();
+	int selection = managers[element].chooseMemberType();
 
 	if (selection == 1)
 	{
