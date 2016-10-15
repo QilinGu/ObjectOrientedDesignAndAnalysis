@@ -351,13 +351,14 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 		}
 		else if (manager != NULL && manager->getAccounts().size() == 1)
 		{
-			bool choice = getChoice(manager->getFirstname() + " " + manager->getLastname() + " only has one account, do you want to remove them?");
+			// An error persists when trying to completely remove a manager, since there accounts are running while you delete them
+			/*bool choice = getChoice(manager->getFirstname() + " " + manager->getLastname() + " only has one account, do you want to remove them?");
 			if (choice)
 			{
 				removed = choice;
 				addTransaction(getFirstname() + " deleted " + manager->getFirstname() + " " + manager->getLastname() + " from PR Bank.");
 				managers.erase(managers.begin() + location);
-			}
+			}*/
 		}
 	}
 
@@ -384,14 +385,18 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 		}
 	}
 
+	
+	if (deleted || removed)
+	{
+		cout << "\n Successfully removed the account associated with " << username << " from PR Bank.\n" << endl;
+		return " closed an account for" + username;
+	}
+	
 	if (!deleted)
 	{
 		cout << "\n Sorry, there was a problem closing the requested account.\n" << endl;
 		return " failed to close an account for" + username;
 	}
-	
-	if (deleted)
-		return " closed an account for" + username;
 }
 
 /**
