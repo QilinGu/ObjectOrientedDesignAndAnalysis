@@ -24,6 +24,13 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 void optionMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice);
 
+double getValue();
+void printSummary(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void withdrawMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void depositMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void transferMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void transferMoneyToMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+
 int main()
 {
 	string username, password;
@@ -157,24 +164,25 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 	cout << " 2. Withdraw Funds" << endl;
 	cout << " 3. Deposit Funds" << endl;
 	cout << " 4. Transfer Funds" << endl;
-	cout << " 5. Print Recent Transactions" << endl;
-	cout << " 6. Quit\n" << endl;
+	cout << " 5. Transfer Funds To Another Member" << endl;
+	cout << " 6. Print Recent Transactions" << endl;
+	cout << " 7. Quit\n" << endl;
 
 	if (type == "manager")
 	{
 		cout << " Additional Manager Options:" << endl;
-		cout << " 7. Create New Member" << endl;
-		cout << " 8. Add Account" << endl;
-		cout << " 9. Close Account" << endl;
-		cout << " 10. View Details of Account(s)\n" << endl;
+		cout << " 8. Create New Member" << endl;
+		cout << " 9. Add Account" << endl;
+		cout << " 10. Close Account" << endl;
+		cout << " 11. View Details of Account(s)\n" << endl;
 	}
 
 	if (type == "maintainer")
 	{
 		cout << " Additional Maintenance Options" << endl;
-		cout << " 7. Turn On Execution Trace" << endl;
-		cout << " 8. Turn Off Execution Trace" << endl;
-		cout << " 9. Print Execution Trace\n" << endl;
+		cout << " 8. Turn On Execution Trace" << endl;
+		cout << " 9. Turn Off Execution Trace" << endl;
+		cout << " 10. Print Execution Trace\n" << endl;
 	}
 
 	cout << " How would you like to proceed: ";
@@ -189,17 +197,17 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 
 		if (type == "client")
 		{
-			if (choice <= 0 || choice >= 7)
+			if (choice <= 0 || choice >= 8)
 				inputFail = true;
 		}
 		else if (type == "manager")
 		{
-			if (choice <= 0 || choice >= 11)
+			if (choice <= 0 || choice >= 12)
 				inputFail = true;
 		}
 		else if (type == "maintainer")
 		{
-			if (choice <= 0 || choice >= 10)
+			if (choice <= 0 || choice >= 11)
 				inputFail = true;
 		}
 	} while (inputFail == true);
@@ -214,139 +222,27 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 	double value = 0;
 	bool inputFail;
 	vector<string> transactions;
+	string transferUser = "";
 
 	switch (choice)
 	{
 		case 1:
-			// Print Account Summary
-			if (type == "client")
-				clients[element].printAccount();
-			else if (type == "manager")
-				managers[element].printAccount();
-			else if (type == "maintainer")
-				maintainers[element].printAccount();
-
-			addTrace(" " + username + " printed a summary of their accounts");
-			optionMenu(username, password, clients, managers, maintainers, type, element);
+			printSummary(username, password, clients, managers, maintainers, type, element);
 			break;
-
 		case 2:
-			// Withdraw Money From Account
-			cout << "--------------------------------------------------------------------------\n\n";
-			cout << " Please enter a value you would like to withdraw: $";
-			do
-			{
-				cin >> value;
-				inputFail = cin.fail();
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			} while (inputFail == true);
-
-			if (type == "client")
-			{
-				Account *account = clients[element].selectAccount("withdraw from");
-				account->withdraw(value);
-				clients[element].addTransaction(clients[element].getFirstname() + " withdrew $" + to_string(value) + " from " + account->getAccountType());
-			}
-			else if (type == "manager")
-			{
-				Account *account = managers[element].selectAccount("withdraw from");
-				account->withdraw(value);
-				managers[element].addTransaction(managers[element].getFirstname() + " withdrew $" + to_string(value) + " from " + account->getAccountType());
-			}
-			else if (type == "maintainer")
-			{
-				Account *account = maintainers[element].selectAccount("withdraw from");
-				account->withdraw(value);
-				maintainers[element].addTransaction(maintainers[element].getFirstname() + " withdrew $" + to_string(value) + " from " + account->getAccountType());
-			}
-
-			cout << endl;
-			addTrace(" " + username + " withdrew money from their account");
-			saveMembers(clients, managers, maintainers);
-			optionMenu(username, password, clients, managers, maintainers, type, element);
+			withdrawMoney(username, password, clients, managers, maintainers, type, element);
 			break;
-
 		case 3:
-			// Deposit Money To Account
-			cout << "--------------------------------------------------------------------------\n\n";
-			cout << " Please enter a value you would like to deposit: $";
-			do
-			{
-				cin >> value;
-				inputFail = cin.fail();
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-			} while (inputFail == true);
-
-			if (type == "client")
-			{
-				Account *account = clients[element].selectAccount("deposit to");
-				account->deposit(value);
-				clients[element].addTransaction(clients[element].getFirstname() + " deposited $" + to_string(value) + " to " + account->getAccountType());
-			}
-			else if (type == "manager")
-			{
-				Account *account = managers[element].selectAccount("deposit to");
-				account->deposit(value);
-				managers[element].addTransaction(managers[element].getFirstname() + " deposited $" + to_string(value) + " to " + account->getAccountType());
-			}
-			else if (type == "maintainer")
-			{
-				Account *account = maintainers[element].selectAccount("deposit to");
-				account->deposit(value);
-				maintainers[element].addTransaction(maintainers[element].getFirstname() + " deposited $" + to_string(value) + " to " + account->getAccountType());
-			}
-
-			cout << endl;
-			addTrace(" " + username + " deposited money into their account");
-			saveMembers(clients, managers, maintainers);
-			optionMenu(username, password, clients, managers, maintainers, type, element);
+			depositMoney(username, password, clients, managers, maintainers, type, element);
 			break;
-
 		case 4:
-			// Transfer Money To Account
-			cout << "--------------------------------------------------------------------------\n\n";
-			cout << " Please enter a value you would like to transfer: $";
-			do
-			{
-				cin >> value;
-				inputFail = cin.fail();
-				cin.clear();
-				cin.ignore(numeric_limits<streamsize>::max(), '\n');
-				if (value <= 0)
-					inputFail = true;
-			} while (inputFail == true);
-
-			if (type == "client")
-			{
-				Account *account1 = clients[element].selectAccount("transfer from");
-				Account *account2 = clients[element].selectAccount("transfer to");
-				account1->transfer(value, account2);
-				clients[element].addTransaction(clients[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + account2->getAccountType());
-			}
-			else if (type == "manager")
-			{
-				Account *account1 = managers[element].selectAccount("transfer from");
-				Account *account2 = managers[element].selectAccount("transfer to");
-				account1->transfer(value, account2);
-				managers[element].addTransaction(managers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + account2->getAccountType());
-			}
-			else if (type == "maintainer")
-			{
-				Account *account1 = maintainers[element].selectAccount("transfer from");
-				Account *account2 = maintainers[element].selectAccount("transfer to");
-				account1->transfer(value, account2);
-				maintainers[element].addTransaction(maintainers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + account2->getAccountType());
-			}
-
-			cout << endl;
-			addTrace(" " + username + " transferred money between their accounts");
-			saveMembers(clients, managers, maintainers);
-			optionMenu(username, password, clients, managers, maintainers, type, element);
+			transferMoney(username, password, clients, managers, maintainers, type, element);
+			break;
+		case 5: 
+			transferMoneyToMember(username, password, clients, managers, maintainers, type, element);
 			break;
 
-		case 5:
+		case 6:
 			// Print Recent Transactions
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " Here are your most recent transactions: \n" << endl;
@@ -371,7 +267,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
-		case 6:
+		case 7:
 			// Log out
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " Logging out, thank you for choosing PR Bank.\n" << endl;
@@ -379,7 +275,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			startMenu(username, password, clients, managers, maintainers);
 			break;
 
-		case 7:
+		case 8:
 			// Create New Member if you are a Manager
 			if (type == "manager")
 			{
@@ -425,7 +321,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
-		case 8:
+		case 9:
 			// Add Account if you are a Manager
 			if (type == "manager")
 			{
@@ -450,7 +346,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
-		case 9:
+		case 10:
 			// Close Account if you are a Manager
 			if (type == "manager")
 			{
@@ -469,7 +365,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
 
-		case 10:
+		case 11:
 			// View Details of Accounts if you are a Manager
 			if (type == "manager")
 			{
@@ -485,4 +381,186 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			addTrace(" " + username + " encountered an error while using PR Bank");
 			startMenu(username, password, clients, managers, maintainers);
 	}
+}
+
+void printSummary(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	// Print Account Summary
+	if (type == "client")
+		clients[element].printAccount();
+	else if (type == "manager")
+		managers[element].printAccount();
+	else if (type == "maintainer")
+		maintainers[element].printAccount();
+
+	addTrace(" " + username + " printed a summary of their accounts");
+	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
+void withdrawMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	// Withdraw Money From Account
+	cout << "--------------------------------------------------------------------------\n\n";
+	cout << " Please enter a value you would like to withdraw: $";
+	double value = getValue();
+
+	if (type == "client")
+	{
+		Account *account = clients[element].selectAccount("withdraw from");
+		account->withdraw(value);
+		clients[element].addTransaction(clients[element].getFirstname() + " withdrew $" + to_string(value) + " from " + account->getAccountType());
+	}
+	else if (type == "manager")
+	{
+		Account *account = managers[element].selectAccount("withdraw from");
+		account->withdraw(value);
+		managers[element].addTransaction(managers[element].getFirstname() + " withdrew $" + to_string(value) + " from " + account->getAccountType());
+	}
+	else if (type == "maintainer")
+	{
+		Account *account = maintainers[element].selectAccount("withdraw from");
+		account->withdraw(value);
+		maintainers[element].addTransaction(maintainers[element].getFirstname() + " withdrew $" + to_string(value) + " from " + account->getAccountType());
+	}
+
+	cout << endl;
+	addTrace(" " + username + " withdrew money from their account");
+	saveMembers(clients, managers, maintainers);
+	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
+void depositMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	// Deposit Money To Account
+	cout << "--------------------------------------------------------------------------\n\n";
+	cout << " Please enter a value you would like to deposit: $";
+	double value = getValue();
+
+	if (type == "client")
+	{
+		Account *account = clients[element].selectAccount("deposit to");
+		account->deposit(value);
+		clients[element].addTransaction(clients[element].getFirstname() + " deposited $" + to_string(value) + " to " + account->getAccountType());
+	}
+	else if (type == "manager")
+	{
+		Account *account = managers[element].selectAccount("deposit to");
+		account->deposit(value);
+		managers[element].addTransaction(managers[element].getFirstname() + " deposited $" + to_string(value) + " to " + account->getAccountType());
+	}
+	else if (type == "maintainer")
+	{
+		Account *account = maintainers[element].selectAccount("deposit to");
+		account->deposit(value);
+		maintainers[element].addTransaction(maintainers[element].getFirstname() + " deposited $" + to_string(value) + " to " + account->getAccountType());
+	}
+
+	cout << endl;
+	addTrace(" " + username + " deposited money into their account");
+	saveMembers(clients, managers, maintainers);
+	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
+void transferMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	// Transfer Money To Account
+	cout << "--------------------------------------------------------------------------\n\n";
+	cout << " Please enter a value you would like to transfer: $";
+	double value = getValue();
+
+	if (type == "client")
+	{
+		Account *account1 = clients[element].selectAccount("transfer from");
+		Account *account2 = clients[element].selectAccount("transfer to");
+		account1->transfer(value, account2);
+		clients[element].addTransaction(clients[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + account2->getAccountType());
+	}
+	else if (type == "manager")
+	{
+		Account *account1 = managers[element].selectAccount("transfer from");
+		Account *account2 = managers[element].selectAccount("transfer to");
+		account1->transfer(value, account2);
+		managers[element].addTransaction(managers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + account2->getAccountType());
+	}
+	else if (type == "maintainer")
+	{
+		Account *account1 = maintainers[element].selectAccount("transfer from");
+		Account *account2 = maintainers[element].selectAccount("transfer to");
+		account1->transfer(value, account2);
+		maintainers[element].addTransaction(maintainers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + account2->getAccountType());
+	}
+
+	cout << endl;
+	addTrace(" " + username + " transferred money between their accounts");
+	saveMembers(clients, managers, maintainers);
+	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
+void transferMoneyToMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	// Transfer Money To Another Member
+	double value = 0;
+	string memberName;
+	Account *account1 = NULL;
+	Account *account2 = NULL;
+
+	cout << "--------------------------------------------------------------------------\n\n";
+	cout << " Please enter a value you would like to transfer: $";
+	value = getValue();
+	cout << " What is the username of the member you wish to transfer to: ";
+	cin >> memberName;
+
+	for (size_t i = 0; i < clients.size(); i++)
+		if (clients[i].getUsername() == memberName)
+			account2 = clients[i].selectAccount("transfer to");
+	if (account2 == NULL)
+		for (size_t i = 0; i < managers.size(); i++)
+			if (managers[i].getUsername() == memberName)
+				account2 = managers[i].selectAccount("transfer to");
+	if (account2 == NULL)
+		for (size_t i = 0; i < maintainers.size(); i++)
+			if (maintainers[i].getUsername() == memberName)
+				account2 = maintainers[i].selectAccount("transfer to");
+
+	if (account2 == NULL)
+		cout << "\n Sorry, we can not find the member matching that username.\n" << endl;
+	else
+	{
+		if(type == "client")
+		{
+			account1 = clients[element].selectAccount("transfer from");
+			clients[element].addTransaction(clients[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + username + "'s" + account2->getAccountType());
+		}
+		else if (type == "manager")
+		{
+			account1 = managers[element].selectAccount("transfer from");
+			managers[element].addTransaction(managers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + username + "'s" + account2->getAccountType());		}
+		else if (type == "maintainer")
+		{
+			account1 = maintainers[element].selectAccount("transfer from");
+			maintainers[element].addTransaction(maintainers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to "+ username + "'s" + account2->getAccountType());
+		}
+
+		account1->transfer(value, account2);
+		cout << endl;
+		addTrace(" " + username + " transferred money between " + memberName + "'s accounts");
+		saveMembers(clients, managers, maintainers);
+	}
+
+	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
+double getValue()
+{
+	double value = 0;
+	bool inputFail;
+	do
+	{
+		cin >> value;
+		inputFail = cin.fail();
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	} while (inputFail == true);
+
+	return value;
 }
