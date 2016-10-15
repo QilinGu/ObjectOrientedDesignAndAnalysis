@@ -30,6 +30,8 @@ void withdrawMoney(string &username, string &password, vector<Client> &clients, 
 void depositMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void transferMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void transferMoneyToMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void printRecentTransactions(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void createMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 
 int main()
 {
@@ -219,11 +221,6 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 
 void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice)
 {
-	double value = 0;
-	bool inputFail;
-	vector<string> transactions;
-	string transferUser = "";
-
 	switch (choice)
 	{
 		case 1:
@@ -241,32 +238,9 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 		case 5: 
 			transferMoneyToMember(username, password, clients, managers, maintainers, type, element);
 			break;
-
 		case 6:
-			// Print Recent Transactions
-			cout << "--------------------------------------------------------------------------\n\n";
-			cout << " Here are your most recent transactions: \n" << endl;
-
-			if (type == "client")
-				transactions = clients[element].getTransactions();
-			else if (type == "manager")
-				transactions = managers[element].getTransactions();
-			else if (type == "maintainer")
-				transactions = maintainers[element].getTransactions();
-
-			for (size_t i = 0; i < transactions.size(); i++)
-			{
-				cout << " " << i + 1 << ". " << transactions[i] << endl;
-			}
-
-			if (transactions.empty())
-				cout << " Sorry, you do not have any recent transactions." << endl;
-
-			cout << endl;
-			addTrace(" " + username + " printed their recent transactions");
-			optionMenu(username, password, clients, managers, maintainers, type, element);
+			printRecentTransactions(username, password, clients, managers, maintainers, type, element);
 			break;
-
 		case 7:
 			// Log out
 			cout << "--------------------------------------------------------------------------\n\n";
@@ -274,35 +248,11 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			addTrace(" " + username + " logged out of PR Bank");
 			startMenu(username, password, clients, managers, maintainers);
 			break;
-
 		case 8:
 			// Create New Member if you are a Manager
 			if (type == "manager")
 			{
-				int selection = managers[element].createMember();
-
-				if (selection == 1)
-				{
-					Client client = managers[element].initializeClient();
-					clients.push_back(client);
-					client.printAccount();
-					addTrace(" " + username + " added " + client.getUsername() + " to PR Bank");
-				}
-				else if (selection == 2)
-				{
-					Manager manager = managers[element].initializeManager();
-					managers.push_back(manager);
-					manager.printAccount();
-					addTrace(" " + username + " added " + manager.getUsername() + " to PR Bank");
-				}
-				else if (selection == 3)
-				{
-					Maintainer maintainer = managers[element].initializeMaintainer();
-					maintainers.push_back(maintainer);
-					maintainer.printAccount();
-					addTrace(" " + username + " added " + maintainer.getUsername() + " to PR Bank");
-				}
-				saveMembers(clients, managers, maintainers);
+				createMember(username, password, clients, managers, maintainers, type, element);
 			}
 
 			// Turn Execution Trace on if you are a Maintainer
@@ -317,10 +267,8 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 					addTrace(" " + username + " turned the execution trace on");
 				}
 			}
-
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
-
 		case 9:
 			// Add Account if you are a Manager
 			if (type == "manager")
@@ -342,10 +290,8 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 					cout << " You have turned the execution trace function off.\n" << endl;
 				}
 			}
-
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
-
 		case 10:
 			// Close Account if you are a Manager
 			if (type == "manager")
@@ -354,17 +300,14 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 				addTrace(" " + username + accountHolder);
 				saveMembers(clients, managers, maintainers);
 			}
-
 			//Print Execution Trace if you are a Maintainer
 			if (type == "maintainer")
 			{
 				addTrace(" " + username + " printed the execution trace");
 				maintainers[element].printTrace();
 			}
-
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
-
 		case 11:
 			// View Details of Accounts if you are a Manager
 			if (type == "manager")
@@ -374,7 +317,6 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 				optionMenu(username, password, clients, managers, maintainers, type, element);
 			}
 			break;
-
 		default:
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " INTERNAL ERROR: Returning to main menu...\n" << endl;
@@ -548,6 +490,61 @@ void transferMoneyToMember(string &username, string &password, vector<Client> &c
 	}
 
 	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
+void printRecentTransactions(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	// Print Recent Transactions
+	vector<string> transactions;
+	cout << "--------------------------------------------------------------------------\n\n";
+	cout << " Here are your most recent transactions: \n" << endl;
+
+	if (type == "client")
+		transactions = clients[element].getTransactions();
+	else if (type == "manager")
+		transactions = managers[element].getTransactions();
+	else if (type == "maintainer")
+		transactions = maintainers[element].getTransactions();
+
+	for (size_t i = 0; i < transactions.size(); i++)
+	{
+		cout << " " << i + 1 << ". " << transactions[i] << endl;
+	}
+
+	if (transactions.empty())
+		cout << " Sorry, you do not have any recent transactions." << endl;
+
+	cout << endl;
+	addTrace(" " + username + " printed their recent transactions");
+	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
+void createMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	int selection = managers[element].createMember();
+
+	if (selection == 1)
+	{
+		Client client = managers[element].initializeClient();
+		clients.push_back(client);
+		client.printAccount();
+		addTrace(" " + username + " added " + client.getUsername() + " to PR Bank");
+	}
+	else if (selection == 2)
+	{
+		Manager manager = managers[element].initializeManager();
+		managers.push_back(manager);
+		manager.printAccount();
+		addTrace(" " + username + " added " + manager.getUsername() + " to PR Bank");
+	}
+	else if (selection == 3)
+	{
+		Maintainer maintainer = managers[element].initializeMaintainer();
+		maintainers.push_back(maintainer);
+		maintainer.printAccount();
+		addTrace(" " + username + " added " + maintainer.getUsername() + " to PR Bank");
+	}
+	saveMembers(clients, managers, maintainers);
 }
 
 double getValue()
