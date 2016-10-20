@@ -1,8 +1,6 @@
 #pragma once
 #include <vector>
 #include <fstream>
-#include <iostream>
-#include <string>
 #include "Client.h"
 #include "Manager.h"
 #include "Maintainer.h"
@@ -13,10 +11,47 @@ class Serializable
 	public:
 	Serializable();
 	~Serializable();
-	void Serializable::saveClients(vector<Client> &clients);
-	vector<Client> Serializable::loadClients();
-	void Serializable::saveManagers(vector<Manager> &managers);
-	vector<Manager> Serializable::loadManagers();
-	void Serializable::saveMaintainers(vector<Maintainer> &maintainers);
-	vector<Maintainer> Serializable::loadMaintainers();
+
+	template <class T> 
+	void saveMembers(vector<T> &members, string file);
+
+	vector<Client> loadClients();
+	vector<Manager> loadManagers();
+	vector<Maintainer> loadMaintainers();
+	void saveTrace(vector<string> &traces, bool toggle);
+	bool loadTrace(vector<string> &traces);
 };
+
+template <class T>
+void Serializable::saveMembers(vector<T>& members, string file)
+{
+	ofstream fileWriter(file);
+
+	if (fileWriter.is_open())
+	{
+		fileWriter << members.size() << "\n";
+		for (size_t i = 0; i < members.size(); i++)
+		{
+			fileWriter << members[i].getFirstname() << "\n";
+			fileWriter << members[i].getLastname() << "\n";
+			fileWriter << members[i].getUsername() << "\n";
+			fileWriter << members[i].getPassword() << "\n";
+			fileWriter << members[i].getAccounts().size() << "\n";
+
+			for (size_t j = 0; j < members[i].getAccounts().size(); j++)
+			{
+				fileWriter << members[i].getAccounts()[j].getAccountType() << "\n";
+				fileWriter << members[i].getAccounts()[j].getBalance() << "\n";
+				fileWriter << members[i].getAccounts()[j].getCreditLimit() << "\n";
+				fileWriter << members[i].getAccounts()[j].getLoanLimit() << "\n";
+			}
+
+			fileWriter << members[i].getTransactions().size() << "\n";
+
+			for (size_t j = 0; j < members[i].getTransactions().size(); j++)
+				fileWriter << members[i].getTransactions()[j] << "\n";
+		}
+	}
+
+	fileWriter.close();
+}

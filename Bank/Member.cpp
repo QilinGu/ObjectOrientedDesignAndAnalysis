@@ -1,11 +1,12 @@
-/*
-Created by: Pearson Radu
-The Member class is a parent class for Client, Manager, and Maintainer. This class give
-members a skeleton which will hold names, username, passwords as well as account detials.
+/**
+ * Created by: Pearson Radu
+ * The Member class is a parent class for Client, Manager, and Maintainer. This class give
+ * members a skeleton which will hold names, username, passwords as well as account detials.
 */
 
 #include "stdafx.h"
 #include "Member.h"
+#include <iomanip>
 
 Member::Member()
 {
@@ -15,10 +16,16 @@ Member::~Member()
 {
 }
 
-/*
-	Initialize Member Function
-	This function allows for the program to add a member with basic parameters
-*/
+/**
+ * \brief
+ * Initialize Member Function
+ * this function allows for the program to add a member with basic parameters
+ * \param first
+ * \param last
+ * \param user
+ * \param pass
+ * \param account
+ */
 void Member::initialize(string first, string last, string user, string pass, Account account)
 {
 	firstname = first;
@@ -26,50 +33,99 @@ void Member::initialize(string first, string last, string user, string pass, Acc
 	username = user;
 	password = pass;
 	addAccount(account);
+	transactions.shrink_to_fit();
 }
 
-/*
-	Additional Account Function
-	Takes a parameter of an account and adds it to the vector
-*/
+/**
+ * \brief
+ * Additional Account Function
+ * takes a parameter of an account and adds it to the accounts vector
+ * \param account
+ */
 void Member::addAccount(Account account)
 {
 	accounts.push_back(account);
 }
 
-/*
-	Remove Account Functions
-*/
-void Member::removeAccount(Account account)
+/**
+ * \brief
+ * Delete Account Functions
+ * removes a specified account from the members account if it has a balance of zero
+ * \param account
+ */
+bool Member::deleteAccount(Account &account)
 {
-	int location;
-	int size = accounts.size();
-	Account *accountLocation = &account;
-	Account *vectorLocation;
-
-	for (int i = 0; i < size; i++)
+	if (account.getBalance() == 0)
 	{
-		vectorLocation = &accounts[i];
-		if (accountLocation == vectorLocation)
-			location = i;
-	}
+		int location = 0;
+		int size = accounts.size();
+		Account *accountLocation = &account;
+		Account *vectorLocation;
 
-	accounts.erase(accounts.begin() + location);
+		for (int i = 0; i < size; i++)
+		{
+			vectorLocation = &accounts[i];
+			if (accountLocation == vectorLocation)
+				location = i;
+		}
+
+		cout << "\n " << getFirstname() << " " << getLastname() << "'s " << account.getAccountType() << " account has been deleted.\n" << endl;
+		
+		
+		//The account has been deleted.\n" << endl;
+		accounts.erase(accounts.begin() + location);
+		return true;
+	}
+	else
+	{
+		cout << "\n The balance of " << getFirstname() << " " << getLastname() << "'s account must be zero to close it." << endl;
+		return false;
+	}
 }
 
-/*
-	Account Selector Function
-*/
-Account *Member::selectAccount()
+/**
+ * \brief
+ * Account Selector Function
+ * Finds the account the user wishes to use
+ * If there is only one account present automatically returns that account
+ * \return
+ */
+Account *Member::selectAccount(string option)
 {
 	if (accounts.size() == 1)
 		return &accounts[0];
+	else
+	{
+		cout << "\n Which account would you like to " << option << "?" << endl;
+		for (size_t i = 0; i < accounts.size(); i++)
+		{
+			cout << " " << i + 1 << ". " << accounts[i].getAccountType() << endl;
+		}
+		cout << " Please enter the corresponding number to the account: ";
+
+		int choice;
+		bool inputFail;
+		do
+		{
+			cin >> choice;
+			inputFail = cin.fail();
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+			if (choice <= 0 || choice >= accounts.size() + 1)
+				inputFail = true;
+
+		} while (inputFail == true);
+
+		return &accounts[choice - 1];
+	}
 }
 
-/*
-	Print Account Function
-	This prints all the accounts and the balances of them
-*/
+/**
+ * \brief
+ * Print Account Function
+ * This prints all the accounts and the balances of them
+ */
 void Member::printAccount()
 {
 	cout << "--------------------------------------------------------------------------\n";
@@ -79,10 +135,12 @@ void Member::printAccount()
 	int size = accounts.size();
 	for (int i = 0; i < size; i++)
 	{
-		cout << " Account " << i + 1 << endl;
+		cout << " Account: " << i + 1 << endl;
+		cout << " Account: " << setprecision(2) << fixed << accounts[i].getAccountType() << endl;
+		cout << " Balance: $" << setprecision(2) << fixed << accounts[i].getBalance() << endl << endl;
 
-		cout << " Account: " << accounts[i].getAccountType() << endl;
-		cout << " Balance: $" << accounts[i].getBalance() << endl << endl;
+		// Use << setprecision(2) << fixed to show 2 decimal place
+		// Use << fixed or << scientific to display the numbers in scientific notation or as a fixed number
 	}
 }
 
@@ -138,4 +196,23 @@ void Member::setPassword(string pass)
 vector<Account> Member::getAccounts()
 {
 	return accounts;
+}
+
+vector<string> Member::getTransactions()
+{
+	/*if (transactions.empty())
+		cout << " Sorry, you do not have any recent transactions." << endl;*/
+
+	return transactions;
+}
+
+void Member::addTransaction(string transaction)
+{
+	if (transactions.size() == 10)
+	{
+		transactions.erase(transactions.begin());
+		transactions.shrink_to_fit();
+	}
+
+	transactions.push_back(transaction);
 }

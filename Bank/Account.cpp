@@ -1,16 +1,19 @@
-/*
-	Created by: Pearson Radu
-	The Account class will be an instance of an account for each member of the bank
-	It will allow the member to execute balance modifications and changes to their account
-*/
+/**
+ * Created by: Pearson Radu
+ * The Account class will be an instance of an account for each member of the bank
+ * It will allow the member to execute balance modifications and changes to their account
+ */
 
 #include "stdafx.h"
 #include "Account.h"
 
-/*
-	Account constructer
-	Takes two parameters, one is the name of the account, the other is the balance of the account
-*/
+ /**
+  * \brief
+  * Account constructer
+  * takes two parameters, one is the name of the account, the other is the balance of the account
+  * \param account
+  * \param value
+  */
 Account::Account(string account, double value)
 {
 	accountType = account;
@@ -22,100 +25,121 @@ Account::~Account()
 {
 }
 
-/*
-	Delete function for account
-	Deletes this Account if the balance is equal to 0
-*/
-void Account::deleteAccount()
-{
-	if (balance == 0)
-	{
-		cout << "This account has been deleted." << endl;
-		delete this;
-	}
-	else
-		cout << "Sorry, this account cannot be deleted since it's balance is not zero." << endl;
-}
-
-/*
-	Withdraw function for account
-	Takes a parameter value that is deducted from the account (if suitable)
-*/
+/**
+ * \brief
+ * Withdraw function for account
+ * takes a parameter value that is deducted from the account (if suitable)
+ * \param value
+ */
 void Account::withdraw(double value)
 {
-	if ((balance - value) < 0)
+	if (value > 0)
 	{
-		cout << "\nSorry, this transaction cannot be completed since this it will result in a \nnegative balance in your account." << endl;
-	}
-	else if ((balance - value) == 1)
-	{
-		cout << "Sorry, this transaction cannot be completed since this will result in a negative balance in your account if you accept the charges." << endl;
-	}
-	else if ((balance - value) < 1000 && balance >= 1000)
-	{
-		cout << "\nIf you continue your " << getAccountType() << " account will have less than $1000 in it." << endl;
-		cout << "If you proceed, we will deduct $2 from your " << getAccountType() << " account." << endl;
-		cout << "Press 1 to proceed, anything else will stop this process: ";
-
-		int answer;
-		cin >> answer;
-
-		if (answer == 1)
+		if (accountType == "Loan")
 		{
-			balance -= 2;
-			balance -= value;
+			if ((balance + value) <= loanLimit)
+			{
+				balance += value;
+				cout << "\n Successfully withdrew $" << value << " from " << accountType << ".\n";
+			}
+			else
+				cout << "\n Sorry, the deposit could not be processed because the balance of a loan\n account cannot be greater than the orignal loan limit." << endl;
+		}
+		else if (accountType == "Credit")
+		{
+			if ((balance + value) <= creditLimit)
+			{
+				balance += value;
+				cout << "\n Successfully withdrew $" << value << " from " << accountType << ".\n";
+			}
+			else
+				cout << "\n Sorry, the deposit could not be processed because the balance of a credit\n account cannot be greater than the orignal credit limit." << endl;
+		}
+		else
+		{
+			if ((balance - value) < 0)
+			{
+				cout << "\n Sorry, this transaction could not be completed since this it will result\n in a negative balance in your account." << endl;
+			}
+			else if ((balance - value) < 1000 && balance >= 1000 && accountType == "Chequing")
+			{
+				cout << "\n If you continue your " << getAccountType() << " account will have less than $1000 in it." << endl;
+				cout << " If you proceed, we will deduct $2 from your " << getAccountType() << " account." << endl;
+				cout << " Press 1 to proceed, anything else will stop this process: ";
+
+				int answer;
+				cin >> answer;
+
+				if (answer == 1)
+				{
+					if ((balance - value) == 1)
+					{
+						cout << "\n Sorry, this transaction cannot be completed since this will result in a \n negative balance in your account if you accept the charges." << endl;
+					}
+					else
+					{
+						balance -= 2;
+						balance -= value;
+						cout << "\n Successfully withdrew $" << value << " from " << accountType << ".\n";
+					}
+				}
+			}
+			else
+			{
+				balance -= value;
+				cout << "\n Successfully withdrew $" << value << " from " << accountType << ".\n";
+			}
 		}
 	}
 	else
-	{
-		cout << "Successfully withdrew $" << value << " from " << accountType << ".\n" << endl;
-		balance -= value;
-	}
+		cout << "\n Sorry, the value $" << value << " cannot be withdrawn." << endl;
+
 }
 
-/*
-Deposit function for account
-Takes parameter value that is added to the account
-*/
+/**
+ * \brief
+ * Deposit function for account
+ * takes parameter value that is added to the account balance or subtracted (if the account is a loan or credit)
+ * \param value
+ */
 void Account::deposit(double value)
 {
 	if (value > 0)
-		balance += value;
+	{
+		if ((accountType == "Loan" || accountType == "Credit") && (balance - value) >= 0)
+		{
+			balance -= value;
+			cout << "\n Successfully deposited $" << value << " to " << accountType << ".\n";
+		}
+		else
+			cout << "\n Sorry, the value $" << value << " cannot be deposited.\n Payments to this account cannot go below $0." << endl;
+
+		if (accountType == "Savings" || accountType == "Chequing")
+		{
+			balance += value;
+			cout << "\n Successfully deposited $" << value << " to " << accountType << ".\n";
+		}
+	}
 	else
-		cout << "Sorry, the value " << value << " cannot be deposited." << endl;
+		cout << "\n Sorry, the value $" << value << " cannot be deposited." << endl;
 }
 
-/*
-Transfer function for account
-Takes parameter value, which is deducted from the account and moved to another account
-*/
-void Account::transfer(double value, Account account)
+/**
+ * \brief
+ * Transfer function for account
+ * Takes parameter value, which is deducted from the account and moved to another account
+ * \param value
+ * \param account
+ */
+void Account::transfer(double value, Account *account)
 {
-	/*
-		N
-		E
-		E
-		D
-		S
-
-		T
-		O
-
-		B
-		E
-
-		I
-		M
-		P
-		L
-		E
-		M
-		E
-		N
-		T
-		E
-		D
-	*/
+	if (this == account)
+		cout << "\n Sorry, you are unable to transfer funds to the same account." << endl;
+	else
+	{
+		withdraw(value);
+		account->deposit(value);
+	}
 }
 
 /*Getter for account type*/
@@ -142,3 +166,22 @@ void Account::setBalance(double value)
 	balance = value;
 }
 
+double Account::getCreditLimit()
+{
+	return creditLimit;
+}
+
+void Account::setCreditLimit(double limit)
+{
+	creditLimit = limit;
+}
+
+double Account::getLoanLimit()
+{
+	return loanLimit;
+}
+
+void Account::setLoanLimit(double limit)
+{
+	loanLimit = limit;
+}

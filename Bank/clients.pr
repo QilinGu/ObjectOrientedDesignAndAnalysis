@@ -1,10 +1,55 @@
-1
+2
 Pearson
 Radu
 pradu
-123
-2
+111
+4
 Savings
-1000
+1.0001e+07
+0
+0
+Loan
+254
+0
+500
+Credit
+0
+400
+0
+Chequing
+196
+0
+0
+10
+Pearson deposited $1000.000000 to Chequing
+Pearson withdrew $1000.000000 from Chequing
+Pearson withdrew $402.000000 from Credit
+Pearson withdrew $500.000000 from Loan
+Pearson deposited $10000000.000000 to Savings
+Pearson withdrew $1.000000 from Savings
+Pearson deposited $1.000000 to Savings
+Pearson withdrew $1.000000 from Loan
+Pearson withdrew $1.000000 from Loan
+Pearson withdrew $2.000000 from Loan
+Billy
+Bob
+bbb
+111
+4
+Savings
+1500
+0
+0
 Chequing
 2000
+0
+0
+Credit
+0
+500
+0
+Loan
+0
+0
+300
+0
