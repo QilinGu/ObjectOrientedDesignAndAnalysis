@@ -3,11 +3,12 @@
 * The Serializable class saves or loads a vector of one of the three types of members.
 * Simply just puts the data in a text file.
 * Previously I did have a method that would use actual object serialization to save the data.
-* Unfortunately I was unable to unserialize the data properly.
+* Unfortunately I was unable to unserialize the data properly, or I would have to resort to boost serialization.
 */
 
 #include "stdafx.h"
 #include "Serializable.h"
+
 
 Serializable::Serializable()
 {
@@ -16,61 +17,6 @@ Serializable::Serializable()
 Serializable::~Serializable()
 {
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * \brief
- * Save Clients Function
- * This function takes a vector of members and saves the attributes individually to a file
- * \param clients
- */
-void Serializable::saveClients(vector<Client>& clients)
-{
-	ofstream fileWriter("clients.pr");
-
-	if (fileWriter.is_open())
-	{
-		fileWriter << clients.size() << "\n";
-		for (size_t i = 0; i < clients.size(); i++)
-		{
-			fileWriter << clients[i].getFirstname() << "\n";
-			fileWriter << clients[i].getLastname() << "\n";
-			fileWriter << clients[i].getUsername() << "\n";
-			fileWriter << clients[i].getPassword() << "\n";
-			fileWriter << clients[i].getAccounts().size() << "\n";
-
-			for (size_t j = 0; j < clients[i].getAccounts().size(); j++)
-			{
-				fileWriter << clients[i].getAccounts()[j].getAccountType() << "\n";
-				fileWriter << clients[i].getAccounts()[j].getBalance() << "\n";
-				fileWriter << clients[i].getAccounts()[j].getCreditLimit() << "\n";
-				fileWriter << clients[i].getAccounts()[j].getLoanLimit() << "\n";
-			}
-
-			fileWriter << clients[i].getTransactions().size() << "\n";
-
-			for (size_t j = 0; j < clients[i].getTransactions().size(); j++)
-				fileWriter << clients[i].getTransactions()[j] << "\n";
-		}
-	}
-
-	fileWriter.close();
-}
-
 
 /**
  * \brief
@@ -138,43 +84,6 @@ vector<Client> Serializable::loadClients()
 
 /**
 * \brief
-* Save Managers Function
-* This function takes a vector of members and saves the attributes individually to a file
-* \param managers
-*/
-void Serializable::saveManagers(vector<Manager>& managers)
-{
-	ofstream fileWriter("managers.pr");
-
-	if (fileWriter.is_open())
-	{
-		fileWriter << managers.size() << "\n";
-		for (size_t i = 0; i < managers.size(); i++)
-		{
-			fileWriter << managers[i].getFirstname() << "\n";
-			fileWriter << managers[i].getLastname() << "\n";
-			fileWriter << managers[i].getUsername() << "\n";
-			fileWriter << managers[i].getPassword() << "\n";
-			fileWriter << managers[i].getAccounts().size() << "\n";
-
-			for (size_t j = 0; j < managers[i].getAccounts().size(); j++)
-			{
-				fileWriter << managers[i].getAccounts()[j].getAccountType() << "\n";
-				fileWriter << managers[i].getAccounts()[j].getBalance() << "\n";
-			}
-
-			fileWriter << managers[i].getTransactions().size() << "\n";
-
-			for (size_t j = 0; j < managers[i].getTransactions().size(); j++)
-				fileWriter << managers[i].getTransactions()[j] << "\n";
-		}
-	}
-
-	fileWriter.close();
-}
-
-/**
-* \brief
 * Load Managers Function
 * This function returns a vector of members that have been pulled and created from a file
 * \return
@@ -209,8 +118,14 @@ vector<Manager> Serializable::loadManagers()
 			string accountType = line;
 			getline(fileReader, line);
 			double balance = stod(line);
+			getline(fileReader, line);
+			double credit = stod(line);
+			getline(fileReader, line);
+			double loan = stod(line);
 
 			Account account(accountType, balance);
+			account.setCreditLimit(credit);
+			account.setLoanLimit(loan);
 			manager.addAccount(account);
 		}
 
@@ -229,43 +144,6 @@ vector<Manager> Serializable::loadManagers()
 	fileReader.close();
 
 	return newManagers;
-}
-
-/**
-* \brief
-* Save Maintainers Function
-* This function takes a vector of members and saves the attributes individually to a file
-* \param maintainers
-*/
-void Serializable::saveMaintainers(vector<Maintainer>& maintainers)
-{
-	ofstream fileWriter("maintainers.pr");
-
-	if (fileWriter.is_open())
-	{
-		fileWriter << maintainers.size() << "\n";
-		for (size_t i = 0; i < maintainers.size(); i++)
-		{
-			fileWriter << maintainers[i].getFirstname() << "\n";
-			fileWriter << maintainers[i].getLastname() << "\n";
-			fileWriter << maintainers[i].getUsername() << "\n";
-			fileWriter << maintainers[i].getPassword() << "\n";
-			fileWriter << maintainers[i].getAccounts().size() << "\n";
-
-			for (size_t j = 0; j < maintainers[i].getAccounts().size(); j++)
-			{
-				fileWriter << maintainers[i].getAccounts()[j].getAccountType() << "\n";
-				fileWriter << maintainers[i].getAccounts()[j].getBalance() << "\n";
-			}
-
-			fileWriter << maintainers[i].getTransactions().size() << "\n";
-
-			for (size_t j = 0; j < maintainers[i].getTransactions().size(); j++)
-				fileWriter << maintainers[i].getTransactions()[j] << "\n";
-		}
-	}
-
-	fileWriter.close();
 }
 
 /**
@@ -304,8 +182,14 @@ vector<Maintainer> Serializable::loadMaintainers()
 			string accountType = line;
 			getline(fileReader, line);
 			double balance = stod(line);
+			getline(fileReader, line);
+			double credit = stod(line);
+			getline(fileReader, line);
+			double loan = stod(line);
 
 			Account account(accountType, balance);
+			account.setCreditLimit(credit);
+			account.setLoanLimit(loan);
 			maintainer.addAccount(account);
 		}
 
@@ -343,7 +227,7 @@ void Serializable::saveTrace(vector<string>& traces, bool toggle)
 		fileWriter << traces.size() << "\n";
 
 		for (size_t i = 0; i < traces.size(); i++)
-			fileWriter << traces[i];
+			fileWriter << traces[i] << "\n";
 	}
 
 	fileWriter.close();
@@ -372,6 +256,7 @@ bool Serializable::loadTrace(vector<string> &traces)
 	{
 		getline(fileReader, line);
 		traces.push_back(line);
+		getline(fileReader, line);
 	}
 
 	fileReader.close();

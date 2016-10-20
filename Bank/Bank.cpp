@@ -64,9 +64,9 @@ void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Main
 void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	Serializable memberSerial;
-	memberSerial.saveClients(clients);
-	memberSerial.saveManagers(managers);
-	memberSerial.saveMaintainers(maintainers);
+	memberSerial.saveMembers(clients, "clients.pr");
+	memberSerial.saveMembers(managers, "managers.pr");
+	memberSerial.saveMembers(maintainers, "maintainers.pr");
 }
 
 void addTrace(string trace)
