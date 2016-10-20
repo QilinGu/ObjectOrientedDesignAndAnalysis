@@ -49,8 +49,8 @@ void Member::addAccount(Account account)
 
 /**
  * \brief
- * Delete Account Functions
- * removes a specified account from the members account if it has a balance of zero
+ * Delete Account Function
+ * Removes a specified account from the members account (only if it has a balance of zero)
  * \param account
  */
 bool Member::deleteAccount(Account &account)
@@ -70,8 +70,8 @@ bool Member::deleteAccount(Account &account)
 		}
 
 		cout << "\n " << getFirstname() << " " << getLastname() << "'s " << account.getAccountType() << " account has been deleted.\n" << endl;
-		
-		
+
+
 		//The account has been deleted.\n" << endl;
 		accounts.erase(accounts.begin() + location);
 		return true;
@@ -94,37 +94,38 @@ Account *Member::selectAccount(string option)
 {
 	if (accounts.size() == 1)
 		return &accounts[0];
-	else
+
+	// If there is more than one account open, it will list all accounts and 
+	// a corresponding number will choose the desired account
+	cout << "\n Which account would you like to " << option << "?" << endl;
+	for (size_t i = 0; i < accounts.size(); i++)
 	{
-		cout << "\n Which account would you like to " << option << "?" << endl;
-		for (size_t i = 0; i < accounts.size(); i++)
-		{
-			cout << " " << i + 1 << ". " << accounts[i].getAccountType() << endl;
-		}
-		cout << " Please enter the corresponding number to the account: ";
-
-		int choice;
-		bool inputFail;
-		do
-		{
-			cin >> choice;
-			inputFail = cin.fail();
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-			if (choice <= 0 || choice >= accounts.size() + 1)
-				inputFail = true;
-
-		} while (inputFail == true);
-
-		return &accounts[choice - 1];
+		cout << " " << i + 1 << ". " << accounts[i].getAccountType() << endl;
 	}
+	cout << " Please enter the corresponding number to the account: ";
+
+	int choice;
+	bool inputFail;
+	do
+	{
+		cin >> choice;
+		inputFail = cin.fail();
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+		if (choice <= 0 || choice >= accounts.size() + 1)
+			inputFail = true;
+
+	} while (inputFail == true);
+
+	// Return choice -1 because we do not display zero as an option
+	return &accounts[choice - 1];
 }
 
 /**
  * \brief
  * Print Account Function
- * This prints all the accounts and the balances of them
+ * This prints all the accounts and the balances of the member
  */
 void Member::printAccount()
 {
@@ -198,16 +199,21 @@ vector<Account> Member::getAccounts()
 	return accounts;
 }
 
+/*Getter for transactions*/
 vector<string> Member::getTransactions()
 {
-	/*if (transactions.empty())
-		cout << " Sorry, you do not have any recent transactions." << endl;*/
-
 	return transactions;
 }
 
+/**
+ * \brief
+ * Function to add a transaction to the member
+ * Adds a string to the list of 10 most recent transactions
+ * \param transaction
+ */
 void Member::addTransaction(string transaction)
 {
+	// Make sure there is only at most 10 transactions saved
 	if (transactions.size() == 10)
 	{
 		transactions.erase(transactions.begin());

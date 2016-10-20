@@ -223,9 +223,12 @@ void Serializable::saveTrace(vector<string>& traces, bool toggle)
 
 	if (fileWriter.is_open())
 	{
+		// Save the toggle (which tells us if the traces we on or off last)
 		fileWriter << toggle << "\n";
+		// Save the number of traces, so we know how many to search for when we load them back
 		fileWriter << traces.size() << "\n";
 
+		// Save the individual trace
 		for (size_t i = 0; i < traces.size(); i++)
 			fileWriter << traces[i] << "\n";
 	}
@@ -245,13 +248,18 @@ bool Serializable::loadTrace(vector<string> &traces)
 {
 	ifstream fileReader("traces.pr");
 	string line;
+
+	// Check to see if the toggle was left on or off
 	getline(fileReader, line);
 	bool toggle = true;
 	if (line == "0")
 		toggle = false;
+
+	// Check to see how many traces were left
 	getline(fileReader, line);
 	int numTrace = stoi(line);
 
+	// Load the individual traces
 	for (int i = 0; i < numTrace; i++)
 	{
 		getline(fileReader, line);

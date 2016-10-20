@@ -28,15 +28,17 @@ Account::~Account()
 /**
  * \brief
  * Withdraw function for account
- * takes a parameter value that is deducted from the account (if suitable)
+ * Takes a parameter value that is deducted (or added if the account is a loan or credit) from the account (if suitable)
  * \param value
  */
 void Account::withdraw(double value)
 {
+	// Proceed with operations as long as the value is a positive number
 	if (value > 0)
 	{
 		if (accountType == "Loan")
 		{
+			// If the value added to the balance is less than or equal to the original limit of the loan, proceed
 			if ((balance + value) <= loanLimit)
 			{
 				balance += value;
@@ -47,6 +49,7 @@ void Account::withdraw(double value)
 		}
 		else if (accountType == "Credit")
 		{
+			// If the value added to the balance is less than or equal to the original credit limit, proceed
 			if ((balance + value) <= creditLimit)
 			{
 				balance += value;
@@ -57,10 +60,12 @@ void Account::withdraw(double value)
 		}
 		else
 		{
+			// If the withdrawn amount produces a negative balance, do not proceed
 			if ((balance - value) < 0)
 			{
 				cout << "\n Sorry, this transaction could not be completed since this it will result\n in a negative balance in your account." << endl;
 			}
+			// If the value being withdrawn is taken from the chequing account, and the balance breaks the $1000 barrier, charge the user $2
 			else if ((balance - value) < 1000 && balance >= 1000 && accountType == "Chequing")
 			{
 				cout << "\n If you continue your " << getAccountType() << " account will have less than $1000 in it." << endl;
@@ -84,6 +89,7 @@ void Account::withdraw(double value)
 					}
 				}
 			}
+			// Otherwise withdraw the money
 			else
 			{
 				balance -= value;
@@ -99,7 +105,7 @@ void Account::withdraw(double value)
 /**
  * \brief
  * Deposit function for account
- * takes parameter value that is added to the account balance or subtracted (if the account is a loan or credit)
+ * Takes a parameter value that is added (or subtractred if the account is a loan or credit) to the account balance
  * \param value
  */
 void Account::deposit(double value)
@@ -125,11 +131,11 @@ void Account::deposit(double value)
 }
 
 /**
- * \brief
+ * \brief 
  * Transfer function for account
  * Takes parameter value, which is deducted from the account and moved to another account
- * \param value
- * \param account
+ * \param value 
+ * \param account 
  */
 void Account::transfer(double value, Account *account)
 {
@@ -166,21 +172,25 @@ void Account::setBalance(double value)
 	balance = value;
 }
 
+/*Getter for credit limit*/
 double Account::getCreditLimit()
 {
 	return creditLimit;
 }
 
+/*Setter for credit limit*/
 void Account::setCreditLimit(double limit)
 {
 	creditLimit = limit;
 }
 
+/*Getter for loan limit*/
 double Account::getLoanLimit()
 {
 	return loanLimit;
 }
 
+/*Setter for loan limit*/
 void Account::setLoanLimit(double limit)
 {
 	loanLimit = limit;
