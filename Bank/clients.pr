@@ -9,7 +9,7 @@ Savings
 0
 0
 Loan
-252
+254
 0
 500
 Credit
@@ -21,7 +21,6 @@ Chequing
 0
 0
 10
-Pearson withdrew $1252.000000 from Savings
 Pearson deposited $1000.000000 to Chequing
 Pearson withdrew $1000.000000 from Chequing
 Pearson withdrew $402.000000 from Credit
@@ -31,6 +30,7 @@ Pearson withdrew $1.000000 from Savings
 Pearson deposited $1.000000 to Savings
 Pearson withdrew $1.000000 from Loan
 Pearson withdrew $1.000000 from Loan
+Pearson withdrew $2.000000 from Loan
 Billy
 Bob
 bbb
