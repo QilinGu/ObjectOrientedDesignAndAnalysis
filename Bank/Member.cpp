@@ -6,6 +6,7 @@
 
 #include "stdafx.h"
 #include "Member.h"
+#include <iomanip>
 
 Member::Member()
 {
@@ -135,9 +136,11 @@ void Member::printAccount()
 	for (int i = 0; i < size; i++)
 	{
 		cout << " Account: " << i + 1 << endl;
+		cout << " Account: " << setprecision(2) << fixed << accounts[i].getAccountType() << endl;
+		cout << " Balance: $" << setprecision(2) << fixed << accounts[i].getBalance() << endl << endl;
 
-		cout << " Account: " << accounts[i].getAccountType() << endl;
-		cout << " Balance: $" << accounts[i].getBalance() << endl << endl;
+		// Use << setprecision(2) << fixed to show 2 decimal place
+		// Use << fixed or << scientific to display the numbers in scientific notation or as a fixed number
 	}
 }
 

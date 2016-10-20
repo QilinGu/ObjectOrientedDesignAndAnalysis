@@ -2,35 +2,54 @@
 Pearson
 Radu
 pradu
-123
-3
-Savings
-1050
-Chequing
-100
-Credit
-100
-10
-Pearson withdrew $49.000000 from Loan
-Pearson withdrew $10000.000000 from Savings
-Pearson withdrew $1.000000 from Loan
-Pearson withdrew $1.000000 from Loan
-Pearson withdrew $1049.000000 from Savings
-Pearson withdrew $1048.000000 from Savings
-Pearson withdrew $1.000000 from Chequing
-Pearson transfered $10.000000 from Savings to Chequing
-Pearson transfered $10.000000 from Chequing to pradu'sCheq
-Pearson withdrew $200.000000 from Loan
-Perry
-Radu
-perryradu
 111
-1
+4
+Savings
+1.0001e+07
+0
+0
+Loan
+250
+0
+500
+Credit
+0
+400
+0
 Chequing
-888
-5
-Perry withdrew $998.000000 from Chequing
-Perry withdrew $80.000000 from Savings
-Perry withdrew $80.000000 from Savings
-Perry withdrew $1.000000 from 111
-Perry transfered $10.000000 from Cheq to perryradu'sSavings
+196
+0
+0
+10
+Pearson withdrew $250.000000 from Loan
+Pearson withdrew $251.000000 from Loan
+Pearson withdrew $401.000000 from Credit
+Pearson withdrew $2252.000000 from Savings
+Pearson withdrew $1252.000000 from Savings
+Pearson deposited $1000.000000 to Chequing
+Pearson withdrew $1000.000000 from Chequing
+Pearson withdrew $402.000000 from Credit
+Pearson withdrew $500.000000 from Loan
+Pearson deposited $10000000.000000 to Savings
+Billy
+Bob
+bbb
+111
+4
+Savings
+1500
+0
+0
+Chequing
+2000
+0
+0
+Credit
+0
+500
+0
+Loan
+0
+0
+300
+0

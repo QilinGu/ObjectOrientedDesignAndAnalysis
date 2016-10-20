@@ -18,6 +18,20 @@ Serializable::~Serializable()
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * \brief
  * Save Clients Function
@@ -43,6 +57,8 @@ void Serializable::saveClients(vector<Client>& clients)
 			{
 				fileWriter << clients[i].getAccounts()[j].getAccountType() << "\n";
 				fileWriter << clients[i].getAccounts()[j].getBalance() << "\n";
+				fileWriter << clients[i].getAccounts()[j].getCreditLimit() << "\n";
+				fileWriter << clients[i].getAccounts()[j].getLoanLimit() << "\n";
 			}
 
 			fileWriter << clients[i].getTransactions().size() << "\n";
@@ -92,8 +108,14 @@ vector<Client> Serializable::loadClients()
 			string accountType = line;
 			getline(fileReader, line);
 			double balance = stod(line);
+			getline(fileReader, line);
+			double credit = stod(line);
+			getline(fileReader, line);
+			double loan = stod(line);
 
 			Account account(accountType, balance);
+			account.setCreditLimit(credit);
+			account.setLoanLimit(loan);
 			client.addAccount(account);
 		}
 

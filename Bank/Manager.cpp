@@ -77,7 +77,6 @@ int Manager::chooseMemberType()
 */
 Client Manager::initializeClient()
 {
-	int choice;
 	vector<Account> accounts;
 	string firstname, lastname, username, password;
 
@@ -105,7 +104,6 @@ Client Manager::initializeClient()
 */
 Manager Manager::initializeManager()
 {
-	int choice;
 	vector<Account> accounts;
 	string firstname, lastname, username, password;
 
@@ -198,7 +196,7 @@ void Manager::memberInput(string &firstname, string &lastname, string &username,
 		while(accountType == "")
 			accountType = chooseAccount(accounts);		
 		
-		cout << " How much money is going to be deposited in this account: $";
+		cout << " What is the balance/limit of this account going to be: $";
 
 		do
 		{
@@ -213,6 +211,19 @@ void Manager::memberInput(string &firstname, string &lastname, string &username,
 		cout << endl;
 
 		Account account(accountType, balance);
+
+		if (account.getAccountType() == "Loan")
+		{
+			account.setLoanLimit(balance);
+			account.setBalance(0);
+		}
+
+		if (account.getAccountType() == "Credit")
+		{
+			account.setCreditLimit(balance);
+			account.setBalance(0);
+		}
+
 		accounts.push_back(account);
 	}
 
@@ -425,7 +436,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 	cout << " What is the username of the member you wish to open: ";
 	cin >> username;
 
-	cout << " What is the balance of this account going to be: $";
+	cout << " What is the balance/limit of this account going to be: $";
 	do
 	{
 		cin >> balance;
@@ -445,6 +456,19 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 		while (accountType == "")
 			accountType = chooseAccount(client->getAccounts());
 		Account account(accountType, balance);
+
+		if (account.getAccountType() == "Loan")
+		{
+			account.setLoanLimit(balance);
+			account.setBalance(0);
+		}
+
+		if (account.getAccountType() == "Credit")
+		{
+			account.setCreditLimit(balance);
+			account.setBalance(0);
+		}
+
 		client->addAccount(account);
 		addTransaction(getFirstname() + " opened a new account for " + client->getFirstname() + " " + client->getLastname());
 	}
@@ -459,6 +483,19 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 			while (accountType == "")
 				accountType = chooseAccount(manager->getAccounts());
 			Account account(accountType, balance);
+
+			if (account.getAccountType() == "Loan")
+			{
+				account.setLoanLimit(balance);
+				account.setBalance(0);
+			}
+
+			if (account.getAccountType() == "Credit")
+			{
+				account.setCreditLimit(balance);
+				account.setBalance(0);
+			}
+
 			manager->addAccount(account);
 			addTransaction(getFirstname() + " opened a new account for " + manager->getFirstname() + " " + manager->getLastname());
 		}
@@ -474,6 +511,19 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 			while (accountType == "")
 				accountType = chooseAccount(maintainer->getAccounts());
 			Account account(accountType, balance);
+
+			if (account.getAccountType() == "Loan")
+			{
+				account.setLoanLimit(balance);
+				account.setBalance(0);
+			}
+
+			if (account.getAccountType() == "Credit")
+			{
+				account.setCreditLimit(balance);
+				account.setBalance(0);
+			}
+
 			maintainer->addAccount(account);
 			addTransaction(getFirstname() + " opened a new account for " + maintainer->getFirstname() + " " + maintainer->getLastname());
 		}
