@@ -3,30 +3,82 @@ Pearson
 Radu
 pradu
 111
-3
+4
 Savings
-1500
+1.0001e+07
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
 0
 0
 Loan
 254
 0
+0
+0
 500
+500
+500
+500
+500
+0
+0
+0
+0
+0
+0
 Chequing
 196
 0
 0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+Credit
+20
+1000
+17
+59
+13
+21
+9
+116
+0
+0
+0
+0
+0
+0
+0
 10
-Pearson withdrew $402.000000 from Credit
-Pearson withdrew $500.000000 from Loan
-Pearson deposited $10000000.000000 to Savings
-Pearson withdrew $1.000000 from Savings
-Pearson deposited $1.000000 to Savings
 Pearson withdrew $1.000000 from Loan
 Pearson withdrew $1.000000 from Loan
 Pearson withdrew $2.000000 from Loan
-Pearson withdrew $1000.000000 from Credit
-Pearson withdrew $500.000000 from Credit
+Pearson withdrew $1.000000 from Savings
+Pearson withdrew $1.000000 from Savings
+Pearson withdrew $20.000000 from Credit
+Pearson withdrew $1.000000 from Savings
+Pearson withdrew $0.000000 from Savings
+Pearson deposited $20.000000 to Credit
+Pearson withdrew $20.000000 from Credit
 Billy
 Bob
 bbb
@@ -36,16 +88,64 @@ Savings
 1500
 0
 0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
 Chequing
 2000
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
 0
 0
 Credit
 0
 500
 0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
 Loan
 0
 0
+0
+0
 300
+300
+300
+300
+300
+0
+0
+0
+0
+0
+0
 0

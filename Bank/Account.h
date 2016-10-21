@@ -11,9 +11,9 @@ class Account
 	double balance;
 	double limit;
 	double creditLimit = 0;
-	struct tm creditTime;
+	struct tm creditTime = { 0,0,0,0,0,0 };
 	double loanLimit = 0;
-	struct tm loanTime;
+	struct tm loanTime = { 0,0,0,0,0,0 };
 	struct tm getTime();
 
 	public:
@@ -28,10 +28,12 @@ class Account
 	void setCreditLimit(double limit);
 	struct tm getCreditTime();
 	void setCreditTime();
+	void setCreditTime(tm time);
 	double getLoanLimit();
 	void setLoanLimit(double limit);
 	struct tm getLoanTime();
 	void setLoanTime();
+	void setLoanTime(tm time);
 	void withdraw(double value);
 	void deposit(double value);
 	void transfer(double value, Account* account);

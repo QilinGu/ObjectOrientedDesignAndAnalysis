@@ -9,6 +9,22 @@
 #include "stdafx.h"
 #include "Serializable.h"
 
+void Serializable::saveTime(ofstream& fileWriter, tm time)
+{
+
+	// Save the seconds
+	fileWriter << time.tm_sec << "\n";
+	// Save the minutes
+	fileWriter << time.tm_min << "\n";
+	// Save the hours
+	fileWriter << time.tm_hour << "\n";
+	// Save the day
+	fileWriter << time.tm_mday << "\n";
+	// Save the month
+	fileWriter << time.tm_mon << "\n";
+	// Save the year
+	fileWriter << time.tm_year << "\n";
+}
 
 Serializable::Serializable()
 {
@@ -16,198 +32,6 @@ Serializable::Serializable()
 
 Serializable::~Serializable()
 {
-}
-
-/**
- * \brief
- * Load Clients Function
- * This function returns a vector of members that have been pulled and created from a file
- * \return
- */
-vector<Client> Serializable::loadClients()
-{
-	ifstream fileReader("clients.pr");
-	string line;
-	getline(fileReader, line);
-	int numClients = stoi(line);
-	vector<Client> newClients;
-
-	for (int i = 0; i < numClients; i++)
-	{
-		Client client;
-
-		getline(fileReader, line);
-		client.setFirtname(line);
-		getline(fileReader, line);
-		client.setLastname(line);
-		getline(fileReader, line);
-		client.setUsername(line);
-		getline(fileReader, line);
-		client.setPassword(line);
-
-		getline(fileReader, line);
-		int accounts = stoi(line);
-
-		for (int j = 0; j < accounts; j++)
-		{
-			getline(fileReader, line);
-			string accountType = line;
-			getline(fileReader, line);
-			double balance = stod(line);
-			getline(fileReader, line);
-			double credit = stod(line);
-			getline(fileReader, line);
-			double loan = stod(line);
-
-			Account account(accountType, balance);
-			account.setCreditLimit(credit);
-			account.setLoanLimit(loan);
-			client.addAccount(account);
-		}
-
-		getline(fileReader, line);
-		int transNum = stoi(line);
-
-		for (int j = 0; j < transNum; j++)
-		{
-			getline(fileReader, line);
-			client.addTransaction(line);
-		}
-
-		newClients.push_back(client);
-	}
-
-	fileReader.close();
-
-	return newClients;
-}
-
-/**
-* \brief
-* Load Managers Function
-* This function returns a vector of members that have been pulled and created from a file
-* \return
-*/
-vector<Manager> Serializable::loadManagers()
-{
-	ifstream fileReader("managers.pr");
-	string line;
-	getline(fileReader, line);
-	int numManagers = stoi(line);
-	vector<Manager> newManagers;
-
-	for (int i = 0; i < numManagers; i++)
-	{
-		Manager manager;
-
-		getline(fileReader, line);
-		manager.setFirtname(line);
-		getline(fileReader, line);
-		manager.setLastname(line);
-		getline(fileReader, line);
-		manager.setUsername(line);
-		getline(fileReader, line);
-		manager.setPassword(line);
-
-		getline(fileReader, line);
-		int accounts = stoi(line);
-
-		for (int j = 0; j < accounts; j++)
-		{
-			getline(fileReader, line);
-			string accountType = line;
-			getline(fileReader, line);
-			double balance = stod(line);
-			getline(fileReader, line);
-			double credit = stod(line);
-			getline(fileReader, line);
-			double loan = stod(line);
-
-			Account account(accountType, balance);
-			account.setCreditLimit(credit);
-			account.setLoanLimit(loan);
-			manager.addAccount(account);
-		}
-
-		getline(fileReader, line);
-		int transNum = stoi(line);
-
-		for (int j = 0; j < transNum; j++)
-		{
-			getline(fileReader, line);
-			manager.addTransaction(line);
-		}
-
-		newManagers.push_back(manager);
-	}
-
-	fileReader.close();
-
-	return newManagers;
-}
-
-/**
-* \brief
-* Load Maintainers Function
-* This function returns a vector of members that have been pulled and created from a file
-* \return
-*/
-vector<Maintainer> Serializable::loadMaintainers()
-{
-	ifstream fileReader("maintainers.pr");
-	string line;
-	getline(fileReader, line);
-	int numMaintainers = stoi(line);
-	vector<Maintainer> newMaintainers;
-
-	for (int i = 0; i < numMaintainers; i++)
-	{
-		Maintainer maintainer;
-
-		getline(fileReader, line);
-		maintainer.setFirtname(line);
-		getline(fileReader, line);
-		maintainer.setLastname(line);
-		getline(fileReader, line);
-		maintainer.setUsername(line);
-		getline(fileReader, line);
-		maintainer.setPassword(line);
-
-		getline(fileReader, line);
-		int accounts = stoi(line);
-
-		for (int j = 0; j < accounts; j++)
-		{
-			getline(fileReader, line);
-			string accountType = line;
-			getline(fileReader, line);
-			double balance = stod(line);
-			getline(fileReader, line);
-			double credit = stod(line);
-			getline(fileReader, line);
-			double loan = stod(line);
-
-			Account account(accountType, balance);
-			account.setCreditLimit(credit);
-			account.setLoanLimit(loan);
-			maintainer.addAccount(account);
-		}
-
-		getline(fileReader, line);
-		int transNum = stoi(line);
-
-		for (int j = 0; j < transNum; j++)
-		{
-			getline(fileReader, line);
-			maintainer.addTransaction(line);
-		}
-
-		newMaintainers.push_back(maintainer);
-	}
-
-	fileReader.close();
-
-	return newMaintainers;
 }
 
 /**
@@ -271,3 +95,4 @@ bool Serializable::loadTrace(vector<string> &traces)
 
 	return toggle;
 }
+

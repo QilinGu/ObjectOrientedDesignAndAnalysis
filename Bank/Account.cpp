@@ -38,10 +38,10 @@ void Account::checkPayment()
 
 	if (x != (time_t)(-1) && y != (time_t)(-1))
 	{
-		difference = difftime(y, x) / 60; // (60 * 60 * 24);
-		cout << ctime(&x);
-		cout << ctime(&y);
-		cout << "difference = " << difference << " days" << endl;
+		difference = difftime(y, x) / (60 * 60 * 24); // To test use only / 60 to calculate the minutes and change difference > 1 to test every minute
+		//cout << ctime(&x);
+		//cout << ctime(&y);
+		//cout << "difference = " << difference << " days" << endl;
 	}
 
 	if (difference > 30)
@@ -61,10 +61,6 @@ struct tm Account::getTime()
 	_time64(&long_time);
 	// Convert to local time.
 	errno_t err = _localtime64_s(&newtime, &long_time);
-
-	int min = newtime.tm_min;
-
-	cout << min << endl;
 
 	return newtime;
 }
@@ -240,6 +236,11 @@ void Account::setCreditTime()
 	creditTime = getTime();
 }
 
+void Account::setCreditTime(struct tm time)
+{
+	creditTime = time;
+}
+
 /*Getter for loan limit*/
 double Account::getLoanLimit()
 {
@@ -262,4 +263,10 @@ struct tm Account::getLoanTime()
 void Account::setLoanTime()
 {
 	loanTime = getTime();
+}
+
+/*Setter for loan time with parameter time*/
+void Account::setLoanTime(struct tm time)
+{
+	loanTime = time;
 }

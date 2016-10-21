@@ -4,32 +4,36 @@
 #include "Client.h"
 #include "Manager.h"
 #include "Maintainer.h"
+#include <ctime>
 using namespace std;
 
 class Serializable
 {
+	private:
+	void saveTime(ofstream &fileWriter, struct tm time);
+
 	public:
 	Serializable();
 	~Serializable();
 
-	template <class T> 
+	template <class T>
 	void saveMembers(vector<T> &members, string file);
 
-	vector<Client> loadClients();
-	vector<Manager> loadManagers();
-	vector<Maintainer> loadMaintainers();
+	template <class T>
+	void loadMembers(vector<T> &members, string file);
+
 	void saveTrace(vector<string> &traces, bool toggle);
 	bool loadTrace(vector<string> &traces);
 };
 
 
 /**
- * \brief 
+ * \brief
  * Template function for saving the members of the bank (clients, managers, & maintainers)
  * Takes a vector of members and a string for file location to save the members to a text file
- * \tparam T 
- * \param members 
- * \param file 
+ * \tparam T
+ * \param members
+ * \param file
  */
 template <class T>
 void Serializable::saveMembers(vector<T>& members, string file)
@@ -55,7 +59,12 @@ void Serializable::saveMembers(vector<T>& members, string file)
 				fileWriter << members[i].getAccounts()[j].getAccountType() << "\n";
 				fileWriter << members[i].getAccounts()[j].getBalance() << "\n";
 				fileWriter << members[i].getAccounts()[j].getCreditLimit() << "\n";
+
+				saveTime(fileWriter, members[i].getAccounts()[j].getCreditTime());
+
 				fileWriter << members[i].getAccounts()[j].getLoanLimit() << "\n";
+
+				saveTime(fileWriter, members[i].getAccounts()[j].getLoanTime());
 			}
 
 			// Save the number of transactions (so we know how many to search for when we load them back), and the individual transaction data
@@ -66,4 +75,105 @@ void Serializable::saveMembers(vector<T>& members, string file)
 	}
 
 	fileWriter.close();
+}
+
+template <class T>
+void Serializable::loadMembers(vector<T>& members, string file)
+{
+	ifstream fileReader(file);
+	string line;
+	getline(fileReader, line);
+	int numMembers = stoi(line);
+
+	for (int i = 0; i < numMembers; i++)
+	{
+		T member;
+
+		getline(fileReader, line);
+		member.setFirtname(line);
+		getline(fileReader, line);
+		member.setLastname(line);
+		getline(fileReader, line);
+		member.setUsername(line);
+		getline(fileReader, line);
+		member.setPassword(line);
+
+		getline(fileReader, line);
+		int accounts = stoi(line);
+
+		for (int j = 0; j < accounts; j++)
+		{
+			getline(fileReader, line);
+			string accountType = line;
+			getline(fileReader, line);
+			double balance = stod(line);
+			getline(fileReader, line);
+			double credit = stod(line);
+			getline(fileReader, line);
+
+			// Load the Credit Time Structure
+			// Seconds
+			getline(fileReader, line);
+			int cSec = stoi(line);
+			// Minutes
+			getline(fileReader, line);
+			int cMin = stoi(line);
+			// Hours
+			getline(fileReader, line);
+			int cHour = stoi(line);
+			// Days
+			getline(fileReader, line);
+			int cDay = stoi(line);
+			// Months
+			getline(fileReader, line);
+			int cMon = stoi(line);
+			// Years
+			getline(fileReader, line);
+			int cYear = stoi(line);
+			struct tm creditTime = { cSec, cMin, cHour, cDay, cMon, cYear };
+
+			double loan = stod(line);
+
+			// Load the Loan Time Structure
+			// Seconds
+			getline(fileReader, line);
+			int lSec = stoi(line);
+			// Minutes
+			getline(fileReader, line);
+			int lMin = stoi(line);
+			// Hours
+			getline(fileReader, line);
+			int lHour = stoi(line);
+			// Days
+			getline(fileReader, line);
+			int lDay = stoi(line);
+			// Months
+			getline(fileReader, line);
+			int lMon = stoi(line);
+			// Years
+			getline(fileReader, line);
+			int lYear = stoi(line);
+			struct tm loanTime = { lSec, lMin, lHour, lDay, lMon, lYear };
+
+			Account account(accountType, balance);
+			account.setCreditLimit(credit);
+			account.setCreditTime(creditTime);
+			account.setLoanLimit(loan);
+			account.setLoanTime(loanTime);
+			member.addAccount(account);
+		}
+
+		getline(fileReader, line);
+		int transNum = stoi(line);
+
+		for (int j = 0; j < transNum; j++)
+		{
+			getline(fileReader, line);
+			member.addTransaction(line);
+		}
+
+		members.push_back(member);
+	}
+
+	fileReader.close();
 }

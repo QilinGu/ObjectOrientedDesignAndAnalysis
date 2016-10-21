@@ -55,11 +55,11 @@ void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Main
 {
 	Serializable memberSerial;
 	clients.clear();
-	clients = memberSerial.loadClients();
+	memberSerial.loadMembers(clients, "clients.pr");
 	managers.clear();
-	managers = memberSerial.loadManagers();
+	memberSerial.loadMembers(managers, "managers.pr");
 	maintainers.clear();
-	maintainers = memberSerial.loadMaintainers();
+	memberSerial.loadMembers(maintainers, "maintainers.pr");
 }
 
 void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
