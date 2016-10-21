@@ -495,6 +495,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 		{
 			account.setCreditLimit(balance);
 			account.setBalance(0);
+			account.setCreditTime();
 		}
 
 		client->addAccount(account);

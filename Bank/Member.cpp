@@ -36,6 +36,18 @@ void Member::initialize(string first, string last, string user, string pass, Acc
 	transactions.shrink_to_fit();
 }
 
+void Member::checkCredit()
+{
+	for (size_t i = 0; i < accounts.size(); i++)
+	{
+		if (accounts[i].getAccountType() == "Credit")
+		{
+			accounts[i].checkPayment();
+			break;
+		}
+	}
+}
+
 /**
  * \brief
  * Additional Account Function

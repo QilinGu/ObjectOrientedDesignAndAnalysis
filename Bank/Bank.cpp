@@ -25,6 +25,7 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice);
 
 double getValue();
+void calculatePayment(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 void printSummary(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void withdrawMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void depositMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
@@ -221,6 +222,8 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 
 void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice)
 {
+	calculatePayment(clients, managers, maintainers);
+
 	switch (choice)
 	{
 		case 1:
@@ -545,6 +548,14 @@ void createMember(string &username, string &password, vector<Client> &clients, v
 		addTrace(" " + username + " added " + maintainer.getUsername() + " to PR Bank");
 	}
 	saveMembers(clients, managers, maintainers);
+}
+
+void calculatePayment(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
+{
+	for(size_t i = 0; i < clients.size(); i++)
+	{
+		clients[i].checkCredit();
+	}
 }
 
 double getValue()

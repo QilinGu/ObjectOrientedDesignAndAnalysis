@@ -6,6 +6,8 @@
 
 #include "stdafx.h"
 #include "Account.h"
+#include <time.h>
+#include <ctime>
 
  /**
   * \brief
@@ -23,6 +25,48 @@ Account::Account(string account, double value)
 /* Account deconstructor*/
 Account::~Account()
 {
+}
+
+// Got help from here to calculate difference between dates http://stackoverflow.com/questions/14218894/number-of-days-between-two-dates-c
+void Account::checkPayment()
+{
+	struct tm diff = getTime();
+	//struct tm diff = { 0,20,21,20,9,116 }; 
+	time_t x = mktime(&creditTime);
+	time_t y = mktime(&diff);
+	double difference = 0;
+
+	if (x != (time_t)(-1) && y != (time_t)(-1))
+	{
+		difference = difftime(y, x) / 60; // (60 * 60 * 24);
+		cout << ctime(&x);
+		cout << ctime(&y);
+		cout << "difference = " << difference << " days" << endl;
+	}
+
+	if (difference > 30)
+	{
+		if(balance != 0)
+			balance += (balance * 0.10);
+
+		creditTime = diff;
+	}
+}
+
+struct tm Account::getTime()
+{
+	struct tm newtime;
+	__time64_t long_time;
+	// Get time as 64-bit integer.
+	_time64(&long_time);
+	// Convert to local time.
+	errno_t err = _localtime64_s(&newtime, &long_time);
+
+	int min = newtime.tm_min;
+
+	cout << min << endl;
+
+	return newtime;
 }
 
 /**
@@ -184,6 +228,18 @@ void Account::setCreditLimit(double limit)
 	creditLimit = limit;
 }
 
+/*Getter for credit time*/
+struct tm Account::getCreditTime()
+{
+	return creditTime;
+}
+
+/*Setter for credit time*/
+void Account::setCreditTime()
+{
+	creditTime = getTime();
+}
+
 /*Getter for loan limit*/
 double Account::getLoanLimit()
 {
@@ -194,4 +250,16 @@ double Account::getLoanLimit()
 void Account::setLoanLimit(double limit)
 {
 	loanLimit = limit;
+}
+
+/*Getter for loan time*/
+struct tm Account::getLoanTime()
+{
+	return loanTime;
+}
+
+/*Setter for loan time*/
+void Account::setLoanTime()
+{
+	loanTime = getTime();
 }

@@ -16,6 +16,7 @@ class Member
 	Member();
 	~Member();
 	void initialize(string first, string last, string user, string pass, Account account);
+	void checkCredit();
 	void addAccount(Account account);
 	bool deleteAccount(Account &account);
 	Account *selectAccount(string option);
