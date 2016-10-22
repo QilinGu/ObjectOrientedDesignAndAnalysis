@@ -33,7 +33,8 @@ Maintainer::~Maintainer()
 
 /**
  * \brief 
- * Print Traces Functio
+ * Print Traces Function
+ * Will print all recent traces, as long as there are some
  */
 void Maintainer::printTrace()
 {

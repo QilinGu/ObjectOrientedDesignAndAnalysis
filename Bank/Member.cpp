@@ -1,7 +1,7 @@
 /**
- * Created by: Pearson Radu
- * The Member class is a parent class for Client, Manager, and Maintainer. This class give
- * members a skeleton which will hold names, username, passwords as well as account detials.
+* Created by: Pearson Radu
+* The Member class is a parent class for Client, Manager, and Maintainer. This class give
+* members a skeleton which will hold names, username, passwords as well as account detials.
 */
 
 #include "stdafx.h"
@@ -17,15 +17,15 @@ Member::~Member()
 }
 
 /**
- * \brief
- * Initialize Member Function
- * this function allows for the program to add a member with basic parameters
- * \param first
- * \param last
- * \param user
- * \param pass
- * \param account
- */
+* \brief
+* Initialize Member Function
+* this function allows for the program to add a member with basic parameters
+* \param first
+* \param last
+* \param user
+* \param pass
+* \param account
+*/
 void Member::initialize(string first, string last, string user, string pass, Account account)
 {
 	firstname = first;
@@ -37,22 +37,102 @@ void Member::initialize(string first, string last, string user, string pass, Acc
 }
 
 /**
- * \brief
- * Additional Account Function
- * takes a parameter of an account and adds it to the accounts vector
- * \param account
+ * \brief 
+ * Checks if the user needs to make a payment
+ * Could be a credit, loan or automatic payment
  */
+void Member::checkPayment()
+{
+	// Update payments or credit and loan
+	for (size_t i = 0; i < accounts.size(); i++)
+		if (accounts[i].getAccountType() == "Credit" || accounts[i].getAccountType() == "Loan")
+			accounts[i].payment();
+
+	// Update automatic payments
+	for (size_t i = 0; i < payments.size(); i++)
+	{
+		// See if there are any payments to charge
+		int initiate = payments[i].payment();
+
+		// Go through and make the payments as long as the user has money in therir account
+		for(size_t j = 0; j < payments.size() && initiate > 0; j++)
+			if (linkedPayments[i]->getBalance() - payments[i].getBalance() >= 0)
+				linkedPayments[i]->setBalance(linkedPayments[i]->getBalance() - payments[i].getBalance());
+	}
+}
+
+/**
+ * \brief 
+ * Add Payment Function
+ * Adds a payment account of the users desire
+ * Adds the payment account to the payments vector
+ * Adds the linked payment account to the linkedPayment vector
+ * \param payment 
+ * \param value 
+ */
+void Member::addPayment(string payment, double value)
+{
+	// Create the payment account (which will only use properties of accountType, balance and credit time)
+	Account account(payment, value);
+	account.setCreditTime();
+	payments.push_back(account);
+	// Push the account linked to the automatic payments
+	linkedPayments.push_back(selectAccount("withdraw payments from"));
+}
+
+/**
+ * \brief 
+ * Cancel Payment Function
+ * Cancels the payment of the user desire and remove the payment information for
+ * the payment and linkedPayment vectors
+ * Return if the payment was found or not
+ * \param payment 
+ * \return 
+ */
+bool Member::cancelPayment(string payment)
+{
+	bool canceled = false;
+
+	for(size_t i = 0; i < payments.size(); i++)
+	{
+		// If the payment exists
+		if(payments[i].getAccountType() == payment)
+		{
+			canceled = true;
+			// remove it from the payments vector
+			payments.erase(payments.begin() + i);
+
+			// Create a temp payment vector that will hold all the payments we want to keep
+			vector<Account*> temp;
+			for(size_t j = 0; j < linkedPayments.size(); j++)
+			{
+				if (j != i)
+					temp.push_back(linkedPayments[j]);
+			}
+			linkedPayments = temp;
+		}
+	}
+
+	return canceled;
+}
+
+/**
+* \brief
+* Additional Account Function
+* takes a parameter of an account and adds it to the accounts vector
+* \param account
+*/
 void Member::addAccount(Account account)
 {
 	accounts.push_back(account);
 }
 
 /**
- * \brief
- * Delete Account Functions
- * removes a specified account from the members account if it has a balance of zero
- * \param account
- */
+* \brief
+* Delete Account Function
+* Removes a specified account from the members account (only if it has a balance of zero)
+* \param account
+*/
 bool Member::deleteAccount(Account &account)
 {
 	if (account.getBalance() == 0)
@@ -70,8 +150,8 @@ bool Member::deleteAccount(Account &account)
 		}
 
 		cout << "\n " << getFirstname() << " " << getLastname() << "'s " << account.getAccountType() << " account has been deleted.\n" << endl;
-		
-		
+
+
 		//The account has been deleted.\n" << endl;
 		accounts.erase(accounts.begin() + location);
 		return true;
@@ -84,48 +164,49 @@ bool Member::deleteAccount(Account &account)
 }
 
 /**
- * \brief
- * Account Selector Function
- * Finds the account the user wishes to use
- * If there is only one account present automatically returns that account
- * \return
- */
+* \brief
+* Account Selector Function
+* Finds the account the user wishes to use
+* If there is only one account present automatically returns that account
+* \return
+*/
 Account *Member::selectAccount(string option)
 {
 	if (accounts.size() == 1)
 		return &accounts[0];
-	else
+
+	// If there is more than one account open, it will list all accounts and 
+	// a corresponding number will choose the desired account
+	cout << "\n Which account would you like to " << option << "?" << endl;
+	for (size_t i = 0; i < accounts.size(); i++)
 	{
-		cout << "\n Which account would you like to " << option << "?" << endl;
-		for (size_t i = 0; i < accounts.size(); i++)
-		{
-			cout << " " << i + 1 << ". " << accounts[i].getAccountType() << endl;
-		}
-		cout << " Please enter the corresponding number to the account: ";
-
-		int choice;
-		bool inputFail;
-		do
-		{
-			cin >> choice;
-			inputFail = cin.fail();
-			cin.clear();
-			cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-			if (choice <= 0 || choice >= accounts.size() + 1)
-				inputFail = true;
-
-		} while (inputFail == true);
-
-		return &accounts[choice - 1];
+		cout << " " << i + 1 << ". " << accounts[i].getAccountType() << endl;
 	}
+	cout << " Please enter the corresponding number to the account: ";
+
+	int choice;
+	bool inputFail;
+	do
+	{
+		cin >> choice;
+		inputFail = cin.fail();
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+		if (choice <= 0 || choice >= accounts.size() + 1)
+			inputFail = true;
+
+	} while (inputFail == true);
+
+	// Return choice -1 because we do not display zero as an option
+	return &accounts[choice - 1];
 }
 
 /**
- * \brief
- * Print Account Function
- * This prints all the accounts and the balances of them
- */
+* \brief
+* Print Account Function
+* This prints all the accounts and the balances of the member
+*/
 void Member::printAccount()
 {
 	cout << "--------------------------------------------------------------------------\n";
@@ -198,16 +279,45 @@ vector<Account> Member::getAccounts()
 	return accounts;
 }
 
+/*Getter for payments*/
+vector<Account> Member::getPayments()
+{
+	return payments;
+}
+
+/*Setter for payments*/
+void Member::setPayments(vector<Account> pays)
+{
+	payments = pays;
+}
+
+/*Getter for linked payments*/
+vector<Account*> Member::getLinkedPayments()
+{
+	return linkedPayments;
+}
+
+/*Setter for linked payments*/
+void Member::setLinkedPayments(vector<Account*> linkedPays)
+{
+	linkedPayments = linkedPays;
+}
+
+/*Getter for transactions*/
 vector<string> Member::getTransactions()
 {
-	/*if (transactions.empty())
-		cout << " Sorry, you do not have any recent transactions." << endl;*/
-
 	return transactions;
 }
 
+/**
+* \brief
+* Function to add a transaction to the member
+* Adds a string to the list of 10 most recent transactions
+* \param transaction
+*/
 void Member::addTransaction(string transaction)
 {
+	// Make sure there is only at most 10 transactions saved
 	if (transactions.size() == 10)
 	{
 		transactions.erase(transactions.begin());
