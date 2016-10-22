@@ -187,14 +187,13 @@ void Account::deposit(double value)
 			balance -= value;
 			cout << "\n Successfully deposited $" << value << " to " << accountType << ".\n";
 		}
-		else
-			cout << "\n Sorry, the value $" << value << " cannot be deposited.\n Payments to this account cannot go below $0." << endl;
-
-		if (accountType == "Savings" || accountType == "Chequing")
+		else if (accountType == "Savings" || accountType == "Chequing")
 		{
 			balance += value;
 			cout << "\n Successfully deposited $" << value << " to " << accountType << ".\n";
 		}
+		else
+			cout << "\n Sorry, the value $" << value << " cannot be deposited.\n Payments to this account cannot go below $0." << endl;
 	}
 	else
 		cout << "\n Sorry, the value $" << value << " cannot be deposited." << endl;

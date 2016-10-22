@@ -49,8 +49,8 @@ void Serializable::saveMembers(vector<T>& members, string file)
 			fileWriter << members[i].getLastname() << "\n";
 			fileWriter << members[i].getUsername() << "\n";
 			fileWriter << members[i].getPassword() << "\n";
+			
 			fileWriter << members[i].getAccounts().size() << "\n";
-
 			for (size_t j = 0; j < members[i].getAccounts().size(); j++)
 			{
 				// Save their account type, balance, credit limit, and loan limit
@@ -62,6 +62,19 @@ void Serializable::saveMembers(vector<T>& members, string file)
 
 				fileWriter << members[i].getAccounts()[j].getLoanLimit() << "\n";
 				saveTime(fileWriter, members[i].getAccounts()[j].getLoanTime());
+			}
+
+			fileWriter << members[i].getPayments().size() << "\n";
+			for(size_t j = 0; j < members[i].getPayments().size(); j++)
+			{
+				fileWriter << members[i].getPayments()[j].getAccountType() << "\n";
+				fileWriter << members[i].getPayments()[j].getBalance() << "\n";
+				fileWriter << members[i].getPayments()[j].getCreditLimit() << "\n";
+				saveTime(fileWriter, members[i].getPayments()[j].getCreditTime());
+				fileWriter << members[i].getPayments()[j].getLoanLimit() << "\n";
+				saveTime(fileWriter, members[i].getPayments()[j].getLoanTime());
+
+				fileWriter << members[i].getLinkedPayments()[j]->getAccountType() << "\n";
 			}
 
 			// Save the number of transactions (so we know how many to search for when we load them back), and the individual transaction data
@@ -159,6 +172,83 @@ void Serializable::loadMembers(vector<T>& members, string file)
 			account.setLoanTime(loanTime);
 			member.addAccount(account);
 		}
+
+		getline(fileReader, line);
+		int payments = stoi(line);
+		vector<Account> pays;
+		vector<Account*> linkedPays;
+
+		for (int j = 0; j < payments; j++)
+		{
+			getline(fileReader, line);
+			string accountType = line;
+			getline(fileReader, line);
+			double balance = stod(line);
+			getline(fileReader, line);
+			double credit = stod(line);
+			getline(fileReader, line);
+
+			// Load the Credit Time Structure
+			// Seconds
+			getline(fileReader, line);
+			int cSec = stoi(line);
+			// Minutes
+			getline(fileReader, line);
+			int cMin = stoi(line);
+			// Hours
+			getline(fileReader, line);
+			int cHour = stoi(line);
+			// Days
+			getline(fileReader, line);
+			int cDay = stoi(line);
+			// Months
+			getline(fileReader, line);
+			int cMon = stoi(line);
+			// Years
+			getline(fileReader, line);
+			int cYear = stoi(line);
+			struct tm creditTime = {cSec, cMin, cHour, cDay, cMon, cYear};
+
+			double loan = stod(line);
+
+			// Load the Loan Time Structure
+			// Seconds
+			getline(fileReader, line);
+			int lSec = stoi(line);
+			// Minutes
+			getline(fileReader, line);
+			int lMin = stoi(line);
+			// Hours
+			getline(fileReader, line);
+			int lHour = stoi(line);
+			// Days
+			getline(fileReader, line);
+			int lDay = stoi(line);
+			// Months
+			getline(fileReader, line);
+			int lMon = stoi(line);
+			// Years
+			getline(fileReader, line);
+			int lYear = stoi(line);
+			struct tm loanTime = {lSec, lMin, lHour, lDay, lMon, lYear};
+
+			Account account(accountType, balance);
+			account.setCreditLimit(credit);
+			account.setCreditTime(creditTime);
+			account.setLoanLimit(loan);
+			account.setLoanTime(loanTime);
+
+			pays.push_back((account));
+
+			getline(fileReader, line);
+
+			for(size_t k = 0; k < member.getAccounts().size(); k++)
+				if (member.getAccounts()[k].getAccountType() == line)
+					linkedPays.push_back(&member.getAccounts()[k]);
+		}
+
+		member.setPayments(pays);
+		member.setLinkedPayments(linkedPays);
 
 		getline(fileReader, line);
 		int transNum = stoi(line);

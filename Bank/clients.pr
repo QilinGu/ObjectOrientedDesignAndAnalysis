@@ -1,11 +1,11 @@
-1
+2
 Pearson
 Radu
 pradu
 111
 3
 Savings
-920
+1165
 0
 0
 0
@@ -21,7 +21,7 @@ Savings
 0
 0
 Chequing
-171
+1975
 0
 0
 0
@@ -36,30 +36,47 @@ Chequing
 0
 0
 0
-Loan
-8.64087e+06
+Credit
 0
-2000
-2000
-2000
-2000
-2000
-2000
-2000
+1200
+58
 33
-1
-10
-26
+14
+22
 9
 116
-10
-Pearson withdrew $100.000000 from Credit
-Pearson withdrew $500.000000 from Loan
-Pearson deposited $146.410000 to Credit
-Pearson deposited $500.000000 to Loan
-Pearson withdrew $100.000000 from Credit
-Pearson deposited $21.000000 to Credit
-Pearson deposited $121.000000 to Credit
-Pearson withdrew $100.000000 from Loan
-Pearson deposited $900.000000 to Savings
+0
+0
+0
+0
+0
+0
+0
+0
+3
 Pearson withdrew $10.000000 from Savings
+Pearson deposited $50.000000 to Savings
+Pearson transfered $25.000000 from Chequing to pradu'sSavings
+Nazim
+Madhavji
+nmad
+pascal
+1
+Savings
+5025
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
