@@ -9,7 +9,6 @@ class Account
 	private:
 	string accountType;
 	double balance;
-	double limit;
 	double creditLimit = 0;
 	struct tm creditTime = { 0,0,0,0,0,0 };
 	double loanLimit = 0;
@@ -19,7 +18,7 @@ class Account
 	public:
 	Account(string account, double value);
 	~Account();
-	void checkPayment();
+	int payment();
 	string getAccountType();
 	void setAccountType(string account);
 	double getBalance();

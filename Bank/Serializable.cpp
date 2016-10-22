@@ -11,7 +11,6 @@
 
 void Serializable::saveTime(ofstream& fileWriter, tm time)
 {
-
 	// Save the seconds
 	fileWriter << time.tm_sec << "\n";
 	// Save the minutes
@@ -95,4 +94,3 @@ bool Serializable::loadTrace(vector<string> &traces)
 
 	return toggle;
 }
-

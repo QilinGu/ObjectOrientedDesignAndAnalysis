@@ -7,7 +7,6 @@
 #include "stdafx.h"
 #include "Account.h"
 #include <time.h>
-#include <ctime>
 
  /**
   * \brief
@@ -28,13 +27,20 @@ Account::~Account()
 }
 
 // Got help from here to calculate difference between dates http://stackoverflow.com/questions/14218894/number-of-days-between-two-dates-c
-void Account::checkPayment()
+int Account::payment()
 {
-	struct tm diff = getTime();
-	//struct tm diff = { 0,20,21,20,9,116 }; 
-	time_t x = mktime(&creditTime);
-	time_t y = mktime(&diff);
 	double difference = 0;
+	struct tm currentTime = getTime();
+	time_t y = mktime(&currentTime);
+	time_t x;
+
+	// If it is a credit account, get the credit date, else if it is a loan account get the loan date
+	if (accountType == "Credit")
+		x = mktime(&creditTime);
+	else if (accountType == "Loan")
+		x = mktime(&loanTime);
+	else if (accountType != "Savings" && accountType != "Chequing")
+		x = mktime(&creditTime);
 
 	if (x != (time_t)(-1) && y != (time_t)(-1))
 	{
@@ -44,13 +50,37 @@ void Account::checkPayment()
 		//cout << "difference = " << difference << " days" << endl;
 	}
 
-	if (difference > 30)
+	// Charge the credit account 10% x how every many monthly payments missed
+	// Once the payment is charged the charge date is updated
+	if ((difference / 30) >= 1 && accountType == "Credit")
 	{
-		if(balance != 0)
-			balance += (balance * 0.10);
+		if (balance != 0)
+		{
+			for (int i = 1; i <= floor(difference / 30); i++)
+				balance *= 0.10;
+		}
 
-		creditTime = diff;
+		creditTime = currentTime;
 	}
+	// Charge the loan account 15% if the balance once the year is up
+	else if (accountType == "Loan")
+	{
+		if (balance != 0 && difference >= 365)
+		{
+			balance += (balance * 0.15);
+			loanTime = currentTime;
+		}
+		//else if (balance != 0 && difference > 30)
+			//balance += (balance * 0.5);
+	}
+	// Return how many missed payments there are and update the date
+	else if ((difference / 30) >= 1 && accountType != "empty")
+	{
+		creditTime = currentTime;
+		return floor(difference / 30);
+	}
+
+	return 0;
 }
 
 struct tm Account::getTime()
@@ -171,11 +201,11 @@ void Account::deposit(double value)
 }
 
 /**
- * \brief 
+ * \brief
  * Transfer function for account
  * Takes parameter value, which is deducted from the account and moved to another account
- * \param value 
- * \param account 
+ * \param value
+ * \param account
  */
 void Account::transfer(double value, Account *account)
 {
@@ -236,6 +266,7 @@ void Account::setCreditTime()
 	creditTime = getTime();
 }
 
+/*Setter for credit time with parameter time*/
 void Account::setCreditTime(struct tm time)
 {
 	creditTime = time;

@@ -1,9 +1,7 @@
 #pragma once
 #include <vector>
 #include <fstream>
-#include "Client.h"
 #include "Manager.h"
-#include "Maintainer.h"
 #include <ctime>
 using namespace std;
 
@@ -12,7 +10,7 @@ class Serializable
 	private:
 	void saveTime(ofstream &fileWriter, struct tm time);
 
-	public:
+	public: 
 	Serializable();
 	~Serializable();
 
@@ -58,12 +56,11 @@ void Serializable::saveMembers(vector<T>& members, string file)
 				// Save their account type, balance, credit limit, and loan limit
 				fileWriter << members[i].getAccounts()[j].getAccountType() << "\n";
 				fileWriter << members[i].getAccounts()[j].getBalance() << "\n";
+				
 				fileWriter << members[i].getAccounts()[j].getCreditLimit() << "\n";
-
 				saveTime(fileWriter, members[i].getAccounts()[j].getCreditTime());
 
 				fileWriter << members[i].getAccounts()[j].getLoanLimit() << "\n";
-
 				saveTime(fileWriter, members[i].getAccounts()[j].getLoanTime());
 			}
 

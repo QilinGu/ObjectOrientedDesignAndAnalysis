@@ -24,8 +24,6 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 void optionMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice);
 
-double getValue();
-void calculatePayment(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
 void printSummary(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void withdrawMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void depositMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
@@ -33,6 +31,10 @@ void transferMoney(string &username, string &password, vector<Client> &clients, 
 void transferMoneyToMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void printRecentTransactions(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
 void createMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void createAutoPayment(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void cancelAutoPayment(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element);
+void calculatePayment(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers);
+double getValue();
 
 int main()
 {
@@ -74,9 +76,6 @@ void addTrace(string trace)
 {
 	if (toggle)
 	{
-		// Get the starting value of clock
-		clock_t start = clock();
-		tm* my_time;
 		// Get current time in format of time_t
 		time_t t = time(NULL);
 		// Convert time_t to char*, and charTime will be the current time
@@ -159,6 +158,8 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 
 void optionMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
+	calculatePayment(clients, managers, maintainers);
+
 	cout << "--------------------------------------------------------------------------\n";
 	cout << "                                Main Menu\n";
 	cout << "--------------------------------------------------------------------------\n" << endl;
@@ -169,24 +170,28 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 	cout << " 4. Transfer Funds" << endl;
 	cout << " 5. Transfer Funds To Another Member" << endl;
 	cout << " 6. Print Recent Transactions" << endl;
-	cout << " 7. Quit\n" << endl;
+	cout << " 7. Create Automatic Payment" << endl;
+	cout << " 8. Cancel Automatic Payment" << endl;
+	cout << " 9. Quit\n" << endl;
 
 	if (type == "manager")
 	{
 		cout << " Additional Manager Options:" << endl;
-		cout << " 8. Create New Member" << endl;
-		cout << " 9. Add Account" << endl;
-		cout << " 10. Close Account" << endl;
-		cout << " 11. View Details of Account(s)\n" << endl;
+		cout << " 10. Create New Member" << endl;
+		cout << " 11. Add Account" << endl;
+		cout << " 12. Close Account" << endl;
+		cout << " 13. View Details of Account(s)\n" << endl;
 	}
 
 	if (type == "maintainer")
 	{
 		cout << " Additional Maintenance Options" << endl;
-		cout << " 8. Turn On Execution Trace" << endl;
-		cout << " 9. Turn Off Execution Trace" << endl;
-		cout << " 10. Print Execution Trace\n" << endl;
+		cout << " 10. Turn On Execution Trace" << endl;
+		cout << " 11. Turn Off Execution Trace" << endl;
+		cout << " 12. Print Execution Trace\n" << endl;
 	}
+
+
 
 	cout << " How would you like to proceed: ";
 	int choice = 0;
@@ -200,17 +205,17 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 
 		if (type == "client")
 		{
-			if (choice <= 0 || choice >= 8)
+			if (choice <= 0 || choice >= 10)
 				inputFail = true;
 		}
 		else if (type == "manager")
 		{
-			if (choice <= 0 || choice >= 12)
+			if (choice <= 0 || choice >= 14)
 				inputFail = true;
 		}
 		else if (type == "maintainer")
 		{
-			if (choice <= 0 || choice >= 11)
+			if (choice <= 0 || choice >= 13)
 				inputFail = true;
 		}
 	} while (inputFail == true);
@@ -222,8 +227,6 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 
 void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice)
 {
-	calculatePayment(clients, managers, maintainers);
-
 	switch (choice)
 	{
 		case 1:
@@ -238,20 +241,26 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 		case 4:
 			transferMoney(username, password, clients, managers, maintainers, type, element);
 			break;
-		case 5: 
+		case 5:
 			transferMoneyToMember(username, password, clients, managers, maintainers, type, element);
 			break;
 		case 6:
 			printRecentTransactions(username, password, clients, managers, maintainers, type, element);
 			break;
 		case 7:
+			createAutoPayment(username, password, clients, managers, maintainers, type, element);
+			break;
+		case 8:
+			cancelAutoPayment(username, password, clients, managers, maintainers, type, element);
+			break;
+		case 9:
 			// Log out
 			cout << "--------------------------------------------------------------------------\n\n";
 			cout << " Logging out, thank you for choosing PR Bank.\n" << endl;
 			addTrace(" " + username + " logged out of PR Bank");
 			startMenu(username, password, clients, managers, maintainers);
 			break;
-		case 8:
+		case 10:
 			// Create New Member if you are a Manager
 			if (type == "manager")
 			{
@@ -272,7 +281,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			}
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
-		case 9:
+		case 11:
 			// Add Account if you are a Manager
 			if (type == "manager")
 			{
@@ -295,7 +304,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			}
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
-		case 10:
+		case 12:
 			// Close Account if you are a Manager
 			if (type == "manager")
 			{
@@ -311,7 +320,7 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 			}
 			optionMenu(username, password, clients, managers, maintainers, type, element);
 			break;
-		case 11:
+		case 13:
 			// View Details of Accounts if you are a Manager
 			if (type == "manager")
 			{
@@ -471,7 +480,7 @@ void transferMoneyToMember(string &username, string &password, vector<Client> &c
 		cout << "\n Sorry, we can not find the member matching that username.\n" << endl;
 	else
 	{
-		if(type == "client")
+		if (type == "client")
 		{
 			account1 = clients[element].selectAccount("transfer from");
 			clients[element].addTransaction(clients[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + username + "'s" + account2->getAccountType());
@@ -479,11 +488,12 @@ void transferMoneyToMember(string &username, string &password, vector<Client> &c
 		else if (type == "manager")
 		{
 			account1 = managers[element].selectAccount("transfer from");
-			managers[element].addTransaction(managers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + username + "'s" + account2->getAccountType());		}
+			managers[element].addTransaction(managers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + username + "'s" + account2->getAccountType());
+		}
 		else if (type == "maintainer")
 		{
 			account1 = maintainers[element].selectAccount("transfer from");
-			maintainers[element].addTransaction(maintainers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to "+ username + "'s" + account2->getAccountType());
+			maintainers[element].addTransaction(maintainers[element].getFirstname() + " transfered $" + to_string(value) + " from " + account1->getAccountType() + " to " + username + "'s" + account2->getAccountType());
 		}
 
 		account1->transfer(value, account2);
@@ -550,12 +560,81 @@ void createMember(string &username, string &password, vector<Client> &clients, v
 	saveMembers(clients, managers, maintainers);
 }
 
+void createAutoPayment(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	cout << "--------------------------------------------------------------------------\n\n";
+	cout << " What would you like to name this automatic payment to be: ";
+	string payment;
+	cin >> payment;
+	cout << " Please enter a value to be automatically withdrawn: $";
+
+	double value = 0;
+	while (value <= 0)
+		value = getValue();
+
+	if (type == "client")
+		clients[element].addPayment(payment, value);
+	else if (type == "manager")
+		managers[element].addPayment(payment, value);
+	else if (type == "maintainer")
+		maintainers[element].addPayment(payment, value);
+
+	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
+void cancelAutoPayment(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
+{
+	cout << "--------------------------------------------------------------------------\n\n";
+	cout << " Here are your current automatic payments:\n";
+
+	vector<Account> payments;
+
+	if (type == "client")
+		payments = clients[element].getPayments();
+	else if (type == "manager")
+		payments = managers[element].getPayments();
+	else if (type == "maintainer")
+		payments = maintainers[element].getPayments();
+
+	if (payments.size() > 0)
+	{
+		for (size_t i = 0; i < payments.size(); i++)
+			cout << " " << payments[i].getAccountType() << endl;
+
+		cout << "\n What is the name of the payment you would like to cancel: ";
+		string payment;
+		cin >> payment;
+
+		bool found = false;
+
+		if (type == "client")
+			found = clients[element].cancelPayment(payment);
+		else if (type == "manager")
+			found = managers[element].cancelPayment(payment);
+		else if (type == "maintainer")
+			found = maintainers[element].cancelPayment(payment);
+
+		if (!found)
+			cout << "\n Sorry, we could not find a payment with that name." << endl;
+		else
+			cout << "\n The payment, " << payment << ", has been canceled." << endl;
+	}
+	else
+		cout << "\n Currently, you have no automatic payments set up.\n" << endl;
+
+	optionMenu(username, password, clients, managers, maintainers, type, element);
+}
+
 void calculatePayment(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
-	for(size_t i = 0; i < clients.size(); i++)
-	{
-		clients[i].checkCredit();
-	}
+	for (size_t i = 0; i < clients.size(); i++)
+		clients[i].checkPayment();
+	for (size_t i = 0; i < managers.size(); i++)
+		managers[i].checkPayment();
+	for (size_t i = 0; i < maintainers.size(); i++)
+		maintainers[i].checkPayment();
+
+	saveMembers(clients, managers, maintainers);
 }
 
 double getValue()

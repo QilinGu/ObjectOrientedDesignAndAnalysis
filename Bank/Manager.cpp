@@ -203,9 +203,9 @@ void Manager::memberInput(string &firstname, string &lastname, string &username,
 
 		// Loop until an account is chosen
 		string accountType = "";
-		while(accountType == "")
-			accountType = chooseAccount(accounts);		
-		
+		while (accountType == "")
+			accountType = chooseAccount(accounts);
+
 		cout << " What is the balance/limit of this account going to be: $";
 
 		do
@@ -315,15 +315,15 @@ Maintainer* Manager::findMaintainer(string username, vector<Maintainer>& maintai
 }
 
 /**
- * \brief 
+ * \brief
  * Close Account Function
  * This function takes all the members of the bank and search for a username, if it finds the user account it will ask what account you want
  * to delete, and if there is only one account it will delete that.
  * The account will only be deleted if there is zero dollars in it
- * \param clients 
- * \param managers 
- * \param maintainers 
- * \return 
+ * \param clients
+ * \param managers
+ * \param maintainers
+ * \return
  */
 string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
@@ -427,7 +427,7 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 		cout << "\n Successfully removed the account associated with " << username << " from PR Bank.\n" << endl;
 		return " closed an account for" + username;
 	}
-	
+
 	if (!deleted)
 	{
 		cout << "\n Sorry, there was a problem closing the requested account.\n" << endl;
@@ -436,14 +436,14 @@ string Manager::closeAccount(vector<Client> &clients, vector<Manager> &managers,
 }
 
 /**
- * \brief 
+ * \brief
  * * Open Account Function
  * This function takes all members of the bank as a parameter and finds the current user accounts based on a username.
  * If it finds the user, it will add a new account to their current ones.
- * \param clients 
- * \param managers 
- * \param maintainers 
- * \return 
+ * \param clients
+ * \param managers
+ * \param maintainers
+ * \return
  */
 string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
@@ -488,6 +488,7 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 		{
 			account.setLoanLimit(balance);
 			account.setBalance(0);
+			account.setLoanTime();
 		}
 
 		// If the account type is a credit, set the balance to 0 and set the credit limit
@@ -578,11 +579,11 @@ string Manager::openAccount(vector<Client> &clients, vector<Manager> &managers, 
 }
 
 /**
- * \brief 
+ * \brief
  * Choose Account Function
  * Find the account type of a user that does not already exist
- * \param accounts 
- * \return 
+ * \param accounts
+ * \return
  */
 string Manager::chooseAccount(vector<Account> &accounts)
 {
@@ -626,17 +627,17 @@ string Manager::chooseAccount(vector<Account> &accounts)
 		cout << " Sorry, this user already has a " << accountType << " account, please choose another.\n" << endl;
 		return "";
 	}
-	
+
 	return accountType;
 }
 
 /**
- * \brief 
+ * \brief
  * View Details Function
  * Allows a manager to choice if they want to view all details of bank members or search by username
- * \param clients 
- * \param managers 
- * \param maintainers 
+ * \param clients
+ * \param managers
+ * \param maintainers
  */
 void Manager::viewDetails(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
@@ -701,11 +702,11 @@ void Manager::viewDetails(vector<Client> &clients, vector<Manager> &managers, ve
 }
 
 /**
- * \brief 
+ * \brief
  * Get Choice Function
  * Returns a confirmation
- * \param text 
- * \return 
+ * \param text
+ * \return
  */
 bool Manager::getChoice(string text)
 {
