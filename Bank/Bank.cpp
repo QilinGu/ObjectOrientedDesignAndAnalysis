@@ -38,21 +38,34 @@ double getValue();
 
 int main()
 {
+	// Create most of the variables that will be passed through menu functions
 	string username, password;
 
 	vector<Client> clients;
 	vector<Manager> managers;
 	vector<Maintainer> maintainers;
+	// Load bank members into their corresponding vectors
 	loadMembers(clients, managers, maintainers);
 
+	// Load the traces
 	Serializable objSerial;
 	toggle = objSerial.loadTrace(traces);
 
+	// Go to start menu!
 	startMenu(username, password, clients, managers, maintainers);
 
 	return 0;
 }
 
+/**
+ * \brief 
+ * Load Members Function
+ * Make sure all vectors are empty before loading their contents 
+ * Use of loadMembers function from serilization class to load members
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ */
 void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	Serializable memberSerial;
@@ -64,6 +77,14 @@ void loadMembers(vector<Client> &clients, vector<Manager> &managers, vector<Main
 	memberSerial.loadMembers(maintainers, "maintainers.pr");
 }
 
+/**
+ * \brief 
+ * Save Members Function
+ * Uses serialization class to save members
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ */
 void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	Serializable memberSerial;
@@ -72,6 +93,12 @@ void saveMembers(vector<Client> &clients, vector<Manager> &managers, vector<Main
 	memberSerial.saveMembers(maintainers, "maintainers.pr");
 }
 
+/**
+ * \brief 
+ * Add Trace Function
+ * Simply adds a new trace with a time stamp when called
+ * \param trace 
+ */
 void addTrace(string trace)
 {
 	if (toggle)
@@ -88,6 +115,17 @@ void addTrace(string trace)
 	}
 }
 
+/**
+ * \brief 
+ * Start Menu Function
+ * Prompts the user to enter their username and password
+ * Called validate function to check if they are a member
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ */
 void startMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	cout << "--------------------------------------------------------------------------\n";
@@ -102,6 +140,17 @@ void startMenu(string &username, string &password, vector<Client> &clients, vect
 	validate(username, password, clients, managers, maintainers);
 }
 
+/**
+ * \brief 
+ * Validate Function
+ * Checks to see if the users input corresponds to an existing account
+ * If they are, continue to the options menu
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ */
 void validate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	cout << "--------------------------------------------------------------------------\n";
@@ -156,6 +205,19 @@ void validate(string &username, string &password, vector<Client> &clients, vecto
 	}
 }
 
+/**
+ * \brief 
+ * Option Menu Function
+ * Depending on the type of member, they will be supplied with a number of options
+ * There option will be sent to the Choice Validate Function
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void optionMenu(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	calculatePayment(clients, managers, maintainers);
@@ -225,6 +287,19 @@ void optionMenu(string &username, string &password, vector<Client> &clients, vec
 	choiceValidate(username, password, clients, managers, maintainers, type, element, choice);
 }
 
+/**
+ * \brief 
+ * Choice Validate Function
+ * Takes the members inputted choice and runs it through a switch case that corresponds to their input
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ * \param choice 
+ */
 void choiceValidate(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element, int choice)
 {
 	switch (choice)
@@ -337,6 +412,19 @@ void choiceValidate(string &username, string &password, vector<Client> &clients,
 	}
 }
 
+/**
+ * \brief 
+ * Print Summary Function
+ * Prints an account summary to the logged in user
+ * Return back to the option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void printSummary(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	// Print Account Summary
@@ -351,6 +439,20 @@ void printSummary(string &username, string &password, vector<Client> &clients, v
 	optionMenu(username, password, clients, managers, maintainers, type, element);
 }
 
+/**
+ * \brief 
+ * Withdraw Money Function
+ * User selects the accounts they would like to withdraw from 
+ * Calls withdraw function from account to withdraw money
+ * Returns to option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void withdrawMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	// Withdraw Money From Account
@@ -383,6 +485,20 @@ void withdrawMoney(string &username, string &password, vector<Client> &clients, 
 	optionMenu(username, password, clients, managers, maintainers, type, element);
 }
 
+/**
+ * \brief 
+ * Deposit Money Function
+ * User selects the accounts they would like to deposit to
+ * Calls deposit function from account to deposit money
+ * Returns to option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void depositMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	// Deposit Money To Account
@@ -415,6 +531,20 @@ void depositMoney(string &username, string &password, vector<Client> &clients, v
 	optionMenu(username, password, clients, managers, maintainers, type, element);
 }
 
+/**
+ * \brief 
+ * Transfer Money Function
+ * User selects the accounts they would like to transfer to 
+ * Calls transfer function from account to transfer money
+ * Returns to option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void transferMoney(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	// Transfer Money To Account
@@ -450,6 +580,21 @@ void transferMoney(string &username, string &password, vector<Client> &clients, 
 	optionMenu(username, password, clients, managers, maintainers, type, element);
 }
 
+/**
+ * \brief 
+ * Transfer Money To Member Function
+ * User selects the accounts they would like to withdraw from 
+ * User selects the users account they would like to deposit to
+ * Calls transfer function from account to transfer money
+ * Returns to option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void transferMoneyToMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	// Transfer Money To Another Member
@@ -505,6 +650,19 @@ void transferMoneyToMember(string &username, string &password, vector<Client> &c
 	optionMenu(username, password, clients, managers, maintainers, type, element);
 }
 
+/**
+ * \brief 
+ * Print Recent Transaction Function
+ * Prints the users (at most 10) recent transactions
+ * Returns to option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void printRecentTransactions(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	// Print Recent Transactions
@@ -532,6 +690,19 @@ void printRecentTransactions(string &username, string &password, vector<Client> 
 	optionMenu(username, password, clients, managers, maintainers, type, element);
 }
 
+/**
+ * \brief 
+ * Create Member Function
+ * Manager utilizes this function to create a new member
+ * Returns to option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void createMember(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	int selection = managers[element].chooseMemberType();
@@ -560,6 +731,19 @@ void createMember(string &username, string &password, vector<Client> &clients, v
 	saveMembers(clients, managers, maintainers);
 }
 
+/**
+ * \brief 
+ * Create Automatic Payment Function
+ * Creates an automatic payment for the user
+ * Returns to option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void createAutoPayment(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	cout << "--------------------------------------------------------------------------\n\n";
@@ -582,6 +766,19 @@ void createAutoPayment(string &username, string &password, vector<Client> &clien
 	optionMenu(username, password, clients, managers, maintainers, type, element);
 }
 
+/**
+ * \brief 
+ * Cancel Automatic Payment Function
+ * Cancels a users desired automatic payment
+ * Returns to option menu when finished
+ * \param username 
+ * \param password 
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ * \param type 
+ * \param element 
+ */
 void cancelAutoPayment(string &username, string &password, vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers, string type, int element)
 {
 	cout << "--------------------------------------------------------------------------\n\n";
@@ -625,6 +822,14 @@ void cancelAutoPayment(string &username, string &password, vector<Client> &clien
 	optionMenu(username, password, clients, managers, maintainers, type, element);
 }
 
+/**
+ * \brief 
+ * Calculate Payment Function
+ * Goes through all members to see if the have any automatic payments, loans or credit accounts to charge them
+ * \param clients 
+ * \param managers 
+ * \param maintainers 
+ */
 void calculatePayment(vector<Client> &clients, vector<Manager> &managers, vector<Maintainer> &maintainers)
 {
 	for (size_t i = 0; i < clients.size(); i++)
@@ -637,6 +842,12 @@ void calculatePayment(vector<Client> &clients, vector<Manager> &managers, vector
 	saveMembers(clients, managers, maintainers);
 }
 
+/**
+ * \brief 
+ * Get Value Function
+ * Returns an double used for input
+ * \return 
+ */
 double getValue()
 {
 	double value = 0;
